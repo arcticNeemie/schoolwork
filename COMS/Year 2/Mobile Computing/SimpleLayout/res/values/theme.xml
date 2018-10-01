@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white_opaque">#FFFFFFFF</color>
+    <color name="pitch_black">#000000</color>
+
+    <style name="AppTheme" parent="android:Theme.Material.Light">
+        <item name="android:background">@color/white_opaque</item>
+        <item name="android:windowBackground">@color/white_opaque</item>
+        <item name="android:colorBackground">@color/white_opaque</item>
+    </style>
+
+    <style name="AppTheme2" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:background">@color/white_opaque</item>
+        <item name="android:windowBackground">@color/white_opaque</item>
+        <item name="android:colorBackground">@color/white_opaque</item>
+
+
+
+    </style>
+</resources>

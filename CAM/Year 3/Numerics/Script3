@@ -1,0 +1,4 @@
+f = @(x) exp(x-(1/2).^2);
+N = 100;
+xs = linspace(0,1,N);
+plot(xs,f(xs));

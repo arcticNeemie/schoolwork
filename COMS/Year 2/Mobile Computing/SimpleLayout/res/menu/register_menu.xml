@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- More -->
+    <item
+            android:id="@+id/a_More"
+            android:icon="@drawable/ic_action_overflow"
+            android:showAsAction="always"
+            android:title="More">
+        <menu>
+
+            <!-- Help -->
+            <item
+                    android:id="@+id/action_help"
+                    android:icon="@drawable/ic_action_help"
+                    android:showAsAction="never"
+                    android:onClick="get_help"
+                    android:title="help"/>
+        </menu>
+    </item>
+
+</menu>
