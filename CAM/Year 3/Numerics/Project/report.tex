@@ -1,0 +1,221 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[margin=0.6in]{geometry}
+\usepackage{multirow}
+\usepackage{subfig}
+\usepackage[capposition=top]{floatrow}
+
+\author{Group 11: Kimessha Paupamah, }
+
+\date{\today}
+
+\begin{document}
+\begin{titlepage}
+	\centering
+	
+\includegraphics[scale=0.5]{index.png}
+	\vspace{1cm}
+	
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+
+{\scshape\Large University of Witwatersrand\par}
+{\scshape\Large Johannesburg, South Africa\par}
+	\vspace{1.5cm}
+	{\huge\bfseries APPM3017 Numerical Methods Assignment \par}
+	\vspace{1cm}
+	{\Large\bfseries Project 5 \par}
+	\vspace{1cm}
+	{\Large\itshape Group 11: Kimessha Paupamah, Tamlin Love\par}
+	\vspace{0.5cm}
+	{\Large\itshape 1038238,1438243\par}
+	\vfill
+	
+\HRule \\[0.4cm]
+{ \huge \bfseries Non-Standard Finite Difference Method}\\[0.4cm] 
+\HRule \\[1.5cm]
+
+	{\large Semester 2, 2018\par}
+
+\end{titlepage}
+
+\begin{abstract}
+We investigate the performance of two numerical schemes - the Explicit Finite Difference and Non-Standard Finite Difference - in solving the Fisher Equation $\frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2} + \rho u(1-u)$. We model the two schemes for varying steps in $x$ and $t$ and compare each to the exact analytical solution, $\frac{1}{(\exp{(\sqrt{\frac{\rho}{6}}x-\frac{5\rho}{6}t)}+1)^2}$. We conclude that FILL THIS IN.
+\end{abstract}
+
+\section{Introduction}\label{sec:introduction}
+Introduce your problem here, highlighting any physical meaning or phenomenological interpretation. Provide a citation (see the end of this template for how to properly include a citation \cite{mickens}) to the provided paper. You should discuss and explain what the paper aimed to achieve and provide some insight into ``what the paper does", ``why" and ``how". 
+\section{Finite Difference Approach}\label{sec:FDM}
+	Briefly introduce the finite difference method: what is it, why do we use it, what do we expect from the results, etc.
+	\subsection{Methodology}\label{sec:FDmethods}
+		Provide a derivation of your finite difference scheme here, including how derivatives are discretised etc. Essentially, this section should be a ``how to" guide for how one can derive their own finite difference scheme, for the same problem or extend it to another problem.
+		\newline 
+		\newline
+		\begin{equation}
+		    \frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2} + \rho u(1-u)
+		\end{equation}
+		
+		
+	\subsection{Analysis}\label{sec:FDanalysis}
+		Include all your analysis here: step by step illustration of the numerical properties asked by the assignment brief.
+		
+	\subsubsection{Consistency}
+	\subsubsection{Stability}
+
+\section{Non-Standard Finite Difference Approach}\label{sec:Alt}
+	\subsection{Methodology}\label{sec:Altmethods}
+		Similar to the finite difference section, this section should include a derivation of your numerical scheme.
+		\newline 
+		\newline
+		From (1) we have
+		\begin{equation*}
+		    \frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2} + \rho u- \rho u^2
+		\end{equation*}
+		
+		
+		We know that a finite difference scheme is considered non-standard if the non-linear term $\rho u^2$ is replaced by a non-local discretisation \cite{anguelov}. 
+		Using the non-local discretisation in \cite{mickens}, we obtain 
+
+		\begin{equation}
+		   \frac{u_i^{n+1} -u_i^{n} }{\Delta t} = \frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n }{\Delta x^2}+\rho u_i^n-\rho (\frac{u_{i+1}^n + u_i^n + u_{i-1}^n}{3})u_i^{n+1}
+		\end{equation}
+		with $u^2$ being replaced by the non-local discretisation $(\frac{u_{i+1}^n + u_i^n + u_{i-1}^n}{3})u_i^{n+1}$.
+		
+		Solving for $u_i^{n+1}$ we get
+        \begin{equation}
+		    u_i^{n+1} = \frac{R(u_{i+1}^n + u_{i-1}^n) + u_i^n(1+\rho \Delta t -2R)}{1+(\frac{\rho \Delta t}{3})(u_{i+1}^n + u_i^n + u_{i-1}^n)}
+		\end{equation}
+		where $R=\frac{\Delta t}{\Delta x^2}$. This gives us our non-standard finite difference scheme.
+		
+	\subsection{Analysis}\label{sec:Altanalysis}
+		\subsubsection{Consistency}
+		
+		From (2) we get
+		\begin{equation*}
+		   \frac{u_i^{n+1} -u_i^{n} }{\Delta t} = \frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n }{\Delta x^2}+\rho u_i^n(1-u_i^n)
+		\end{equation*}
+		Applying limits,
+        \begin{equation*}
+		   \lim_{\Delta x, \Delta t\rightarrow 0}\frac{u_i^{n+1} -u_i^{n} }{\Delta t} = \lim_{\Delta x, \Delta t\rightarrow 0} \frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n }{\Delta x^2}+\lim_{\Delta x, \Delta t\rightarrow 0} \rho u_i^n(1-u_i^n)
+		\end{equation*}
+		which recovers (1),
+		\begin{equation*}
+		    \frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2} + \rho u(1-u)
+		\end{equation*}
+		\subsubsection{Stability}
+		
+\section{Results}\label{sec:results}
+	\subsection{Finite Difference Method}
+	Comparing the Finite Difference scheme to the true solution, we obtained the following errors at $t=0.005$, using the initial condition of $u(x,0)=\frac{1}{(\exp{10\sqrt{\frac{10}{3}}x}+1)^2}$ and Dirichlet boundary conditions $u(-1, t) = 1$ and $u(1, t) = 0$, with $\rho =2000$. 
+    	
+    	\begin{table}[H]
+            \begin{tabular}{|l|l|l|l|}
+            \hline
+            Experiment & $\Delta x$ & $\Delta t$   & $L_2$ Error \\ \hline
+            1          & 0.05       & 0.00125      & 37.6239\\ \hline
+            2          & 0.025      & 0.0003125    & 1.0009\\ \hline
+            3          & 0.0125     & 0.000078125  & 0.2235\\ \hline
+            4          & 0.00625    & 0.0000195313 & 0.0324\\ \hline
+            \end{tabular}
+        \end{table}
+	\subsection{Non-Standard Finite Difference Method}
+    	Comparing the Non-Standard Finite Difference scheme to the true solution, we obtained the following errors at $t=0.005$, using the initial condition of $u(x,0)=\frac{1}{(\exp{10\sqrt{\frac{10}{3}}x}+1)^2}$ and Dirichlet boundary conditions $u(-1, t) = 1$ and $u(1, t) = 0$, with $\rho =2000$. 
+    	
+    	\begin{table}[H]
+            \begin{tabular}{|l|l|l|l|}
+            \hline
+            Experiment & $\Delta x$ & $\Delta t$   & $L_2$ Error \\ \hline
+            1          & 0.05       & 0.00125      &    \\ \hline
+            2          & 0.025      & 0.0003125    &    \\ \hline
+            3          & 0.0125     & 0.000078125  &   \\ \hline
+            4          & 0.00625    & 0.0000195313 &   \\ \hline
+            \end{tabular}
+        \end{table}
+	
+	
+	
+	
+	
+\section{Discussion}\label{sec:discussion}
+	Use this section to discuss the results presented in Section \ref{sec:results}. This discussion should be a comparison of the results obtained: which method is better or worse, by what measure are they better or worse. You should also discuss any advantages or disadvantages of the methods, clearly indicating which method you think is more appropriate for the given problem. Any other insights into the problem's solution should be given here: how do you interpret the solutions to the given problem, and how do these solutions relate back to the physical process being modelled? 
+
+\section{Conclusion}\label{sec:conclusion}
+	This section is not just a summary of the work conducted. Use this opportunity to reflect on what work has been conducted, pointing out which aspects were performed well and which aspects require more attention; indicate how you might approach the problem in the future to overcome any shortcomings of this work.
+\newpage
+\section{Some LaTeX tips}
+\label{sec:latex}
+\subsection{\LaTeX Distribution}
+You can use whichever \LaTeX distribution you like. All the information you need can be found at the following websites.\\
+\begin{itemize}
+	\item {\tt https://www.overleaf.com/}
+	\item {\tt https://www.latex-project.org/}	
+\end{itemize}
+
+\subsection{How to Make Tables}
+Use the table and tabular commands for basic tables --- see Table~\ref{tab:widgets}, for example.
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|r|}
+	\hline
+	Item & Quantity \\\hline
+	Widgets & 42 \\
+	Gadgets & 13 \\
+	\hline
+\end{tabular}
+\caption{\label{tab:widgets}An example table.}
+\end{table}
+
+\subsection{How to Write Mathematics}
+
+\LaTeX{} is great at typesetting mathematics. Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
+
+\begin{equation}
+S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+      = \frac{1}{n}\sum_{i}^{n} X_i
+\label{eq:sn}
+\end{equation}
+
+denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+
+The equation (\ref{eq:sn}) is very nice.
+
+\subsection{How to Make Sections and Subsections}
+
+Use section and subsection commands to organize your document. \LaTeX{} handles all the formatting and numbering automatically. Use ref and label commands for cross-references.
+
+\subsection{How to Make Lists}
+
+You can make lists with automatic numbering \dots
+
+\begin{enumerate}
+\item Like this,
+\item and like this.
+\end{enumerate}
+\dots or bullet points \dots
+\begin{itemize}
+\item Like this,
+\item and like this.
+\end{itemize}
+\dots or with words and descriptions \dots
+\begin{description}
+\item[Word] Definition
+\item[Concept] Explanation
+\item[Idea] Text
+\end{description}
+
+Hopefully you find \LaTeX useful!
+
+\begin{thebibliography}{9}
+    
+\bibitem{mickens} 
+    Mickens, Ronald E. Nonstandard finite difference schemes for reaction‐diffusion equations. \emph{Numerical Methods for Partial Differential Equations: An International Journal} 15.2 (1999): 201-214.
+
+\bibitem{anguelov} 
+    Anguelov, R., P. Kama, and JM-S. Lubuma. On non-standard finite difference models of reaction–diffusion equations. \emph{Journal of computational and Applied Mathematics} 175.1 (2005): 11-29.
+
+\end{thebibliography}
+\end{document}
