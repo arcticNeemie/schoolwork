@@ -6,7 +6,7 @@ p = 2000;
 f = @(x) 1./((exp(10*sqrt(10/3).*x)+1).^2);
 sol = @(x,t) 1./((exp(sqrt(p/6).*x-(5*p/6)*t)+1).^2);
 
-ex = 2;
+ex = 4;
 
 switch ex
     case 1
@@ -61,9 +61,10 @@ end
 hold on
 surf(xs,time,A);
 %surf(xs,time,B);
-xlabel('X');
-ylabel('Time');
-zlabel('U');
+%title('Finite Difference Approximation of u(x,t) vs. x vs. t - Neumann Boundaries');
+xlabel('x');
+ylabel('t');
+zlabel('u(x,t)');
 hold off;
 shading interp
 

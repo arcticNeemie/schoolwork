@@ -122,6 +122,16 @@ Introduce your problem here, highlighting any physical meaning or phenomenologic
             4          & 0.00625    & 0.0000195313 & 0.0324\\ \hline
             \end{tabular}
         \end{table}
+    Plotting a mesh plot of the scheme in the Dirichlet Boundary case, using the values $\Delta x = 0.00625$ and $\Delta t = 0.0000195313$ produces the following.
+    \begin{figure}[H]
+    \caption{Finite Difference Approximation with Dirichlet Boundaries}
+    \includegraphics[scale=0.8]{Fisher_Dirichlet_FiniteDifference.png}
+    \end{figure}
+    The Neumann Boundary case, for the same values of $\Delta x$ and $\Delta t$ plots as follows:
+    \begin{figure}[H]
+    \caption{Finite Difference Approximation with Neumann Boundaries}
+    \includegraphics[scale=0.8]{Fisher_Neumann_FiniteDifference.png}
+    \end{figure}
 	\subsection{Non-Standard Finite Difference Method}
     	Comparing the Non-Standard Finite Difference scheme to the true solution, we obtained the following errors at $t=0.005$, using the initial condition of $u(x,0)=\frac{1}{(\exp{10\sqrt{\frac{10}{3}}x}+1)^2}$ and Dirichlet boundary conditions $u(-1, t) = 1$ and $u(1, t) = 0$, with $\rho =2000$. 
     	

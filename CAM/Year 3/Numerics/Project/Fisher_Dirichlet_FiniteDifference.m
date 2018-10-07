@@ -59,21 +59,22 @@ end
 %hold off
 
 %   Mesh Plot
-% [xs,time] = meshgrid(xs,time) ;
-% hold on
-% surf(xs,time,A);
-% %surf(xs,time,B);
-% xlabel('X');
-% ylabel('Time');
-% zlabel('U');
-% hold off;
-% shading interp
+[xs,time] = meshgrid(xs,time) ;
+hold on
+surf(xs,time,A);
+%surf(xs,time,B);
+%title('Finite Difference Approximation of u(x,t) vs. x vs. t - Dirichlet Boundaries');
+xlabel('x');
+ylabel('t');
+zlabel('u(x,t)');
+hold off;
+shading interp
 
 %   Error Plot
-hold on
-plot(1:4,error);
-set(gca,'yscale','log')
-title('Error Plot for Finite Difference Approach');
-xlabel('Experiment Number');
-ylabel('L2 Error');
-hold off
+% hold on
+% plot(1:4,error);
+% set(gca,'yscale','log')
+% title('Error Plot for Finite Difference Approach');
+% xlabel('Experiment Number');
+% ylabel('L2 Error');
+% hold off
