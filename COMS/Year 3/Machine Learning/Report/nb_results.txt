@@ -1,0 +1,8 @@
+==Testing the impact of enharmonics==
+All true, no enharmonics - 68.93%
+All true, with enharmonics - 69.08%
+
+==Testing the impact of each feature, with enharmonics==
+No chord notes - 33.61%
+No bass notes - 67.65%
+No meter - 69.98%
