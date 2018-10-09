@@ -49,8 +49,8 @@ end
 
 %Construct b
 c = zeros(N,1);
-c(1) = -2*L1*dx*b0;
-c(end) = -2*L1*dx*b1;
+c(1) = 2*L1*dx*b0;
+c(end) = 2*L1*dx*b1;
 
 %Iterate across time
 for t=1:T
