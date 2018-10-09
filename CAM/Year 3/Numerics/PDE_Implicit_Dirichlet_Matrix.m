@@ -1,5 +1,6 @@
-%Finite Difference Heat Equation - Matrix Implementation
+%Dirichlet, Implicit, Matrix
 clc
+clear all
 close all
 
 %Parameters
@@ -24,28 +25,36 @@ N = length(x);
 time = t0:dt:t1;
 T = length(time);
 
+%Initial Condition
 u = transpose(f(x));
-L1 = (D*dt)/(dx^2);
-L2 = 1 - 2*L1;
 
-A = zeros(N,N);
-A(1,1) = 1;
-A(end,end) = 1;
+%Boundary Condition
+u(1) = b0;
+u(end) = b1;
+
+L1 = (D*dt)/(dx^2);
+L3 = 1 + 2*L1;
+
+%Construct A
+C = zeros(N,N);
+C(1,1) = 1;
+C(end,end) = 1;
 for i=2:N-1
-    A(i,i) = L2;
-    A(i,i-1) = L1;
-    A(i,i+1) = L1;
+    C(i,i) = L3;
+    C(i,i-1) = -L1;
+    C(i,i+1) = -L1;
 end
 
-for n = 1:T
+%Iterate across time
+for t=1:T
     old = u;
-    u = A*old;
+    u = C\old;
+    
     %Plot
     figure(1);
     plot(x,u);
-    axis([0,1,0,1])
+    axis([x0,x1,0,1])
     pause(0.001);
 end
 
 hold off
-
