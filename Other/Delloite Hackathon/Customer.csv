@@ -1,0 +1,548 @@
+CustomerID,Customer,Customer Province,Age,Race,Income Bracket,Gender
+5HMU,Assunta Wiegand  ,Eastern Cape,44,African,15 001 - 20 000,Female
+2EFD,Austin Shaughnessy  ,Eastern Cape,98,African,15 001 - 20 000,Male
+2DFL,Barrett Allmond  ,Eastern Cape,80,African,5 001 - 10 000,Male
+5LDA,Brittney Duncan  ,Eastern Cape,58,African,20 001 - 25 000,Female
+2DGE,Brook Engelman  ,Eastern Cape,90,African,0 - 5000,Female
+2GPM,Carmine Razo  ,Eastern Cape,18,African,25 001 - 35 000,Female
+2EJB,Chiquita Leatherwood  ,Eastern Cape,37,White,10 001 - 15 000,Female
+8BEG,Clayton Hartline  ,Eastern Cape,39,White,10 001 - 15 000,Male
+8CPA,Coralie Egnor  ,Eastern Cape,61,African,20 001 - 25 000,Female
+2EUC,Cris Demby  ,Eastern Cape,54,African,10 001 - 15 000,Female
+8BEB,Crysta Townley  ,Eastern Cape,33,African,10 001 - 15 000,Female
+2HLC,Darlena Holeman  ,Eastern Cape,19,African,5 001 - 10 000,Female
+5HMV,Debora Holst  ,Eastern Cape,80,African,35 001 - 50 000,Female
+2ERB,Don Yung  ,Eastern Cape,61,African,35 001 - 50 000,Male
+8CWH,Donella Taniguchi  ,Eastern Cape,72,African,50 001+,Female
+8CNF,Elfreda Stalder  ,Eastern Cape,45,African,5 001 - 10 000,Female
+2ECH,Elton Silas  ,Eastern Cape,92,African,5 001 - 10 000,Male
+2EGT,Fidelia Krenz  ,Eastern Cape,24,White,5 001 - 10 000,Female
+2HMD,Freeda Able  ,Eastern Cape,39,African,35 001 - 50 000,Female
+2HMC,Hyon Kosinski  ,Eastern Cape,89,African,20 001 - 25 000,Male
+2END,Jamal Grace  ,Eastern Cape,94,White,15 001 - 20 000,Male
+2EED,Joya Fettig  ,Eastern Cape,29,African,20 001 - 25 000,Female
+2EUE,Keenan Murillo  ,Eastern Cape,18,African,15 001 - 20 000,Male
+2HMB,Kirby Jeanbaptiste  ,Eastern Cape,72,African,25 001 - 35 000,Male
+5HNE,Lavone Hawks  ,Eastern Cape,49,African,20 001 - 25 000,Female
+2HLF,Leroy Monte  ,Eastern Cape,41,African,20 001 - 25 000,Male
+2EUJ,Lorinda Oehler  ,Eastern Cape,39,African,15 001 - 20 000,Female
+2ETN,Maragret Studley  ,Eastern Cape,77,African,5 001 - 10 000,Female
+2HKQ,Marianne Denicola  ,Eastern Cape,87,African,0 - 5000,Female
+5HNJ,Marlena Mazzarella  ,Eastern Cape,62,African,20 001 - 25 000,Female
+2FEQ,Marline Ocallaghan  ,Eastern Cape,30,African,5 001 - 10 000,Female
+2HLV,Melodee Luczak  ,Eastern Cape,59,African,10 001 - 15 000,Female
+8BFM,Milly Grider  ,Eastern Cape,21,African,35 001 - 50 000,Male
+2HLW,Mirtha Zylstra  ,Eastern Cape,75,African,5 001 - 10 000,Male
+5HMQ,My Peabody  ,Eastern Cape,79,Coloured,20 001 - 25 000,Male
+8BHF,Olinda Acuff  ,Eastern Cape,40,African,20 001 - 25 000,Male
+2HMH,Ozella Kerwin  ,Eastern Cape,90,African,20 001 - 25 000,Male
+8BFL,Phylicia Hallmark  ,Eastern Cape,59,African,15 001 - 20 000,Male
+8BEL,Rayford Hanford  ,Eastern Cape,46,African,5 001 - 10 000,Male
+2ETJ,Rosemarie Utter  ,Eastern Cape,59,Coloured,5 001 - 10 000,Female
+2HLG,Rozella Mann  ,Eastern Cape,20,African,20 001 - 25 000,Female
+2HME,Rufus Dillahunt  ,Eastern Cape,19,African,10 001 - 15 000,Male
+2HLJ,Shasta Sachs  ,Eastern Cape,32,African,35 001 - 50 000,Female
+2HLE,Terica Grissett  ,Eastern Cape,78,Coloured,0 - 5000,Female
+2EQQ,Tonda Knebel  ,Eastern Cape,91,African,10 001 - 15 000,Male
+8CWW,Ward Bakley  ,Eastern Cape,90,Asian,15 001 - 20 000,Male
+8BFT,Annett Smolen  ,Free State,27,African,20 001 - 25 000,Male
+5TCH,Argentina Garrido  ,Free State,95,African,5 001 - 10 000,Male
+7FVL,Aura Sharma  ,Free State,55,African,35 001 - 50 000,Female
+5RBP,Beatrice Yancy  ,Free State,64,African,25 001 - 35 000,Female
+5RBT,Bella Bedell  ,Free State,59,African,35 001 - 50 000,Female
+5TEB,Bradford Swinney  ,Free State,52,White,0 - 5000,Male
+5TAR,Bulah Graden  ,Free State,28,African,5 001 - 10 000,Male
+5MAJ,Callie Loveland  ,Free State,32,African,15 001 - 20 000,Female
+7FQQ,Candis Stansell  ,Free State,47,African,5 001 - 10 000,Female
+8CVW,Carlton Cappel  ,Free State,81,African,10 001 - 15 000,Male
+5TEP,Chanda Ferriera  ,Free State,83,African,15 001 - 20 000,Female
+5RAQ,Diedra Lavoie  ,Free State,95,African,15 001 - 20 000,Female
+5TFQ,Dorthy Crayton  ,Free State,65,African,50 001+,Female
+5RBN,Elia Zehner  ,Free State,92,African,35 001 - 50 000,Female
+7FKW,Elliot Braga  ,Free State,53,White,15 001 - 20 000,Male
+6CMG,Enid Brinks  ,Free State,19,African,20 001 - 25 000,Female
+7HEB,Fermin Baxendale  ,Free State,47,African,0 - 5000,Male
+5TAQ,Gaston Lowther  ,Free State,62,African,25 001 - 35 000,Male
+5TBR,Gertude Londono  ,Free State,96,African,0 - 5000,Female
+5RAT,Grace Passmore  ,Free State,51,African,0 - 5000,Female
+5RBH,Hazel Tingle  ,Free State,48,African,15 001 - 20 000,Female
+5RBJ,Jami Levell  ,Free State,88,African,10 001 - 15 000,Male
+5TCC,January Creswell  ,Free State,27,African,25 001 - 35 000,Male
+5RBC,Jasper Alger  ,Free State,92,African,25 001 - 35 000,Male
+5RBD,Juli Sommers  ,Free State,52,African,0 - 5000,Female
+5LAP,Kacey Dickens  ,Free State,36,White,15 001 - 20 000,Female
+5TAB,Karyl Mangini  ,Free State,24,African,10 001 - 15 000,Female
+5TBK,Keri Alicea  ,Free State,34,Coloured,25 001 - 35 000,Female
+5RBF,Kimi Manz  ,Free State,18,African,0 - 5000,Female
+8BMP,Kizzie Reisinger  ,Free State,60,African,25 001 - 35 000,Male
+5MJE,Krystin Bernett  ,Free State,75,White,5 001 - 10 000,Male
+5CQD,Lakenya Goetz  ,Free State,24,African,10 001 - 15 000,Female
+8BGU,Leanne Waddell  ,Free State,75,African,5 001 - 10 000,Female
+5RAW,Luciano Runion  ,Free State,50,African,10 001 - 15 000,Male
+5TCE,Maia Darden  ,Free State,96,African,0 - 5000,Female
+5MHH,Mariah Priebe  ,Free State,95,African,10 001 - 15 000,Female
+5MHJ,Melissia Perrier  ,Free State,46,African,10 001 - 15 000,Female
+8BMQ,Minta Duval  ,Free State,22,African,10 001 - 15 000,Male
+5RAV,Modesta Weiland  ,Free State,39,African,25 001 - 35 000,Female
+8BLA,Porfirio Hillebrand  ,Free State,47,Coloured,5 001 - 10 000,Male
+8DAP,Rickie Trial  ,Free State,56,Coloured,10 001 - 15 000,Male
+5NPG,Scott Pruden  ,Free State,19,African,5 001 - 10 000,Male
+6ELU,Seth Kuta  ,Free State,41,African,5 001 - 10 000,Male
+5CUC,Signe Mcpherson  ,Free State,52,African,10 001 - 15 000,Male
+5TDW,Simonne Zollner  ,Free State,21,Asian,20 001 - 25 000,Female
+5TCD,Sook Standridge  ,Free State,78,African,15 001 - 20 000,Male
+8BFP,Spring Bard  ,Free State,63,African,15 001 - 20 000,Male
+5CTU,Stephnie Boyette  ,Free State,27,African,0 - 5000,Female
+6CPP,Tereasa Baumgardner  ,Free State,98,African,5 001 - 10 000,Female
+5CLV,Valentin Bray  ,Free State,60,Coloured,15 001 - 20 000,Male
+5RAH,Wyatt Tercero  ,Free State,95,African,50 001+,Male
+7FTP,Akiko Lightcap  ,Gauteng Central,93,African,10 001 - 15 000,Male
+7NHD,Alayna Victorine  ,Gauteng Central,53,Asian,35 001 - 50 000,Female
+7KRC,Alfred Mcquiggan  ,Gauteng Central,38,African,20 001 - 25 000,Male
+8CMN,Andres Deppe  ,Gauteng Central,35,African,20 001 - 25 000,Male
+7MWD,Angele Corter  ,Gauteng Central,19,Asian,25 001 - 35 000,Male
+7NKG,Angelina Salcedo  ,Gauteng Central,88,African,5 001 - 10 000,Female
+7NJM,Antione Virgil  ,Gauteng Central,62,African,15 001 - 20 000,Male
+7GBJ,Arlean Mollica  ,Gauteng Central,71,African,25 001 - 35 000,Male
+7FDH,Arlinda Carlsen  ,Gauteng Central,51,African,0 - 5000,Female
+8DAK,Arline Valdovinos  ,Gauteng Central,64,African,25 001 - 35 000,Female
+8BDM,Arnold Soderstrom  ,Gauteng Central,30,African,35 001 - 50 000,Male
+8DBD,Aurea Peters  ,Gauteng Central,78,African,25 001 - 35 000,Female
+7QVA,Brandy Calderwood  ,Gauteng Central,92,African,15 001 - 20 000,Female
+7NQK,Breanna Crumrine  ,Gauteng Central,89,African,10 001 - 15 000,Female
+7PMC,Brittaney Blakeslee  ,Gauteng Central,88,African,20 001 - 25 000,Female
+7FUF,Carmelo Tiernan  ,Gauteng Central,39,African,20 001 - 25 000,Female
+7MVJ,Cherelle Monks  ,Gauteng Central,40,African,25 001 - 35 000,Female
+7FEQ,Christy Coachman  ,Gauteng Central,32,Coloured,0 - 5000,Female
+8DAD,Clarice Hodel  ,Gauteng Central,76,Asian,35 001 - 50 000,Female
+7MAH,Clementine Kari  ,Gauteng Central,95,African,15 001 - 20 000,Male
+7EAM,Clint Collazo  ,Gauteng Central,63,African,20 001 - 25 000,Male
+7MDL,Cortney Leverett  ,Gauteng Central,61,African,10 001 - 15 000,Female
+7JCC,Damian Squires  ,Gauteng Central,56,African,10 001 - 15 000,Male
+9ADE,Daniele Crooks  ,Gauteng Central,36,African,10 001 - 15 000,Female
+7HFD,Dave Leister  ,Gauteng Central,19,African,20 001 - 25 000,Male
+7NUM,Dee Lambros  ,Gauteng Central,25,White,5 001 - 10 000,Female
+8BNT,Deena Lusher  ,Gauteng Central,96,African,10 001 - 15 000,Female
+7FTD,Dewitt Dusek  ,Gauteng Central,98,African,10 001 - 15 000,Male
+7NCK,Dorian Hixson  ,Gauteng Central,54,White,5 001 - 10 000,Male
+6CUD,Eleonora Magnusson  ,Gauteng Central,24,African,10 001 - 15 000,Female
+7NTF,Elida Rhymer  ,Gauteng Central,55,White,20 001 - 25 000,Female
+8BCU,Eric Keane  ,Gauteng Central,49,African,20 001 - 25 000,Male
+7FFE,Eugenio Montgomery  ,Gauteng Central,24,African,5 001 - 10 000,Male
+9ABW,Eulalia Pua  ,Gauteng Central,90,African,10 001 - 15 000,Female
+8BCP,Fernanda Biondi  ,Gauteng Central,54,African,0 - 5000,Male
+8BDE,Filomena Vorpahl  ,Gauteng Central,23,African,10 001 - 15 000,Female
+7FRF,Freda Bohm  ,Gauteng Central,69,African,15 001 - 20 000,Female
+9ADJ,Georgetta Presley  ,Gauteng Central,40,African,5 001 - 10 000,Female
+7FEM,Gina Fecteau  ,Gauteng Central,30,African,0 - 5000,Female
+9ABZ,Hedy Desai  ,Gauteng Central,56,Asian,15 001 - 20 000,Male
+8BAK,Hee Loudon  ,Gauteng Central,66,African,15 001 - 20 000,Male
+7NPR,Heike Ditmore  ,Gauteng Central,72,White,15 001 - 20 000,Female
+7FEP,Hope Lacayo  ,Gauteng Central,31,Coloured,20 001 - 25 000,Male
+9AAN,Hosea Bjornstad  ,Gauteng Central,45,African,15 001 - 20 000,Male
+7NKD,Howard Mott  ,Gauteng Central,36,African,20 001 - 25 000,Male
+7NJQ,Ione Siu  ,Gauteng Central,42,African,5 001 - 10 000,Female
+7FNG,Isaura Rogerson  ,Gauteng Central,40,African,10 001 - 15 000,Female
+7MRP,Israel Vandermolen  ,Gauteng Central,75,African,5 001 - 10 000,Female
+7FRJ,Ivory Bowler  ,Gauteng Central,18,African,20 001 - 25 000,Female
+7EMT,Jacinda Gent  ,Gauteng Central,46,Coloured,0 - 5000,Male
+7FWQ,Jacquelin Bourassa  ,Gauteng Central,73,White,5 001 - 10 000,Female
+7MTL,Jami Sano  ,Gauteng Central,80,White,10 001 - 15 000,Male
+7MRN,Jenni Townes  ,Gauteng Central,97,African,25 001 - 35 000,Female
+7NQH,Jermaine Spahn  ,Gauteng Central,52,African,5 001 - 10 000,Female
+6CKV,Jerrell Sexson  ,Gauteng Central,63,White,15 001 - 20 000,Female
+6CTQ,Jon Hakala  ,Gauteng Central,66,African,5 001 - 10 000,Male
+9ABL,Kami Vandyne  ,Gauteng Central,72,African,20 001 - 25 000,Male
+7FEN,Katerine Omeara  ,Gauteng Central,59,Asian,15 001 - 20 000,Female
+7GAC,Kirk Piraino  ,Gauteng Central,61,African,15 001 - 20 000,Male
+7CNJ,Lanelle Dvorak  ,Gauteng Central,71,Asian,5 001 - 10 000,Female
+9ADF,Larita Gaines  ,Gauteng Central,53,African,0 - 5000,Female
+8BBU,Lavera Burchill  ,Gauteng Central,41,African,10 001 - 15 000,Female
+9ABR,Lena Covert  ,Gauteng Central,22,Coloured,10 001 - 15 000,Female
+8BDN,Lera Panetta  ,Gauteng Central,44,African,0 - 5000,Female
+8BCW,Librada Galland  ,Gauteng Central,32,White,5 001 - 10 000,Male
+8BLT,Lilian Riccardi  ,Gauteng Central,65,Asian,25 001 - 35 000,Female
+9AAR,Liza Loucks  ,Gauteng Central,33,African,15 001 - 20 000,Female
+7FED,Lou Dunbar  ,Gauteng Central,35,White,10 001 - 15 000,Male
+6CWQ,Maryalice Giffen  ,Gauteng Central,79,African,10 001 - 15 000,Female
+7HCL,Marybelle Hetherington  ,Gauteng Central,78,African,25 001 - 35 000,Female
+7MRR,Maryrose Castiglia  ,Gauteng Central,79,African,5 001 - 10 000,Female
+7NUL,Mavis Sage  ,Gauteng Central,31,African,0 - 5000,Male
+7HUE,Mika Standish  ,Gauteng Central,25,White,0 - 5000,Male
+8BDD,Nathan Higa  ,Gauteng Central,77,African,10 001 - 15 000,Male
+7JRK,Necole Dehner  ,Gauteng Central,23,African,0 - 5000,Female
+8CWG,Ned Lattea  ,Gauteng Central,91,African,35 001 - 50 000,Male
+9ACB,Neomi Brose  ,Gauteng Central,82,Coloured,35 001 - 50 000,Female
+7GWP,Nicolas Brase  ,Gauteng Central,65,African,20 001 - 25 000,Male
+9ABT,Norine Devilbiss  ,Gauteng Central,23,African,20 001 - 25 000,Female
+8BNM,Pamella Prior  ,Gauteng Central,19,Coloured,35 001 - 50 000,Female
+9ABV,Paul Stalker  ,Gauteng Central,81,African,5 001 - 10 000,Male
+7NQQ,Pedro Elamin  ,Gauteng Central,48,African,10 001 - 15 000,Male
+7NLN,Precious Cephas  ,Gauteng Central,49,African,15 001 - 20 000,Female
+6CLN,Refugio Beiler  ,Gauteng Central,18,African,15 001 - 20 000,Male
+7FFK,Roseanne Arnwine  ,Gauteng Central,84,African,35 001 - 50 000,Female
+7FFC,Rudy Severe  ,Gauteng Central,61,African,5 001 - 10 000,Male
+8DBU,Selma Yong  ,Gauteng Central,60,African,5 001 - 10 000,Female
+7NTP,Son Mccleery  ,Gauteng Central,35,African,15 001 - 20 000,Male
+8BCV,Tamela Lyford  ,Gauteng Central,88,African,20 001 - 25 000,Female
+9AAA,Tawna Hirai  ,Gauteng Central,20,African,5 001 - 10 000,Female
+7NPN,Tillie Wierenga  ,Gauteng Central,59,African,10 001 - 15 000,Female
+7NJL,Timothy Cude  ,Gauteng Central,47,African,10 001 - 15 000,Male
+9ABU,Tracee Toppin  ,Gauteng Central,94,African,10 001 - 15 000,Female
+7NDK,Vena Agron  ,Gauteng Central,71,African,10 001 - 15 000,Female
+8CWQ,Vern Coad  ,Gauteng Central,74,African,15 001 - 20 000,Male
+6CUA,Vilma Zimmermann  ,Gauteng Central,45,African,20 001 - 25 000,Female
+7NKT,Virgie Prescott  ,Gauteng Central,22,African,5 001 - 10 000,Female
+8BKN,Virginia Kellerhouse  ,Gauteng Central,43,African,10 001 - 15 000,Female
+7FRH,Willetta Courville  ,Gauteng Central,86,African,5 001 - 10 000,Female
+7NRT,Williemae Fitzsimons  ,Gauteng Central,79,African,0 - 5000,Female
+8BKQ,Wynell Gephart  ,Gauteng Central,59,Coloured,10 001 - 15 000,Male
+7NFR,Adeline Bloodsaw  ,Gauteng East,83,White,0 - 5000,Female
+7FTR,Alane Apo  ,Gauteng East,69,African,25 001 - 35 000,Male
+7FWU,Alda Benz  ,Gauteng East,90,African,50 001+,Male
+9AAX,Alda Haight  ,Gauteng East,78,African,20 001 - 25 000,Male
+7NUQ,Amberly Gunther  ,Gauteng East,79,African,50 001+,Female
+8CRK,Ardell Cournoyer  ,Gauteng East,72,Asian,15 001 - 20 000,Female
+7QUB,Asia Steppe  ,Gauteng East,70,Asian,5 001 - 10 000,Male
+9AAV,Azucena Mclead  ,Gauteng East,60,African,25 001 - 35 000,Female
+8BDG,Beverly Shalash  ,Gauteng East,77,White,5 001 - 10 000,Male
+7FTG,Brant Barsh  ,Gauteng East,52,African,25 001 - 35 000,Male
+7NNR,Carmelo Bertone  ,Gauteng East,97,African,15 001 - 20 000,Female
+7FKP,Charles Bloss  ,Gauteng East,93,Asian,15 001 - 20 000,Male
+8BBJ,Charlyn Tylor  ,Gauteng East,21,African,5 001 - 10 000,Male
+7FLF,Daphine Venema  ,Gauteng East,85,African,20 001 - 25 000,Female
+8DBK,Delena Breeden  ,Gauteng East,94,African,5 001 - 10 000,Female
+7NTV,Drusilla Babbitt  ,Gauteng East,53,African,15 001 - 20 000,Female
+8BDF,Eldora Mcferrin  ,Gauteng East,74,African,5 001 - 10 000,Female
+6CGW,Evelyn Telesco  ,Gauteng East,89,White,10 001 - 15 000,Female
+7FEF,Fabian Silcox  ,Gauteng East,41,African,20 001 - 25 000,Male
+7HGD,Fransisca Giesen  ,Gauteng East,32,African,15 001 - 20 000,Female
+7FLA,Gracie Kok  ,Gauteng East,77,African,0 - 5000,Female
+8BBC,Gretchen Marquez  ,Gauteng East,45,African,15 001 - 20 000,Female
+7NKK,Heidi Jerome  ,Gauteng East,96,African,35 001 - 50 000,Female
+7NCR,Huong Bruso  ,Gauteng East,83,African,10 001 - 15 000,Male
+7JNP,Isidro Siciliano  ,Gauteng East,53,African,5 001 - 10 000,Female
+7NCE,Isobel Marcantel  ,Gauteng East,22,African,20 001 - 25 000,Female
+7FRK,Jae Hodnett  ,Gauteng East,31,African,20 001 - 25 000,Female
+7FKG,Johnnie Sirmons  ,Gauteng East,40,White,15 001 - 20 000,Male
+7FLT,Kasi Stokes  ,Gauteng East,66,African,20 001 - 25 000,Female
+7NCC,Keeley Gouveia  ,Gauteng East,62,African,5 001 - 10 000,Female
+7GAE,Keren Manion  ,Gauteng East,90,African,15 001 - 20 000,Female
+7NKW,Kourtney Varden  ,Gauteng East,33,African,0 - 5000,Female
+7MRV,Laronda Guillet  ,Gauteng East,47,White,25 001 - 35 000,Male
+8DAQ,Leatrice Dogan  ,Gauteng East,26,African,0 - 5000,Female
+7BWH,Liberty Westergard  ,Gauteng East,82,African,10 001 - 15 000,Male
+7FWN,Loralee Guynn  ,Gauteng East,96,White,5 001 - 10 000,Female
+7FQW,Maragret Steadman  ,Gauteng East,26,White,10 001 - 15 000,Female
+8CUD,Maurita Wimsatt  ,Gauteng East,40,African,35 001 - 50 000,Female
+8DBW,Mayra Pelto  ,Gauteng East,21,Coloured,10 001 - 15 000,Female
+7FWT,Mckenzie Corns  ,Gauteng East,26,White,50 001+,Female
+8BBB,Melody Tigner  ,Gauteng East,93,Coloured,10 001 - 15 000,Female
+7HLB,Missy Berk  ,Gauteng East,55,African,25 001 - 35 000,Female
+7NKR,Mitchell Schmeltzer  ,Gauteng East,33,White,10 001 - 15 000,Male
+8BDK,Mui Penaloza  ,Gauteng East,65,African,25 001 - 35 000,Male
+7HND,Nada Henricksen  ,Gauteng East,98,White,10 001 - 15 000,Female
+7NJJ,Otto Speziale  ,Gauteng East,64,African,5 001 - 10 000,Male
+6CBP,Penni Cantrell  ,Gauteng East,49,African,35 001 - 50 000,Female
+9AAO,Rema Kita  ,Gauteng East,29,African,5 001 - 10 000,Female
+8CLK,Rosalva Vasko  ,Gauteng East,25,African,5 001 - 10 000,Male
+9AAK,Rosanne Risner  ,Gauteng East,55,African,10 001 - 15 000,Female
+7NHU,Rosetta Reaux  ,Gauteng East,52,African,0 - 5000,Female
+7FWW,Selina Yocum  ,Gauteng East,69,African,5 001 - 10 000,Female
+9AAM,Sharri Bodily  ,Gauteng East,93,White,10 001 - 15 000,Female
+7BUV,Simona Brannock  ,Gauteng East,19,Coloured,5 001 - 10 000,Female
+7FTL,Sue Ridge  ,Gauteng East,49,African,5 001 - 10 000,Female
+9AAT,Travis Tudor  ,Gauteng East,93,African,5 001 - 10 000,Male
+7FKQ,Trey Desanti  ,Gauteng East,20,Asian,0 - 5000,Male
+6BJR,Twanda Cater  ,Gauteng East,49,Coloured,15 001 - 20 000,Male
+6BLU,Ty Noland  ,Gauteng East,56,African,0 - 5000,Male
+7FRQ,Verda Spainhour  ,Gauteng East,64,African,35 001 - 50 000,Female
+7MWE,Xiomara Jacobi  ,Gauteng East,90,Asian,10 001 - 15 000,Female
+7FRR,Yevette Knauss  ,Gauteng East,81,African,0 - 5000,Female
+6CAH,Yoshiko Chavous  ,Gauteng East,40,African,5 001 - 10 000,Male
+9ABY,Alina Mcquiggan  ,Gauteng South West,43,African,20 001 - 25 000,Female
+7FPE,Alleen Arvie  ,Gauteng South West,90,African,15 001 - 20 000,Male
+8BAB,Amina Gangi  ,Gauteng South West,45,White,25 001 - 35 000,Male
+7NHV,Angie Shindler  ,Gauteng South West,77,African,35 001 - 50 000,Male
+7FGN,Aracelis Neuman  ,Gauteng South West,57,African,15 001 - 20 000,Male
+8BLG,Cammy Difranco  ,Gauteng South West,90,White,20 001 - 25 000,Female
+7GBV,Carmina Uresti  ,Gauteng South West,36,African,5 001 - 10 000,Female
+7GEL,Celine Grennan  ,Gauteng South West,83,African,10 001 - 15 000,Female
+7HFT,Charlesetta Mercuri  ,Gauteng South West,35,African,25 001 - 35 000,Female
+7HAA,Clarissa Crumbley  ,Gauteng South West,40,African,25 001 - 35 000,Female
+7EMQ,Corrin Riggleman  ,Gauteng South West,80,African,15 001 - 20 000,Male
+8BDQ,Daniel Maudlin  ,Gauteng South West,66,African,5 001 - 10 000,Male
+7NUD,Danilo Lyles  ,Gauteng South West,50,African,20 001 - 25 000,Male
+7FTH,Darell Yochum  ,Gauteng South West,71,Coloured,15 001 - 20 000,Male
+7FMW,Davis Moczygemba  ,Gauteng South West,47,African,15 001 - 20 000,Male
+7HGM,Elfrieda Brunette  ,Gauteng South West,45,Coloured,15 001 - 20 000,Female
+7HCM,Emery Voisine  ,Gauteng South West,63,African,15 001 - 20 000,Male
+7MED,Eula Popejoy  ,Gauteng South West,42,African,10 001 - 15 000,Female
+7GHR,Frieda Tanaka  ,Gauteng South West,92,African,10 001 - 15 000,Female
+9ABI,Galen Moyle  ,Gauteng South West,84,African,5 001 - 10 000,Male
+7FUE,Germaine Redden  ,Gauteng South West,58,African,0 - 5000,Female
+8DBR,Gina Weyand  ,Gauteng South West,32,African,0 - 5000,Female
+7HCV,Greta Sponaugle  ,Gauteng South West,60,African,10 001 - 15 000,Female
+7PED,Ilana Wilburn  ,Gauteng South West,59,African,15 001 - 20 000,Female
+7NWG,Jami Moralez  ,Gauteng South West,81,African,10 001 - 15 000,Male
+8BKK,Jarvis Kildow  ,Gauteng South West,24,Coloured,5 001 - 10 000,Male
+7KGJ,Jeri Spells  ,Gauteng South West,22,African,10 001 - 15 000,Female
+7GJE,Jessica Sigler  ,Gauteng South West,66,African,0 - 5000,Female
+7FFF,Johnie Scally  ,Gauteng South West,67,African,5 001 - 10 000,Male
+8CTN,Karima Fairman  ,Gauteng South West,61,White,20 001 - 25 000,Female
+7GJJ,Karyn Browning  ,Gauteng South West,30,African,10 001 - 15 000,Female
+7FVA,Kendrick Merlo  ,Gauteng South West,42,African,5 001 - 10 000,Male
+7ELV,Laurene Toomey  ,Gauteng South West,58,Coloured,10 001 - 15 000,Female
+7HFQ,Lee Wheatley  ,Gauteng South West,57,African,5 001 - 10 000,Male
+9ACO,Liliana Edney  ,Gauteng South West,90,African,25 001 - 35 000,Female
+7NMQ,Linn Dahlin  ,Gauteng South West,54,African,25 001 - 35 000,Female
+7HFV,Loraine Highfill  ,Gauteng South West,27,African,10 001 - 15 000,Female
+7QKU,Loretta Randle  ,Gauteng South West,90,African,5 001 - 10 000,Female
+7HVA,Mariam Millener  ,Gauteng South West,77,African,5 001 - 10 000,Female
+8DAL,Markita Brunson  ,Gauteng South West,98,African,20 001 - 25 000,Female
+6BDJ,Melaine Spinney  ,Gauteng South West,44,Coloured,20 001 - 25 000,Male
+6BJE,Melida Mclemore  ,Gauteng South West,21,African,20 001 - 25 000,Female
+7HBH,Nikole Dunlap  ,Gauteng South West,57,African,10 001 - 15 000,Male
+8DBF,Noel Ross  ,Gauteng South West,67,African,5 001 - 10 000,Male
+7NJF,Reiko Barbour  ,Gauteng South West,51,African,10 001 - 15 000,Male
+7FTW,Rena Breeden  ,Gauteng South West,63,African,0 - 5000,Female
+7FUH,Romona Macauley  ,Gauteng South West,25,African,15 001 - 20 000,Female
+7NFW,Ryann Drewes  ,Gauteng South West,61,African,10 001 - 15 000,Male
+7FUW,Sharmaine Wedeking  ,Gauteng South West,46,African,20 001 - 25 000,Female
+7NMP,Sheila Ribera  ,Gauteng South West,89,White,5 001 - 10 000,Female
+6BCM,Sheryll Langsam  ,Gauteng South West,67,Coloured,15 001 - 20 000,Female
+7NUC,Tatiana Kastner  ,Gauteng South West,42,Coloured,20 001 - 25 000,Female
+7FNP,Agnes Chae  ,Limpopo,86,African,5 001 - 10 000,Female
+7FQV,Alanna Facemire  ,Limpopo,77,African,20 001 - 25 000,Female
+7KAF,Alba Hamdan  ,Limpopo,74,African,5 001 - 10 000,Female
+7HFM,Alison Sandler  ,Limpopo,88,African,5 001 - 10 000,Female
+7NEF,Alissa Naron  ,Limpopo,90,African,15 001 - 20 000,Male
+9ADL,Alvaro Zacarias  ,Limpopo,63,African,50 001+,Female
+7MVU,Archie Gladson  ,Limpopo,18,African,5 001 - 10 000,Female
+7FJV,Breanne Blazek  ,Limpopo,49,African,20 001 - 25 000,Female
+6BML,Brian Moss  ,Limpopo,54,African,15 001 - 20 000,Male
+7FTV,Brigitte Burda  ,Limpopo,47,African,20 001 - 25 000,Female
+7MNE,Celina Cleveland  ,Limpopo,89,African,15 001 - 20 000,Female
+7FLD,Charlyn Roloff  ,Limpopo,62,African,25 001 - 35 000,Female
+9ADI,Cheree Perdue  ,Limpopo,28,African,25 001 - 35 000,Female
+6BHV,Christinia Cohan  ,Limpopo,70,African,5 001 - 10 000,Female
+7NDB,Coleman Nunley  ,Limpopo,76,African,20 001 - 25 000,Male
+7HGF,Cordia Ewald  ,Limpopo,78,African,15 001 - 20 000,Female
+7FTF,Dallas Rutherford  ,Limpopo,18,African,10 001 - 15 000,Male
+7GBN,Dannielle Sable  ,Limpopo,36,White,15 001 - 20 000,Female
+7FJT,Darrick Kalin  ,Limpopo,55,African,20 001 - 25 000,Male
+7QGK,Dawn Gory  ,Limpopo,22,African,5 001 - 10 000,Female
+7GBF,Elli Dahlin  ,Limpopo,49,African,5 001 - 10 000,Female
+7EKW,Elvie Sandhu  ,Limpopo,42,African,15 001 - 20 000,Female
+8BKH,Elwanda Trentham  ,Limpopo,28,Coloured,15 001 - 20 000,Male
+7NTJ,Gerard Cogar  ,Limpopo,68,African,5 001 - 10 000,Male
+7NUA,Han Sons  ,Limpopo,95,African,5 001 - 10 000,Female
+7NJP,Herschel Blackwood  ,Limpopo,97,African,10 001 - 15 000,Male
+7NAK,Jason Alves,Limpopo,39,African,10 001 - 15 000,Male
+7NQC,Jenniffer Crosswell  ,Limpopo,47,African,10 001 - 15 000,Female
+7PUW,Jerrell Turpen  ,Limpopo,64,African,10 001 - 15 000,Male
+7NDV,Joann Copeland  ,Limpopo,52,African,50 001+,Male
+7NVV,Kera Harm  ,Limpopo,52,African,5 001 - 10 000,Female
+8BAL,Krystina Bourdeau  ,Limpopo,47,African,5 001 - 10 000,Female
+7NLB,Larue Cahall  ,Limpopo,82,African,20 001 - 25 000,Female
+7FTM,Lashandra Weller  ,Limpopo,97,African,15 001 - 20 000,Female
+7EFT,Laverna Seidell  ,Limpopo,49,African,5 001 - 10 000,Female
+6BMG,Lavinia Hindman  ,Limpopo,50,African,0 - 5000,Female
+7NUB,Lawrence Weatherholt  ,Limpopo,60,White,20 001 - 25 000,Male
+7NGT,Leora Solar  ,Limpopo,91,African,20 001 - 25 000,Female
+6BNT,Lexie Edmiston  ,Limpopo,73,African,15 001 - 20 000,Female
+7NRP,Lise Finnell  ,Limpopo,58,African,15 001 - 20 000,Female
+7NAJ,Lurlene Lindstrom  ,Limpopo,22,Coloured,15 001 - 20 000,Female
+7PDA,Lyndon Just  ,Limpopo,71,African,25 001 - 35 000,Male
+7NLF,Mac Tharpe  ,Limpopo,49,African,5 001 - 10 000,Male
+7NCA,Malisa Necaise  ,Limpopo,71,African,5 001 - 10 000,Female
+6BCV,Maribel Gale  ,Limpopo,83,African,20 001 - 25 000,Female
+8BAD,Markus Pellegrin  ,Limpopo,79,African,0 - 5000,Male
+8BLW,Marya Rowsey  ,Limpopo,39,African,20 001 - 25 000,Female
+7GBB,Meri Artz  ,Limpopo,64,Asian,20 001 - 25 000,Female
+7HTK,Nakesha Penn  ,Limpopo,25,African,10 001 - 15 000,Female
+7NEN,Nannette Kimbrel  ,Limpopo,34,African,10 001 - 15 000,Female
+7NJN,Nila Ary  ,Limpopo,77,African,15 001 - 20 000,Female
+7GAR,Ricarda Makuch  ,Limpopo,24,African,5 001 - 10 000,Male
+7NVJ,Rochell Deherrera  ,Limpopo,96,African,5 001 - 10 000,Female
+7GAB,Rodger Schuman  ,Limpopo,60,African,5 001 - 10 000,Male
+7NNA,Roy Rubi  ,Limpopo,92,African,15 001 - 20 000,Male
+7HGA,Samara Shatley  ,Limpopo,74,African,15 001 - 20 000,Female
+6ETN,Sharie Ledezma  ,Limpopo,63,African,5 001 - 10 000,Female
+8BLF,Sharyn Manfre  ,Limpopo,49,African,20 001 - 25 000,Female
+7FJM,Shelia Golston  ,Limpopo,33,African,35 001 - 50 000,Female
+8DBJ,Silvana Gales  ,Limpopo,42,African,15 001 - 20 000,Female
+7NAM,Sueann Gorman  ,Limpopo,35,African,20 001 - 25 000,Male
+7JDW,Suzi Yeary  ,Limpopo,37,African,20 001 - 25 000,Female
+7FRB,Thanh Silverman  ,Limpopo,69,African,5 001 - 10 000,Male
+7QJM,Tristan Ricca  ,Limpopo,83,African,10 001 - 15 000,Male
+8DAU,Ute Preusser  ,Limpopo,82,African,5 001 - 10 000,Male
+7NLP,Vella Raby  ,Limpopo,83,African,15 001 - 20 000,Female
+7FHQ,Verena Heidler  ,Limpopo,44,Coloured,5 001 - 10 000,Female
+5RBG,Albertha Heidler  ,Mpumalanga,24,African,15 001 - 20 000,Female
+5CPD,America Chamberland  ,Mpumalanga,81,African,25 001 - 35 000,Male
+5CRM,Angele Mccaskill  ,Mpumalanga,67,African,20 001 - 25 000,Male
+5LCL,Angelia Owenby  ,Mpumalanga,41,African,35 001 - 50 000,Female
+7QWL,Arleen Styles  ,Mpumalanga,74,African,15 001 - 20 000,Female
+5CNU,Bell Prosser  ,Mpumalanga,62,Asian,15 001 - 20 000,Male
+5LCH,Beverley Strittmatter  ,Mpumalanga,71,African,15 001 - 20 000,Female
+5CFC,Blossom Bechtol  ,Mpumalanga,43,African,35 001 - 50 000,Female
+5CHM,Booker Wentworth  ,Mpumalanga,19,African,50 001+,Male
+7NWP,Caroyln Calderon  ,Mpumalanga,24,African,25 001 - 35 000,Female
+5RBB,Ching Zubia  ,Mpumalanga,18,African,10 001 - 15 000,Male
+5CHW,Christoper Jesse  ,Mpumalanga,29,African,15 001 - 20 000,Male
+5CLW,Clara Spear  ,Mpumalanga,80,African,10 001 - 15 000,Female
+6EVM,Clayton Byers  ,Mpumalanga,25,Coloured,5 001 - 10 000,Male
+5CKK,Coy Erdman  ,Mpumalanga,34,African,5 001 - 10 000,Male
+5HFU,Cristobal Guthridge  ,Mpumalanga,38,White,10 001 - 15 000,Male
+5CLG,Cyrus Hallum  ,Mpumalanga,32,African,5 001 - 10 000,Male
+5LCQ,Dagmar Branton  ,Mpumalanga,67,African,10 001 - 15 000,Female
+5CMK,Daina Spearman  ,Mpumalanga,91,African,10 001 - 15 000,Female
+5CQJ,Darlena Ducan  ,Mpumalanga,35,African,20 001 - 25 000,Female
+7FKA,Delmar Etheredge  ,Mpumalanga,80,White,25 001 - 35 000,Male
+5LCJ,Desiree Dumond  ,Mpumalanga,31,White,5 001 - 10 000,Male
+5CJK,Dollie Dan  ,Mpumalanga,38,Coloured,10 001 - 15 000,Female
+5LCR,Earline Kisling  ,Mpumalanga,23,African,10 001 - 15 000,Female
+5LAQ,Ehtel Olivier  ,Mpumalanga,96,African,5 001 - 10 000,Male
+8CLN,Eldridge Scola  ,Mpumalanga,32,White,10 001 - 15 000,Male
+7FUJ,Elina Lipsky  ,Mpumalanga,33,African,10 001 - 15 000,Female
+5LAK,Emmitt Phair  ,Mpumalanga,34,African,10 001 - 15 000,Male
+8CLJ,Essie Lucier  ,Mpumalanga,71,Asian,10 001 - 15 000,Female
+5CPK,Estefana Nagy  ,Mpumalanga,39,African,10 001 - 15 000,Female
+5CPV,Euna Higa  ,Mpumalanga,49,African,10 001 - 15 000,Male
+7FKU,Fidela Ogg  ,Mpumalanga,71,African,25 001 - 35 000,Female
+5LCK,Flor Kale  ,Mpumalanga,44,White,5 001 - 10 000,Male
+5DLH,Fredricka Pellegrin  ,Mpumalanga,31,African,25 001 - 35 000,Female
+7NVN,Gaynell Cardamone  ,Mpumalanga,29,White,35 001 - 50 000,Male
+7NFV,Glenn Petty  ,Mpumalanga,55,White,0 - 5000,Male
+5BBC,Harvey Consolini  ,Mpumalanga,27,African,10 001 - 15 000,Male
+5CQA,Heike Semple  ,Mpumalanga,79,African,5 001 - 10 000,Female
+5LAR,Ignacia Mckittrick  ,Mpumalanga,69,African,5 001 - 10 000,Female
+5LBG,Jacquelyn Santora  ,Mpumalanga,65,African,5 001 - 10 000,Female
+5CJW,Jessi Irish  ,Mpumalanga,58,African,5 001 - 10 000,Female
+5CFP,Jordan Jaffe  ,Mpumalanga,42,African,20 001 - 25 000,Male
+5CFE,Judith Brannum  ,Mpumalanga,47,African,20 001 - 25 000,Female
+5CHB,Kaitlin Orth  ,Mpumalanga,31,White,15 001 - 20 000,Female
+5LBD,Kasandra Fragoso  ,Mpumalanga,81,African,5 001 - 10 000,Female
+5LCA,Kayla Gosha  ,Mpumalanga,64,White,0 - 5000,Female
+7DRA,Kaylene Noah  ,Mpumalanga,68,African,5 001 - 10 000,Female
+5CRV,Keith Kruse  ,Mpumalanga,74,African,15 001 - 20 000,Female
+5BUN,Khalilah Tate  ,Mpumalanga,50,African,15 001 - 20 000,Female
+7FTC,Kim Grandstaff  ,Mpumalanga,47,African,20 001 - 25 000,Female
+5LBH,Kimiko Harding  ,Mpumalanga,97,African,15 001 - 20 000,Male
+5CPU,Kirsten Paulette  ,Mpumalanga,20,Coloured,5 001 - 10 000,Female
+8CKW,Kisha Divers  ,Mpumalanga,50,African,0 - 5000,Female
+7NBE,Lanell Mcaleer  ,Mpumalanga,65,African,10 001 - 15 000,Male
+5CRK,Larae Spicer  ,Mpumalanga,86,African,10 001 - 15 000,Female
+5LBB,Larisa Jonson  ,Mpumalanga,37,African,10 001 - 15 000,Female
+5CKU,Leah Ackles  ,Mpumalanga,18,African,15 001 - 20 000,Female
+7NUV,Leilani Bacon  ,Mpumalanga,25,African,0 - 5000,Female
+5CLT,Linh Lessman  ,Mpumalanga,34,Coloured,10 001 - 15 000,Female
+5CPQ,Lucinda Reeve  ,Mpumalanga,69,African,5 001 - 10 000,Female
+8BFQ,Lyndon Soloman  ,Mpumalanga,73,African,35 001 - 50 000,Male
+5LAV,Mabel Krueger  ,Mpumalanga,74,African,20 001 - 25 000,Female
+9ADD,Maire Stutz  ,Mpumalanga,76,Asian,20 001 - 25 000,Female
+5CJB,Marylou Mingus  ,Mpumalanga,32,African,15 001 - 20 000,Female
+5FUU,Megan Castilleja  ,Mpumalanga,79,African,0 - 5000,Female
+5LBE,Melita Campione  ,Mpumalanga,64,African,0 - 5000,Female
+5CLR,Michel Gaynor  ,Mpumalanga,34,African,10 001 - 15 000,Male
+2EDL,Muriel Shell  ,Mpumalanga,35,African,5 001 - 10 000,Male
+5KKL,Nakia Burrell  ,Mpumalanga,83,Coloured,10 001 - 15 000,Female
+7FDW,Nila Haith  ,Mpumalanga,60,White,0 - 5000,Female
+8CWV,Ozell Laino  ,Mpumalanga,72,African,10 001 - 15 000,Male
+8BMM,Piedad Ciriaco  ,Mpumalanga,73,African,25 001 - 35 000,Male
+5LBC,Pinkie Quesnel  ,Mpumalanga,79,African,25 001 - 35 000,Female
+5BTP,Portia Horner  ,Mpumalanga,49,Asian,0 - 5000,Female
+5KRT,Rachele Friedrichs  ,Mpumalanga,63,African,5 001 - 10 000,Female
+7FLL,Rachelle Bomba  ,Mpumalanga,69,White,20 001 - 25 000,Female
+5CTV,Ramonita Fleagle  ,Mpumalanga,20,African,5 001 - 10 000,Female
+5LBR,Randi Current  ,Mpumalanga,38,African,25 001 - 35 000,Male
+7JQB,Rhonda Montemayor  ,Mpumalanga,43,Asian,5 001 - 10 000,Male
+5LBK,Rolando Mazzone  ,Mpumalanga,38,Coloured,5 001 - 10 000,Male
+8CTJ,Rolf Bellard  ,Mpumalanga,18,White,15 001 - 20 000,Male
+7NPT,Rosamaria Bussey  ,Mpumalanga,59,White,15 001 - 20 000,Female
+5LAU,Sharleen Bowens  ,Mpumalanga,98,African,5 001 - 10 000,Female
+5CQE,Shauna Hyneman  ,Mpumalanga,67,Coloured,5 001 - 10 000,Female
+7FTT,Shelba Edens  ,Mpumalanga,23,African,5 001 - 10 000,Female
+5LAT,Sherrell Raye  ,Mpumalanga,94,African,10 001 - 15 000,Male
+5NHB,Shira Konkel  ,Mpumalanga,41,African,5 001 - 10 000,Female
+5NED,Shyla Diebold  ,Mpumalanga,48,African,15 001 - 20 000,Female
+5CUF,Signe Hafford  ,Mpumalanga,56,African,15 001 - 20 000,Female
+7FTE,Silas Marcus  ,Mpumalanga,25,African,15 001 - 20 000,Male
+5CNG,Sixta Stamp  ,Mpumalanga,46,African,25 001 - 35 000,Female
+8BNA,Stanton Suitt  ,Mpumalanga,29,Coloured,5 001 - 10 000,Male
+7HNH,Tempie Sok  ,Mpumalanga,65,African,15 001 - 20 000,Male
+7MVL,Tiara Markus  ,Mpumalanga,65,White,15 001 - 20 000,Female
+5DLL,Toccara Hinson  ,Mpumalanga,57,African,5 001 - 10 000,Female
+7NAD,Tonisha Schlottmann  ,Mpumalanga,93,African,10 001 - 15 000,Female
+5CNW,Val Linthicum  ,Mpumalanga,37,African,25 001 - 35 000,Male
+5LCU,Valorie Hollandsworth  ,Mpumalanga,67,African,5 001 - 10 000,Female
+5LCB,Vertie Wessels  ,Mpumalanga,83,African,10 001 - 15 000,Female
+5LCM,Vikki Dismukes  ,Mpumalanga,50,African,5 001 - 10 000,Female
+7NAE,Willa Hackley  ,Mpumalanga,43,Coloured,5 001 - 10 000,Female
+5CFW,Willette Friedel  ,Mpumalanga,43,African,15 001 - 20 000,Female
+5LBL,Zachary Loss  ,Mpumalanga,21,White,5 001 - 10 000,Male
+2HKV,Amberly Wallner  ,Western Cape,82,Coloured,35 001 - 50 000,Female
+2EJR,Arden Niswander  ,Western Cape,75,African,35 001 - 50 000,Male
+2EDK,Arlette Woolum  ,Western Cape,91,Coloured,25 001 - 35 000,Male
+2DKC,Beverly Gettys  ,Western Cape,97,African,15 001 - 20 000,Female
+2EHV,Carlena Chock  ,Western Cape,58,Asian,20 001 - 25 000,Female
+2FCQ,Carolyn Schommer  ,Western Cape,97,White,25 001 - 35 000,Female
+2EPK,Colene Cephus  ,Western Cape,93,African,0 - 5000,Female
+2EKV,Deanne Skates  ,Western Cape,39,African,10 001 - 15 000,Female
+2EMN,Delsie Demario  ,Western Cape,26,African,10 001 - 15 000,Male
+2BQE,Digna Bradshaw  ,Western Cape,83,African,50 001+,Female
+2HLL,Dylan Sauers  ,Western Cape,38,African,25 001 - 35 000,Male
+2EFV,Earl Mungia  ,Western Cape,51,African,0 - 5000,Male
+8BEQ,Earlene Krizan  ,Western Cape,59,African,35 001 - 50 000,Female
+2EFE,Eliseo Cleland  ,Western Cape,68,African,20 001 - 25 000,Male
+2HLA,Emilee Pitts  ,Western Cape,92,African,5 001 - 10 000,Female
+2HLK,Felicidad Gudino  ,Western Cape,32,African,5 001 - 10 000,Male
+2ECR,Fidelia Onstad  ,Western Cape,80,African,35 001 - 50 000,Female
+8BMD,Gabriel Blazek  ,Western Cape,65,White,35 001 - 50 000,Male
+2FCK,Gemma Oswald  ,Western Cape,84,African,10 001 - 15 000,Female
+2ERW,Georgia Coe  ,Western Cape,73,African,15 001 - 20 000,Female
+8CUP,Giuseppe Morein  ,Western Cape,44,Coloured,0 - 5000,Female
+2HMQ,Ila Lokey  ,Western Cape,84,African,10 001 - 15 000,Female
+2ELV,Jamie Snydens,Western Cape,60,African,25 001 - 35 000,Female
+2ENC,Janine Shabazz  ,Western Cape,53,Asian,5 001 - 10 000,Female
+2FKC,Janis Huffstetler  ,Western Cape,28,African,15 001 - 20 000,Male
+2EML,Jannet Dieter  ,Western Cape,78,African,5 001 - 10 000,Female
+8BMT,Jeanine Whittenburg  ,Western Cape,74,African,15 001 - 20 000,Female
+2ENA,Jessie Reeds,Western Cape,98,White,50 001+,Female
+2GTW,Kathaleen Maze  ,Western Cape,65,African,5 001 - 10 000,Female
+8BEV,Kathy Louden  ,Western Cape,29,African,10 001 - 15 000,Female
+2HHC,Kaycee Clothier  ,Western Cape,91,African,20 001 - 25 000,Female
+2HKM,Kazuko Alderman  ,Western Cape,87,African,20 001 - 25 000,Female
+2EMH,Kimber Post  ,Western Cape,49,Asian,25 001 - 35 000,Female
+2HLT,Kyong Ojeda  ,Western Cape,70,African,10 001 - 15 000,Male
+2EHW,Leah Brothers  ,Western Cape,39,African,10 001 - 15 000,Female
+2EQF,Lonna Hollman  ,Western Cape,55,African,5 001 - 10 000,Female
+2ETT,Lyndia Kempton  ,Western Cape,64,African,50 001+,Female
+2EQU,Marjory Seigel  ,Western Cape,68,African,20 001 - 25 000,Male
+2ERD,Merilyn Mccullers  ,Western Cape,84,African,20 001 - 25 000,Female
+2HKH,Nubia Flicker  ,Western Cape,37,Coloured,10 001 - 15 000,Male
+2HMP,Oliver Bongiorno  ,Western Cape,44,African,20 001 - 25 000,Male
+2EEW,Patti Machin  ,Western Cape,18,White,10 001 - 15 000,Female
+2HKJ,Rashida Lazos  ,Western Cape,43,Coloured,20 001 - 25 000,Female
+2BTK,Rhoda Dubose  ,Western Cape,27,Coloured,10 001 - 15 000,Male
+2HKP,Rico Farquhar  ,Western Cape,87,African,25 001 - 35 000,Male
+8CPQ,Robena Fucci  ,Western Cape,36,African,20 001 - 25 000,Male
+8BEU,Rosia Boykins  ,Western Cape,26,Asian,25 001 - 35 000,Female
+2HMA,Sanjuanita Clutts  ,Western Cape,95,Coloured,5 001 - 10 000,Female
+2HMM,Sharmaine Albertini  ,Western Cape,94,African,5 001 - 10 000,Female
+2GBN,Shauna Topping  ,Western Cape,43,African,10 001 - 15 000,Female
+2EKT,Sid Desai  ,Western Cape,21,Coloured,0 - 5000,Male
+2HLM,Sirena Henning  ,Western Cape,80,African,0 - 5000,Female
+2HMJ,Stevie Leighty  ,Western Cape,98,African,25 001 - 35 000,Male
+2EEA,Sunshine Frances  ,Western Cape,40,African,5 001 - 10 000,Female
+2EGU,Tara Rispoli  ,Western Cape,22,African,0 - 5000,Female
+2EUA,Teresita Harrill  ,Western Cape,81,African,15 001 - 20 000,Female
+2HKU,Tess Cupples  ,Western Cape,28,African,15 001 - 20 000,Female
+2HMR,Theo Klingensmith  ,Western Cape,45,African,5 001 - 10 000,Male
+2EJT,Tish Grigsby  ,Western Cape,67,Coloured,0 - 5000,Female
+2EQR,Trent Rieger  ,Western Cape,43,African,10 001 - 15 000,Male
+2HKG,Ulysses Brannan  ,Western Cape,48,African,15 001 - 20 000,Male
+2HMK,Valeria Phillips  ,Western Cape,47,African,25 001 - 35 000,Female
+2HKW,Velma Northington  ,Western Cape,45,African,25 001 - 35 000,Female
+8CWK,Werner Wieland  ,Western Cape,65,African,0 - 5000,Male
