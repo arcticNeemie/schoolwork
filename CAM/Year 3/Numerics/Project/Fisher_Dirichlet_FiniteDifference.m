@@ -63,7 +63,7 @@ end
 hold on
 surf(xs,time,A);
 %surf(xs,time,B);
-%title('Finite Difference Approximation of u(x,t) vs. x vs. t - Dirichlet Boundaries');
+%title('');
 xlabel('x');
 ylabel('t');
 zlabel('u(x,t)');
