@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.File;
 import java.io.PrintWriter;
 
-public class Program {
+public class SaveSolution {
 	public static void main(String[] args) throws Exception{
 		// we need to read in the input of the sudoku board
 		/*
@@ -13,7 +13,7 @@ public class Program {
 		file = file + in.nextLine().replace(" ", "");
 		file = file + ".txt";
 		*/
-		String file = "problems.txt";
+		String file = "sudoku.txt";
 
 		Timer timer = new Timer();
 
@@ -26,22 +26,23 @@ public class Program {
 		ArrayList<Integer> orders = new ArrayList<>();
 
 		int makeJiaHaoHappy = 0;
-
 		for(Block[][] sudoku : grid){
 			orders.add(Order(sudoku));
 
 			timer.start();
 			sudoku = solve(sudoku);
+			print("Grid "+makeJiaHaoHappy+"\n");
+			print(sudoku);
 			timer.stop();
 
 			durs.add(timer.getTime());
 
 			makeJiaHaoHappy++;
-			System.out.println(makeJiaHaoHappy);
+			//System.out.println(makeJiaHaoHappy);
 
 		}
 
-		writeToCSV(durs,orders,"largeExperiment.csv");
+		writeToCSV(durs,orders);
 
 		reader.close();
 	}
@@ -106,7 +107,7 @@ public class Program {
 	public static void print(Block[][] sudoku) {
 		for(int i = 0 ; i < 9; i++) {
 			for(int j = 0; j < 9; j++) {
-				print(sudoku[i][j].number + " ");
+				print(sudoku[i][j].number + "");
 			}
 			print("\n");
 		}
@@ -203,9 +204,9 @@ public class Program {
 		return grids;
 	}
 
-	public static void writeToCSV(ArrayList<Long> durs, ArrayList<Integer> orders, String filename){
+	public static void writeToCSV(ArrayList<Long> durs, ArrayList<Integer> orders){
     try{
-      PrintWriter writer = new PrintWriter(filename, "UTF-8");
+      PrintWriter writer = new PrintWriter("experiment.csv", "UTF-8");
       writer.println("input,time");
       for (int i=0;i<durs.size();i++){
         writer.println(orders.get(i)+","+durs.get(i));
