@@ -15,7 +15,8 @@ for i=1:X
     for j=1:Z
         u = b + alpha*a/2;
         for n=1:m
-            u = u - ((4*alpha*a*(cos(((2*n-1)*pi*x(i))/(a))))/(((2*n-1)^2)*(pi^2)*cosh((2*n-1)*pi*b/a)))*cosh((2*n-1)*pi*z(j)/a);
+            u = u - (4*alpha*a*(cos(((2*n-1)*pi*x(i))/(a))))/(((2*n-1)^2)*(pi^2)*cosh((2*n-1)*pi*b/a));
+            u = );
         end
         U(j,i) = u;
     end
@@ -23,6 +24,7 @@ end
 [x,z] = meshgrid(x,z);
 hold on
 surf(x,z,U);
+axis([0 1000 0 500 -100 100])
 xlabel('x');
 ylabel('z');
 zlabel('u(x,z)');
