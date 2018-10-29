@@ -1,7 +1,0 @@
-
-public class SnakePoint {
-	int x;
-	int y;
-	
-	
-}
