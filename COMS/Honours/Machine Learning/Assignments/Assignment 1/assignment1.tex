@@ -39,7 +39,6 @@ In this report we consider the following features.
 \paragraph{Week Day} - the day of the week. This is considered as different days of the week may feature regular weekly traffic patterns that may affect bus arrival time. This can be represented as an integer $d \in \interval[{0,4}]$, where 0 enumerates Monday, 1 enumerates Tuesday, 2 enumerates Wednesday, 3 enumerates Thursday and 4 enumerates Friday.
 \paragraph{Stop} - the stop which we are considering. This is considered as traffic may interrupt flow from stop A to stop B, but not necessarily from B to A. This is represented as a boolean $s \in \interval[{0,1}]$, where 0 represents AMIC deck and 1 represents WEC.
 \paragraph{Rain Status} - the intensity of rain at the time of scheduled arrival. This is considered as rain often has a big effect on traffic flow. This can be represented as an integer $r \in \interval[{0,2}]$, where 0 represents no rain, 1 represents light rain and 2 represents heavy rain.
-\paragraph{Temperature} - the temperature at the stop. This is considered as we hypothesise that ambient temperature may have an effect on traffic. This is represented as \textbf{TODO: Look at Occupancy thing and see how they do it}
 \\
-Thus, we 
+Thus, we seek a function $y = f(t,d,s,r)$
 \end{document}
