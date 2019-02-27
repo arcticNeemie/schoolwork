@@ -1,0 +1,46 @@
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{#1}
+\csname url@rmstyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+
+\bibitem{ajoodha17}
+R.~Ajoodha and B.~Rosman, ``Tracking influence between naïve bayes models
+  using score-based structure learning,'' in \emph{2017 Pattern Recognition
+  Association of South Africa and Robotics and Mechatronics
+  (PRASA-RobMech)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, November 2017.
+ \begin{quotation}\noindent \textbf{Aim: }To present a method that learns the
+  high-level influence structure present between a set of independently learned
+  na\"{i}ve Bayes models. \paragraph{Summary:}This paper presents an algorithm
+  for learning the influence structure between na\"{i}ve Bayes models (NBMs).
+  The algorithm achieves this by first learning a set of independent NBMs (i).
+  It then computes a score used to evalutate the fitness of the network (ii).
+  This approach makes use of a modified Bayesian information criterion (BIC)
+  for scoring, which provides an acceptable trade-off between model complexity
+  and data fitting. The algorithm then refines the model given the new
+  influence structure using expectation maximisation (iii). After this, the
+  candidate network is subjected to a graph operation (edge addition, reversal
+  or deletion) chosen to improve the network's score (iv). This is achieved
+  using a greedy hill-climbing heuristic, which guarantees monotonicaly
+  improving score between iterations. Finally, steps (ii) to (iv) are repeated
+  until an optimum is found. The result is a method which, in the authors'
+  tests achieved 60-82% accuracy when compared to the ground truth structure.
+  Additionally, the method outperformed the random structure and the structure
+  with no conditional independece assertions, and tended towards the true
+  structure as number of samples increased. \end{quotation}
+
+\end{thebibliography}
