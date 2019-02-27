@@ -40,7 +40,7 @@ To solve the problem of predicting arrival time deviation posed above, the probl
 \\
 More formally, we seek a function $f$ such that $y = f(\underline{x})$ where $y$ represents the target variable and $\underline{x}$ represents a vector of features.
 \subsection{Target Variable}
-As stated above, the target variable $y \in \mathbb{R}$ is the difference in seconds between the bus's actual arrival time and its scheduled arrival time. Thus a late bus will be labeled with a positive number and an early bus with a negative number. A bus which is exactly on time would give a value $y = 0$. Because the domain of $y$ is continuous, the problem is formulated as a regression problem, rather than a classification problem.
+As stated above, the target variable $y \in \mathbb{R}$, referred to as the arrival time deviation, is the difference in seconds between the bus's actual arrival time and its scheduled arrival time\cite{kalaputapu94}. Thus a late bus will be labeled with a positive number and an early bus with a negative number. A bus which is exactly on time would give a value $y = 0$. Because the domain of $y$ is continuous, the problem is formulated as a regression problem, rather than a classification problem.
 \subsection{Features}
 We now consider the following features which will make up $\underline{x}$.
 \paragraph{Scheduled Arrival Time} - the time at which the bus is scheduled to arrive. This is considered as certain times of the day may be more conducive to lateness or earliness (e.g. busses may tend to be late during peak hour traffic times). This can be represented as a decimal number $t \in \interval[{0,24})$, where, for example, $t = 17.5$ denotes the 17:30 bus.
@@ -54,6 +54,6 @@ Therefore, our feature vector $\underline{x}$ will be the vector $\underline{x} 
 When discussing applications of machine learning, it is important to state how one intends to gather and label data. This report proposes an electronic system, most likely in the form of a software application, which could allow bus stop coordinators to label the above variables with ease.
 \\
 Of the above variables, $t$, $I$ and $r$ could be entered manually by the on-duty coordinator, as the scheduled time and bus driver ID is known beforehand and the rain status is easily observed. The other variables, $d$, $s$ and the target $y$ could be labelled automatically by the software system, with the week day and actual arrival time deviation being caulculated from the timestamp when the data is entered, and the stop being calculated from the GPS coordinates of the coordinator's device.
-\bibliographystyle{plain}
+\bibliographystyle{IEEEtran}
 \bibliography{assignment1.bib} 
 \end{document}
