@@ -43,9 +43,16 @@ R.~Ajoodha and B.~Rosman, ``Tracking influence between naïve bayes models
   with no conditional independece assertions, and tended towards the true
   structure as the number of samples increased. \end{quotation}
 
+\bibitem{ajoodha18}
+------, ``Learning the influence structure between partially observed
+  stochastic processes using iot sensor data,'' in \emph{Workshops at the
+  Thirty-Second AAAI Conference on Artificial Intelligence}, 2018.
+
+
 \bibitem{koller09}
 D.~Koller and N.~Friedman, \emph{Probabilistic Graphical Models - Principles
-  and Techniques}.\hskip 1em plus 0.5em minus 0.4em\relax The MIT Press, 2009.
+  and Techniques - Chapter 3: The Bayesian Network Representation}.\hskip 1em
+  plus 0.5em minus 0.4em\relax The MIT Press, 2009.
 
 
 \end{thebibliography}
