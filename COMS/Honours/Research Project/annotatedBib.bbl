@@ -38,9 +38,14 @@ R.~Ajoodha and B.~Rosman, ``Tracking influence between naïve bayes models
   using a greedy hill-climbing heuristic, which guarantees monotonicaly
   improving score between iterations. Finally, steps (ii) to (iv) are repeated
   until an optimum is found. The result is a method which, in the authors'
-  tests achieved 60-82% accuracy when compared to the ground truth structure.
+  tests achieved 60-82\% accuracy when compared to the ground truth structure.
   Additionally, the method outperformed the random structure and the structure
   with no conditional independece assertions, and tended towards the true
-  structure as number of samples increased. \end{quotation}
+  structure as the number of samples increased. \end{quotation}
+
+\bibitem{koller09}
+D.~Koller and N.~Friedman, \emph{Probabilistic Graphical Models - Principles
+  and Techniques}.\hskip 1em plus 0.5em minus 0.4em\relax The MIT Press, 2009.
+
 
 \end{thebibliography}
