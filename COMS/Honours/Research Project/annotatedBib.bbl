@@ -1,28 +1,11 @@
-\begin{thebibliography}{1}
-\providecommand{\url}[1]{#1}
-\csname url@rmstyle\endcsname
-\providecommand{\newblock}{\relax}
-\providecommand{\bibinfo}[2]{#2}
-\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
-\providecommand\BIBentryALTinterwordstretchfactor{4}
-\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
-\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
-  \fontdimen4\font\relax}
-\providecommand\BIBforeignlanguage[2]{{%
-\expandafter\ifx\csname l@#1\endcsname\relax
-\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
-\typeout{** loaded for the language `#1'. Using the pattern for}%
-\typeout{** the default language instead.}%
-\else
-\language=\csname l@#1\endcsname
-\fi
-#2}}
+\begin{thebibliography}{}
 
-\bibitem{ajoodha17}
-R.~Ajoodha and B.~Rosman, ``Tracking influence between naïve bayes models
-  using score-based structure learning,'' in \emph{2017 Pattern Recognition
-  Association of South Africa and Robotics and Mechatronics
-  (PRASA-RobMech)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, November 2017.
+\bibitem[\protect\citeauthoryear{Ajoodha and Rosman}{2017}]{ajoodha17}
+Ritesh Ajoodha and Benjamin Rosman.
+\newblock Tracking influence between naïve bayes models using score-based
+  structure learning.
+\newblock In {\em 2017 Pattern Recognition Association of South Africa and
+  Robotics and Mechatronics (PRASA-RobMech)}. IEEE, November 2017.
  \begin{quotation}\noindent \textbf{Aim: }To present a method that learns the
   high-level influence structure present between a set of independently learned
   na\"{i}ve Bayes models. \paragraph{Summary:}This paper presents an algorithm
@@ -43,10 +26,12 @@ R.~Ajoodha and B.~Rosman, ``Tracking influence between naïve bayes models
   structure with no conditional independece assertions, and tended towards the
   true structure as the number of samples increased. \end{quotation}
 
-\bibitem{ajoodha18}
-------, ``Learning the influence structure between partially observed
-  stochastic processes using iot sensor data,'' in \emph{Workshops at the
-  Thirty-Second AAAI Conference on Artificial Intelligence}, 2018.
+\bibitem[\protect\citeauthoryear{Ajoodha and Rosman}{2018}]{ajoodha18}
+Ritesh Ajoodha and Benjamin Rosman.
+\newblock Learning the influence structure between partially observed
+  stochastic processes using iot sensor data.
+\newblock In {\em Workshops at the Thirty-Second AAAI Conference on Artificial
+  Intelligence}. AAAI Publications, 2018.
  \begin{quotation}\noindent \textbf{Aim: }To present an algorithm for learning
   the influence structure between a set of stochastic processes represented as
   hidden Markov models (HMMs). \paragraph{Summary:}This paper presents a
@@ -71,10 +56,11 @@ R.~Ajoodha and B.~Rosman, ``Tracking influence between naïve bayes models
   200) observations, the tree structures and no structure performed better than
   the GESS-produced structures in this regard. \end{quotation}
 
-\bibitem{koller09}
-D.~Koller and N.~Friedman, \emph{Probabilistic Graphical Models - Principles
-  and Techniques - Chapter 3: The Bayesian Network Representation}.\hskip 1em
-  plus 0.5em minus 0.4em\relax The MIT Press, 2009.
+\bibitem[\protect\citeauthoryear{Koller and Friedman}{2009}]{koller09}
+Daphne Koller and Nir Friedman.
+\newblock {\em Probabilistic Graphical Models - Principles and Techniques -
+  Chapter 3: The Bayesian Network Representation}.
+\newblock MIT Press, 2009.
  \begin{quotation}\noindent \textbf{Aim: } To present the notion of a Bayesian
   network (BN), to prove some fundamental properties of BNs, to present the
   notion of I-equivalence and show that a partially directed acyclic graph
