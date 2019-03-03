@@ -6,7 +6,9 @@ year = 2017,
 month = nov,
 publisher = "IEEE",
 annote={\textbf{Aim: }To present a method that learns the high-level influence structure present between a set of independently learned na\"{i}ve Bayes models.
-\paragraph{Summary:}This paper presents an algorithm for learning the influence structure between na\"{i}ve Bayes models (NBMs). The algorithm achieves this by first learning a set of independent NBMs (i). It then computes a score used to evalutate the fitness of the network (ii). This approach makes use of the Bayesian information criterion (BIC) for scoring, which provides an acceptable trade-off between model complexity and data fitting. The algorithm then refines the model given the new influence structure using expectation maximisation (iii). After this, the candidate network is subjected to a graph operation (edge addition, reversal or deletion) chosen to optimally improve the network's score (iv). This is achieved using a greedy hill-climbing heuristic, which guarantees monotonicaly improving score between iterations. Finally, steps (ii) to (iv) are repeated until an optimum is found. The result is a method which, in the authors' tests achieved 60-82\% accuracy when compared to the ground truth structure. Additionally, the method outperformed the random structure and the structure with no conditional independece assertions, and tended towards the true structure as the number of samples increased.}
+\paragraph{Summary:}This paper presents an algorithm for learning the influence structure between na\"{i}ve Bayes models (NBMs). The algorithm achieves this by first learning a set of independent NBMs. It then computes a score used to evalutate the fitness of the network. This approach makes use of the Bayesian information criterion (BIC) for scoring, which provides an acceptable trade-off between model complexity and data fitting. The algorithm then refines the model given the new influence structure using expectation maximisation. After this, the candidate network is subjected to a graph operation (edge addition, reversal or deletion) chosen to optimally improve the network's score. This is achieved using a greedy hill-climbing heuristic, which guarantees monotonicaly improving score between iterations. Finally, these steps are repeated until an optimum is found.
+\\
+The result is a method which, in the authors' tests achieved 60-82\% accuracy when compared to the ground truth structure. Additionally, the method outperformed the random structure and the structure with no conditional independece assertions, and tended towards the true structure as the number of samples increased.}
 }
 
 @Book{koller09,
@@ -14,7 +16,7 @@ title="Probabilistic Graphical Models - Principles and Techniques - Chapter 3: T
 author="Daphne Koller and Nir Friedman",
 year=2009,
 publisher="MIT Press",
-annote = {\textbf{Aim: } To present the notion of a Bayesian network (BN), to prove some fundamental properties of BNs, to present the notion of I-equivalence and show that a partially directed acyclic graph (PDAG) can be used to represent all members of an I equivalence class, and to present an algorithm for constructing such a PDAG.
+annote = {\textbf{Aim: } To present the notion of a Bayesian network (BN), to prove some fundamental properties of BNs, to present the notion of I-equivalence and show that a partially directed acyclic graph (PDAG) can be used to represent all members of an I equivalence class, and to present an algorithm for constructing such a PDAG; all in textbook format.
 \paragraph{Summary:} This chapter presents the concept of a Bayesian network and shows that it can be used to reduce the number of parameters needed to represent a joint distribution. The book provides two definitions of a BN, one as a data structure for compact representation of a joint distribution, and the other as a representation of the set of conditional independence assumptions that hold for such a distribution, and then shows that these definitions are in fact equivalent.
 \\
 The authors then present the definition of I-equivalence: that two graphs belong to the same I-equivalence class if and only if they represent the same set of independence assumptions. The authors show that a PDAG can be used to represent an I-equivalence class, in which all the undirected edges of the graph can be oriented in any way to produce a graph that belongs to the class. The authors also provide a definition for an immorality between three variables.
@@ -33,5 +35,25 @@ annote = {\textbf{Aim: }To present an algorithm for learning the influence struc
 \\
 In the authors' tests, the DDINs produced by the GESS algorithm with the aforementioned scoring criteria more closely recovered the ground truth structure than the tree structures and no structure for a large number of observations. However, for fewer (less than 200) observations, the tree structures and no structure performed better than the GESS-produced structures in this regard.}
 }
+
+@InProceedings{Pan05,
+author="Rong Pan and Zhongli Ding and Yang Yu and Yun Peng",
+title="A {B}ayesian Network Approach to Ontology Mapping",
+booktitle="The Semantic Web -- ISWC 2005",
+year="2005",
+publisher="Springer Berlin Heidelberg",
+pages="563--577",
+isbn="978-3-540-32082-1",
+annote={\textbf{Aim: }To present an approach to automatically mapping concepts between two ontologies via two Bayesian networks using the BayesOWL framework for the semantic web.
+\paragraph{Summary:} This paper presents a framework for mapping concepts between ontologies using an "m to n" probabilistic mapping rather than a simple "1 to 1" mapping. This framework consists of three parts: a learner module, a BayesOWL module and concept mapping module. The learner module is responsible for learning the prior, conditional and joint distributions over concepts in two ontologies. It does this by using text classification to associate concepts with sample documents. In order to correctly label the sample documents, the concept, along with all of its ancestors in the ontology, is searched using a search engine and is associated to any documents returned by the search engine.
+\\
+The BayesOWL module is responsible for translating each ontology to a Bayesian network. It does so by translating each class into a node and each predicate relation between two classes into an arc, from superclass to subclass, between the corresponding nodes. The module also creates a set of control nodes to represent logical relations between concepts in the original ontology. The authors also present an algorithm named D-IPFP, which extends the iterative proportional fitting procedure (IPFP) and is used to construct the conditional probability table of each regular node given the set of all control nodes.
+\\
+Finally, the mapping module uses evidential reasoning across the two networks and the learned similarities calculated earlier to discover mappings. The authors present the notion of pair-wise probabilistic semantic linkage and show that it can be thought of as two subsequent applications of Jeffrey's rule. The authors go on to present a method to map one concept in one ontology to many concepts in another, using a combination of Jeffrey's rule and IPFP. The paper then briefly explores the notion of reducing the number of linkages between variables while still preserving the probability constraints of the system so as to improve the performance of the already computationally expensive IPFP algorithm.
+\\
+The authors show in their eperiments that the framework can succesfully map semantically identical concepts and can detect overlap between related but not identical concepts.}
+}
+
+
 
 
