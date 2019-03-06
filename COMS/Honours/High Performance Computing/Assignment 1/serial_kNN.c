@@ -6,7 +6,6 @@
 #include <string.h>
 
 double** readInArray(char filename[]);
-int* getParams(char pfilename[],char qfilename[]);
 int* serial_kNN(double** P, double** Q, int k);
 void usage(char prog_name[]);
 
@@ -15,8 +14,7 @@ int m,n,d;
 
 int main(int argc,char **argv){
   //Check if enough args
-  if (argc != 4) {
-    //printf("%i\n",argc);
+  if (argc != 7) {
 		usage(argv[0]);
 		exit (-1);
 	}
@@ -24,6 +22,9 @@ int main(int argc,char **argv){
   char* pfile = argv[1];
   char* qfile = argv[2];
   int k = atoi(argv[3]);
+  m = atoi(argv[4]);
+  n = atoi(argv[5]);
+  d = atoi(argv[6]);
 
   double** P;
   double** Q;
@@ -32,20 +33,6 @@ int main(int argc,char **argv){
   P = readInArray(pfile);
   Q = readInArray(qfile);
 
-  //Get parameters
-  int* params = getParams(pfile,qfile);
-  m = params[0];
-  n = params[1];
-  d = params[2];
-
-  /*
-  for(int i=0;i<m;i++){
-    for(int j=0;j<d;j++){
-      printf("%f,",P[i][j]);
-    }
-    printf("\n");
-  }
-  */
 
 }
 
@@ -66,49 +53,25 @@ double** readInArray(char filename[]){
   int r = atoi(rs);
   int c = atoi(cs);
 
-  char rows[r*c][maxline];
-
-  //Read in lines
-  for(int i=0;i<r*c;i++){
-    fgets(rows[i],maxline,f);
-  }
-  fclose(f);
-
   double ** buf;
+  char* line = malloc(maxline*sizeof(char));
   buf = (double**) malloc(r * sizeof(double*));
   for(int i=0;i<r;i++){
     buf[i] = (double*) malloc(c * sizeof(double));
   }
   for(int i=0;i<r;i++){
     for(int j=0;j<c;j++){
-      buf[i][j] = atof(rows[i+j]);
+      //printf("Hello\n");
+      fgets(line,maxline,f);
+      //printf("Hello2\n");
+      buf[i][j] = atof(line);
     }
   }
 
+  free(line);
+
+  fclose(f);
   return buf;
-}
-
-int* getParams(char pfilename[],char qfilename[]){
-  FILE* p;
-  FILE* q;
-  p = fopen(pfilename,"r");
-  q = fopen(qfilename,"r");
-
-  char ps[maxline], qs[maxline], ds[maxline];
-  fgets(ps,maxline,p);
-  fgets(qs,maxline,q);
-  fgets(ds,maxline,p);
-  int m = atoi(ps);
-  int n = atoi(qs);
-  int d = atoi(ds);
-
-  int* params;
-
-  params[0] = m;
-  params[1] = n;
-  params[2] = d;
-
-  return params;
 }
 
 
@@ -118,5 +81,5 @@ int* getParams(char pfilename[],char qfilename[]){
  * In arg:      prog_name
  */
 void usage(char prog_name[]) {
-   fprintf(stderr, "usage:  %s <input text file> <query text file> <value of k>\n", prog_name);
+   fprintf(stderr, "usage:  %s <input text file> <query text file> <value of k> <number of P> <number of Q> <dimension>\n", prog_name);
 } /* usage */
