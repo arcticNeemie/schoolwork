@@ -5,9 +5,13 @@
 #include <math.h>
 #include <string.h>
 
-double* readInArray(char filename[]);
-int* serial_KNN(double* glug);
+double** readInArray(char filename[]);
+int* getParams(char pfilename[],char qfilename[]);
+int* serial_kNN(double** P, double** Q, int k);
 void usage(char prog_name[]);
+
+int maxline = 20;
+int m,n,d;
 
 int main(int argc,char **argv){
   //Check if enough args
@@ -21,26 +25,46 @@ int main(int argc,char **argv){
   char* qfile = argv[2];
   int k = atoi(argv[3]);
 
-  readInArray(pfile);
+  double** P;
+  double** Q;
+
+  //Get arrays
+  P = readInArray(pfile);
+  Q = readInArray(qfile);
+
+  //Get parameters
+  int* params = getParams(pfile,qfile);
+  m = params[0];
+  n = params[1];
+  d = params[2];
+
+  /*
+  for(int i=0;i<m;i++){
+    for(int j=0;j<d;j++){
+      printf("%f,",P[i][j]);
+    }
+    printf("\n");
+  }
+  */
 
 }
 
 
-//Reads in the file and returns it as an array
-double* readInArray(char filename[]){
+//Reads in the file and returns it as a double**
+double** readInArray(char filename[]){
   FILE* f;
   char ch;
   f = fopen(filename,"r");
   if(f==NULL){
-    printf("Error reading p.txt!");
+    printf("Error reading file!");
     exit(-1);
   }
 
-  //TODO
-  int r = atoi(fgets(f));
-  int c = atoi(fgets(f));
-
-  int maxline = 20;
+  char rs[maxline], cs[maxline];
+  fgets(rs,maxline,f);
+  fgets(cs,maxline,f);
+  int r = atoi(rs);
+  int c = atoi(cs);
 
   char rows[r*c][maxline];
 
@@ -50,19 +74,41 @@ double* readInArray(char filename[]){
   }
   fclose(f);
 
-  double array[r][c];
+  double ** buf;
+  buf = (double**) malloc(r * sizeof(double*));
+  for(int i=0;i<r;i++){
+    buf[i] = (double*) malloc(c * sizeof(double));
+  }
   for(int i=0;i<r;i++){
     for(int j=0;j<c;j++){
-      array[i][j] = atof(rows[i+j]);
-      printf("%f\n",array[i][j]);
+      buf[i][j] = atof(rows[i+j]);
     }
   }
 
+  return buf;
+}
 
+int* getParams(char pfilename[],char qfilename[]){
+  FILE* p;
+  FILE* q;
+  p = fopen(pfilename,"r");
+  q = fopen(qfilename,"r");
 
-  double* car;
-  return car;
+  char ps[maxline], qs[maxline], ds[maxline];
+  fgets(ps,maxline,p);
+  fgets(qs,maxline,q);
+  fgets(ds,maxline,p);
+  int m = atoi(ps);
+  int n = atoi(qs);
+  int d = atoi(ds);
 
+  int* params;
+
+  params[0] = m;
+  params[1] = n;
+  params[2] = d;
+
+  return params;
 }
 
 
