@@ -7,7 +7,7 @@ MATH= -lm
 all: serial_kNN
 
 serial_kNN: serial_kNN.c
-	$(CC) serial_kNN.c -o serial_kNN $(MATH)
+	$(CC) serial_kNN.c -o serial_kNN $(OMPFLAG) $(MATH)
 
 clean:
 	rm serial_KNN

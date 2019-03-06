@@ -46,11 +46,13 @@ int main(int argc,char **argv){
 
   int** kNN = serial_kNN(P,Q,k);
 
+  /*
   printf("\n");
   for(int j=0;j<k;j++){
     printf("%i ",kNN[0][j]);
   }
   printf("\n");
+  */
 
   //Cleanup
   free(kNN);
@@ -83,16 +85,17 @@ int** serial_kNN(double** P, double** Q, int k){
   for(int i=0;i<n;i++){
     myQsort(indices[i],dist[i],0,m);
   }
-
-  for(int j=0;j<k;j++){
-    printf("%f ",dist[0][j]);
+  /*
+  for(int i=1;i<=k;i++){
+    printf("%f ",dist[0][i]);
   }
   printf("\n");
+  */
+
   free(dist);
 
   //Pick k nearest indices:
-  int** kIndices;
-  kIndices = (int**) malloc(n * sizeof(int*));
+  int** kIndices = (int**) malloc(n * sizeof(int*));
   for(int i=0;i<n;i++){
     kIndices[i] = (int*) malloc(k * sizeof(int));
     for(int j=0;j<k;j++){
@@ -107,7 +110,7 @@ int** serial_kNN(double** P, double** Q, int k){
 //Quicksort
 void myQsort(int* indices, double* array, int low, int high){
   if(low<high){
-    int pivot = partition(indices, array, low, high);
+    double pivot = partition(indices, array, low, high);
     myQsort(indices,array, low, pivot - 1);
     myQsort(indices,array, pivot+1, high);
   }
@@ -115,7 +118,7 @@ void myQsort(int* indices, double* array, int low, int high){
 
 //Partition for quicksort
 int partition(int* indices, double* array,int low, int high){
-  int pivot = array[high];
+  double pivot = array[high];
   int i = low - 1;
 
   for (int j = low; j <= high - 1; j++){
