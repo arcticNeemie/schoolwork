@@ -5,8 +5,19 @@
 #include <math.h>
 #include <string.h>
 
+//Preprocess
+double** initDoubleStarStar(int r,int c);
 double** readInArray(char filename[]);
-int* serial_kNN(double** P, double** Q, int k);
+//Main Algorithm
+int** serial_kNN(double** P, double** Q, int k);
+//Distance metrics
+double euclid(double* x, double* y);
+//Sorts
+void myQsort(int* indices, double* array, int low, int high);
+int partition(int* indices, double* array,int low, int high);
+//Misc
+void swapD(double* array,int i, int j);
+void swapI(int* array,int i, int j);
 void usage(char prog_name[]);
 
 int maxline = 20;
@@ -33,7 +44,100 @@ int main(int argc,char **argv){
   P = readInArray(pfile);
   Q = readInArray(qfile);
 
+  int** kNN = serial_kNN(P,Q,k);
 
+  printf("\n");
+  for(int j=0;j<k;j++){
+    printf("%i ",kNN[0][j]);
+  }
+  printf("\n");
+
+  //Cleanup
+  free(kNN);
+  free(P);
+  free(Q);
+  exit(0);
+
+}
+
+//Takes in P, Q and k and returns the indices of P which are the k-nearest to each qi
+int** serial_kNN(double** P, double** Q, int k){
+  //Calculate Distances
+  double** dist = initDoubleStarStar(n,m);
+  for(int i=0;i<n;i++){
+    for(int j=0;j<m;j++){
+      dist[i][j] = euclid(Q[i],P[j]);
+    }
+  }
+
+  //Apply sorting
+  int** indices;
+  indices = (int**) malloc(n * sizeof(int*));
+  for(int i=0;i<n;i++){
+    indices[i] = (int*) malloc(m * sizeof(int));
+    for(int j=0;j<m;j++){
+      indices[i][j] = j;
+    }
+  }
+
+  for(int i=0;i<n;i++){
+    myQsort(indices[i],dist[i],0,m);
+  }
+
+  for(int j=0;j<k;j++){
+    printf("%f ",dist[0][j]);
+  }
+  printf("\n");
+  free(dist);
+
+  //Pick k nearest indices:
+  int** kIndices;
+  kIndices = (int**) malloc(n * sizeof(int*));
+  for(int i=0;i<n;i++){
+    kIndices[i] = (int*) malloc(k * sizeof(int));
+    for(int j=0;j<k;j++){
+      kIndices[i][j] = indices[i][j];
+    }
+  }
+
+  free(indices);
+  return kIndices;
+}
+
+//Quicksort
+void myQsort(int* indices, double* array, int low, int high){
+  if(low<high){
+    int pivot = partition(indices, array, low, high);
+    myQsort(indices,array, low, pivot - 1);
+    myQsort(indices,array, pivot+1, high);
+  }
+}
+
+//Partition for quicksort
+int partition(int* indices, double* array,int low, int high){
+  int pivot = array[high];
+  int i = low - 1;
+
+  for (int j = low; j <= high - 1; j++){
+        if (array[j] <= pivot){
+            i++;
+            swapD(array,i,j);
+            swapI(indices,i,j);
+        }
+  }
+  swapD(array,i+1,high);
+  swapI(indices,i+1,high);
+  return i+1;
+}
+
+
+//Computes the euclidean distance
+double euclid(double* x, double* y){
+  double sum = 0.0;
+  for(int i=0;i<d;i++){
+    sum+=(x[i]-y[i])*(x[i]-y[i]);
+  }
+  return sqrt(sum);
 }
 
 
@@ -53,17 +157,11 @@ double** readInArray(char filename[]){
   int r = atoi(rs);
   int c = atoi(cs);
 
-  double ** buf;
+  double ** buf = initDoubleStarStar(r,c);
   char* line = malloc(maxline*sizeof(char));
-  buf = (double**) malloc(r * sizeof(double*));
-  for(int i=0;i<r;i++){
-    buf[i] = (double*) malloc(c * sizeof(double));
-  }
   for(int i=0;i<r;i++){
     for(int j=0;j<c;j++){
-      //printf("Hello\n");
       fgets(line,maxline,f);
-      //printf("Hello2\n");
       buf[i][j] = atof(line);
     }
   }
@@ -74,6 +172,30 @@ double** readInArray(char filename[]){
   return buf;
 }
 
+//All-purpose function for initializing a double** r x c
+double** initDoubleStarStar(int r,int c){
+  double ** buf;
+  buf = (double**) malloc(r * sizeof(double*));
+  for(int i=0;i<r;i++){
+    buf[i] = (double*) malloc(c * sizeof(double));
+  }
+
+  return buf;
+}
+
+//Swaps two members of a double array
+void swapD(double* array,int i, int j){
+  double temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
+}
+
+//Swaps two members of an int array
+void swapI(int* array,int i, int j){
+  int temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
+}
 
 /*--------------------------------------------------------------------
  * Function:    usage
