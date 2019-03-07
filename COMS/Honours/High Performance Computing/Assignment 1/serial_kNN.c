@@ -18,6 +18,10 @@ void myQsort(int* indices, double* array, int low, int high);
 int partition(int* indices, double* array,int low, int high);
 
 void bubble(int* indices, double* array, int size);
+
+void myMergesort(int* indices, double* array, int size);
+void myMsort(int* indices, int* indices2, double* array, double* b, int low, int high);
+void merge(int* indices, int* indices2, double* array, double* b, int low, int mid, int high);
 //Misc
 void swapD(double* array,int i, int j);
 void swapI(int* array,int i, int j);
@@ -86,7 +90,7 @@ int** serial_kNN(double** P, double** Q, int k){
   }
 
   for(int i=0;i<n;i++){
-    bubble(indices[i],dist[i],m);
+    myMergesort(indices[i],dist[i],m);
   }
 
   for(int i=1;i<=k;i++){
@@ -153,6 +157,71 @@ void bubble(int* indices, double* array, int size){
       }
     }
   }
+}
+
+//Mergesort parent
+void myMergesort(int* indices, double* array, int size){
+  double* b = (double*)malloc(size*sizeof(double));
+  int* indices2 = (int*)malloc(size*sizeof(int));
+  myMsort(indices,indices2,array,b,0,size);
+
+  free(b);
+  free(indices2);
+
+}
+
+//Merge sort
+void myMsort(int* indices, int* indices2, double* array, double* b, int low, int high){
+  int mid;
+
+   if(low < high) {
+      mid = (low + high) / 2;
+      myMsort(indices, indices2, array, b, low, mid);
+      myMsort(indices, indices2, array, b, mid+1, high);
+      merge(indices, indices2, array, b, low, mid, high);
+   } else {
+      return;
+   }
+
+}
+
+//Merge for mergesort
+void merge(int* indices, int* indices2, double* array, double* b, int low, int mid, int high){
+  int l1 = low;
+  int l2 = mid + 1;
+  int i;
+
+   for(i = low; l1 <= mid && l2 <= high; i++) {
+      if(array[l1] <= array[l2]){
+         b[i] = array[l1];
+         indices2[i] = indices[l1];
+         l1++;
+      }
+      else{
+         b[i] = array[l2];
+         indices2[i] = indices[l2];
+         l2++;
+      }
+   }
+
+   while(l1 <= mid){
+      b[i] = array[l1];
+      indices2[i] = indices[l1];
+      i++;
+      l1++;
+    }
+
+   while(l2 <= high){
+      b[i] = array[l2];
+      indices2[i] = indices[l2];
+      i++;
+      l2++;
+    }
+
+    for(i = low; i <= high; i++){
+      array[i] = b[i];
+      indices[i] = indices2[i];
+    }
 }
 
 
