@@ -44,8 +44,10 @@ int main()
    * The size of this grid is 256*32 = 8192.
    */
 
+  //In order to ensure that everything works, we need to have that
+  //that threads_per_block*number_of_blocks > N
   size_t threads_per_block = 256;
-  size_t number_of_blocks = 32;
+  size_t number_of_blocks = 64;
 
   doubleElements<<<number_of_blocks, threads_per_block>>>(a, N);
   cudaDeviceSynchronize();

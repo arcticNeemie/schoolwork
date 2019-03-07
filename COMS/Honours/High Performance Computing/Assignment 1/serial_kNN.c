@@ -51,14 +51,23 @@ int main(int argc,char **argv){
   P = readInArray(pfile);
   Q = readInArray(qfile);
 
+  double start_time, run_time;
+
+  start_time = omp_get_wtime();
   int** kNN = serial_kNN(P,Q,k);
+  run_time = omp_get_wtime() - start_time;
+
+  //Print Runtime
+  printf("%s runs in %f seconds for m = %i, n = %i, d = %i, k = %i\n\n",argv[0],run_time,m,n,d,k);
 
   //Test
+  /*
   printf("\n");
   for(int j=0;j<k;j++){
     printf("%i ",kNN[0][j]);
   }
   printf("\n");
+  */
 
   //Cleanup
   free(kNN);
@@ -68,7 +77,7 @@ int main(int argc,char **argv){
 
 }
 
-//Takes in P, Q and k and returns the indices of P which are the k-nearest to each qi
+//Takes in P, Q and k and returns the indices of P which arreadInArraye the k-nearest to each qi
 int** serial_kNN(double** P, double** Q, int k){
   //Calculate Distances
   double** dist = initDoubleStarStar(n,m);
@@ -78,7 +87,7 @@ int** serial_kNN(double** P, double** Q, int k){
     }
   }
 
-  //Apply sorting
+  //Initialize index array for sorting
   int** indices;
   indices = (int**) malloc(n * sizeof(int*));
   for(int i=0;i<n;i++){
@@ -88,16 +97,20 @@ int** serial_kNN(double** P, double** Q, int k){
     }
   }
 
+  //Sort
   for(int i=0;i<n;i++){
-    myMergesort(indices[i],dist[i],m);
+    //myMergesort(indices[i],dist[i],m);
+    //bubble(indices[i],dist[i],m);
+    myQsort(indices[i],dist[i],0,m);
   }
 
   //Test
+  /*
   for(int i=1;i<=k;i++){
     printf("%f ",dist[0][i]);
   }
   printf("\n");
-
+  */
 
   free(dist);
 
