@@ -53,13 +53,12 @@ int main(int argc,char **argv){
 
   int** kNN = serial_kNN(P,Q,k);
 
-
+  //Test
   printf("\n");
   for(int j=0;j<k;j++){
     printf("%i ",kNN[0][j]);
   }
   printf("\n");
-
 
   //Cleanup
   free(kNN);
@@ -93,6 +92,7 @@ int** serial_kNN(double** P, double** Q, int k){
     myMergesort(indices[i],dist[i],m);
   }
 
+  //Test
   for(int i=1;i<=k;i++){
     printf("%f ",dist[0][i]);
   }
