@@ -100,8 +100,8 @@ int** serial_kNN(double** P, double** Q, int k){
   //Sort
   for(int i=0;i<n;i++){
     //myMergesort(indices[i],dist[i],m);
-    //bubble(indices[i],dist[i],m);
-    myQsort(indices[i],dist[i],0,m);
+    bubble(indices[i],dist[i],m);
+    //myQsort(indices[i],dist[i],0,m);
   }
 
   //Test
@@ -162,6 +162,7 @@ int partition(int* indices, double* array,int low, int high){
 
 //Bubblesort
 void bubble(int* indices, double* array, int size){
+  //printf("Bubble!\n");
   for(int i = 0;i<size-1;i++){
     for (int j = 0; j < size-i-1; j++){
       if(array[j]>array[j+1]){

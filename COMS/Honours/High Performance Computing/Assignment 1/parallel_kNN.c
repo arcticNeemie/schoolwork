@@ -61,7 +61,7 @@ int main(int argc,char **argv){
 
   double start_time, run_time;
 
-  omp_set_num_threads(NUM_THREADS);
+  //omp_set_num_threads(NUM_THREADS);
 
   start_time = omp_get_wtime();
   int** kNN = parallel_kNN(P,Q,k);
@@ -69,16 +69,16 @@ int main(int argc,char **argv){
 
   //Print Runtime
   printf("%s runs in %f seconds for m = %i, n = %i, d = %i, k = %i\n",argv[0],run_time,m,n,d,k);
-  printf("Number of threads: %i\n\n",NUM_THREADS);
+  printf("Number of threads: %i\n\n",omp_get_num_threads());
 
   //Test
-
+  /*
   printf("\n");
   for(int j=0;j<k;j++){
     printf("%i ",kNN[0][j]);
   }
   printf("\n");
-
+  */
 
   //Cleanup
   free(kNN);
@@ -92,6 +92,8 @@ int main(int argc,char **argv){
 int** parallel_kNN(double** P, double** Q, int k){
   //Calculate Distances
   double** dist = initDoubleStarStar(n,m);
+  int i,j;
+  #pragma omp parallel for private(i,j) collapse(2)
   for(int i=0;i<n;i++){
     for(int j=0;j<m;j++){
       dist[i][j] = euclid(Q[i],P[j]);
@@ -111,17 +113,17 @@ int** parallel_kNN(double** P, double** Q, int k){
   //Sort
   for(int i=0;i<n;i++){
     //myMergesort(indices[i],dist[i],m);
-    bubble(indices[i],dist[i],m);
-    //myQsort(indices[i],dist[i],0,m);
+    //bubble(indices[i],dist[i],m);
+    myQsort(indices[i],dist[i],0,m);
   }
 
   //Test
-
+  /*
   for(int i=1;i<=k;i++){
     printf("%f ",dist[0][i]);
   }
   printf("\n");
-
+  */
 
   free(dist);
 
@@ -184,27 +186,21 @@ int partition(int* indices, double* array,int low, int high){
 
 //Bubblesort
 void bubble(int* indices, double* array, int size){
-  int sorted = 0;
-  int b = 0;
-  while(sorted==0){
-    sorted = 1;
-    #pragma omp parallel for
-      for(int i=0;i<size-1;i+=2){
-        if(array[i]>array[i+1]){
-          swapD(array,i,i+1);
-          swapI(indices,i,i+1);
-          sorted = 0;
-        }
+  /*
+  swapD(array,i,i+1);
+  swapI(indices,i,i+1);
+  */
+  //Odd-Even sort
+  for(int i=0;i<size;i++){
+    int j0 = i % 2;
+    printf("Loop %i\n",i);
+    #pragma omp parallel for shared(array,indices,j0)
+    for(int j=j0;j<size-1;j+=2){
+      if(array[j]>array[j+1]){
+        swapD(array,j,j+1);
+        swapI(indices,j,j+1);
       }
-    #pragma omp parallel for
-      for(int i=1;i<size-1;i+=2){
-        if(array[i]>array[i+1]){
-          swapD(array,i,i+1);
-          swapI(indices,i,i+1);
-          sorted = 0;
-        }
-      }
-
+    }
   }
 }
 
