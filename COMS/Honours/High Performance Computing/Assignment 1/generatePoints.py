@@ -6,7 +6,7 @@ def writeToFile(arr,file):
     r = arr.shape[0]
     d = arr.shape[1]
 
-    output = str(r)+"\n"+str(d)+"\n"
+    output = ""
     for i in range(r):
         line = ""
         for j in range(d):

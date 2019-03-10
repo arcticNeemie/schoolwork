@@ -7,7 +7,7 @@
 
 //Preprocess
 double** initDoubleStarStar(int r,int c);
-double** readInArray(char filename[]);
+double** readInArray(char filename[],int type);
 //Main Algorithm
 int** serial_kNN(double** P, double** Q, int k);
 //Distance metrics
@@ -29,10 +29,11 @@ void usage(char prog_name[]);
 
 int maxline = 20;
 int m,n,d;
+int myDist,mySort;
 
 int main(int argc,char **argv){
   //Check if enough args
-  if (argc != 7) {
+  if (argc != 9) {
 		usage(argv[0]);
 		exit (-1);
 	}
@@ -43,22 +44,17 @@ int main(int argc,char **argv){
   m = atoi(argv[4]);
   n = atoi(argv[5]);
   d = atoi(argv[6]);
+  myDist = atoi(argv[7]);   //0 = euclid, 1 = manhattan
+  mySort = atoi(argv[8]);   //0 = quicksort, 1 = mergesort, 2 = bubblesort
 
   double** P;
   double** Q;
 
   //Get arrays
-  P = readInArray(pfile);
-  Q = readInArray(qfile);
+  P = readInArray(pfile,0);
+  Q = readInArray(qfile,1);
 
-  double start_time, run_time;
-
-  start_time = omp_get_wtime();
   int** kNN = serial_kNN(P,Q,k);
-  run_time = omp_get_wtime() - start_time;
-
-  //Print Runtime
-  printf("%s runs in %f seconds for m = %i, n = %i, d = %i, k = %i\n\n",argv[0],run_time,m,n,d,k);
 
   //Test
   /*
@@ -79,13 +75,21 @@ int main(int argc,char **argv){
 
 //Takes in P, Q and k and returns the indices of P which arreadInArraye the k-nearest to each qi
 int** serial_kNN(double** P, double** Q, int k){
+  double start_time1, run_time1, start_time, run_time;
   //Calculate Distances
   double** dist = initDoubleStarStar(n,m);
+  start_time = omp_get_wtime();
   for(int i=0;i<n;i++){
     for(int j=0;j<m;j++){
-      dist[i][j] = euclid(Q[i],P[j]);
+      if(myDist==0){
+        dist[i][j] = euclid(Q[i],P[j]);
+      }
+      else{
+        dist[i][j] = manhattan(Q[i],P[j]);
+      }
     }
   }
+  run_time = omp_get_wtime() - start_time;
 
   //Initialize index array for sorting
   int** indices;
@@ -98,12 +102,19 @@ int** serial_kNN(double** P, double** Q, int k){
   }
 
   //Sort
+  start_time1 = omp_get_wtime();
   for(int i=0;i<n;i++){
-    //myMergesort(indices[i],dist[i],m);
-    bubble(indices[i],dist[i],m);
-    //myQsort(indices[i],dist[i],0,m);
+    if(mySort==0){
+      myQsort(indices[i],dist[i],0,m);
+    }
+    else if(mySort==1){
+      myMergesort(indices[i],dist[i],m);
+    }
+    else{
+      bubble(indices[i],dist[i],m);
+    }
   }
-
+  run_time1 = omp_get_wtime() - start_time1;
   //Test
   /*
   for(int i=1;i<=k;i++){
@@ -113,6 +124,26 @@ int** serial_kNN(double** P, double** Q, int k){
   */
 
   free(dist);
+
+  printf("Runtime for m = %i, n = %i, d = %i, k = %i\n",m,n,d,k);
+  if(myDist==0){
+    printf("Euclidean distance - ");
+  }
+  else{
+    printf("Manhattan distance - ");
+  }
+  if(mySort==0){
+    printf("Quicksort\n");
+  }
+  else if(mySort==1){
+    printf("Mergesort\n");
+  }
+  else{
+    printf("Bubblesort\n");
+  }
+  printf("Distance: %f seconds\n",run_time);
+  printf("Sorting: %f seconds\n",run_time1);
+  printf("Total: %f seconds\n\n\n",run_time+run_time1);
 
   //Pick k nearest indices:
   int** kIndices = (int**) malloc(n * sizeof(int*));
@@ -258,9 +289,15 @@ double euclid(double* x, double* y){
 //Computes the Manhattan Distance
 double manhattan(double* x, double* y){
   double sum = 0.0;
+  double diff;
   for(int i=0;i<d;i++){
-    sum+=abs(x[i]-y[i]);
+    diff = x[i]-y[i];
+    if(diff<0){
+      diff = -1*diff;
+    }
+    sum+=diff;
   }
+  return sum;
 }
 
 /**
@@ -272,7 +309,7 @@ double manhattan(double* x, double* y){
 
 
 //Reads in the file and returns it as a double**
-double** readInArray(char filename[]){
+double** readInArray(char filename[], int type){
   FILE* f;
   char ch;
   f = fopen(filename,"r");
@@ -281,16 +318,18 @@ double** readInArray(char filename[]){
     exit(-1);
   }
 
-  char rs[maxline], cs[maxline];
-  fgets(rs,maxline,f);
-  fgets(cs,maxline,f);
-  int r = atoi(rs);
-  int c = atoi(cs);
+  int r;
+  if(type==0){
+    r = m;
+  }
+  else{
+    r = n;
+  }
 
-  double ** buf = initDoubleStarStar(r,c);
+  double ** buf = initDoubleStarStar(r,d);
   char* line = malloc(maxline*sizeof(char));
   for(int i=0;i<r;i++){
-    for(int j=0;j<c;j++){
+    for(int j=0;j<d;j++){
       fgets(line,maxline,f);
       buf[i][j] = atof(line);
     }
@@ -333,5 +372,5 @@ void swapI(int* array,int i, int j){
  * In arg:      prog_name
  */
 void usage(char prog_name[]) {
-   fprintf(stderr, "usage:  %s <input text file> <query text file> <value of k> <number of P> <number of Q> <dimension>\n", prog_name);
+   fprintf(stderr, "usage:  %s <input text file> <query text file> <value of k> <number of P> <number of Q> <dimension> <dist> <sort>\n", prog_name);
 } /* usage */

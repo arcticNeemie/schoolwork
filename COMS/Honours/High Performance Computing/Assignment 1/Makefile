@@ -4,7 +4,7 @@ OMPFLAG=-fopenmp
 CC=gcc
 MATH= -lm
 
-all: serial_kNN parallel_kNN.c
+all: serial_kNN parallel_kNN
 
 serial_kNN: serial_kNN.c
 	$(CC) serial_kNN.c -o serial_kNN $(OMPFLAG) $(MATH)

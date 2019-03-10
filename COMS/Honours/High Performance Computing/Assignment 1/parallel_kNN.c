@@ -13,7 +13,7 @@ Parallel kNN using sections directive OpenMP
 
 //Preprocess
 double** initDoubleStarStar(int r,int c);
-double** readInArray(char filename[]);
+double** readInArray(char filename[], int type);
 //Main Algorithm
 int** parallel_kNN(double** P, double** Q, int k);
 //Distance metrics
@@ -35,12 +35,13 @@ void usage(char prog_name[]);
 
 int maxline = 20;
 int m,n,d;
+int myDist,mySort;
 int CUT_OFF = 1000;
 int NUM_THREADS = 2;
 
 int main(int argc,char **argv){
   //Check if enough args
-  if (argc != 7) {
+  if (argc != 9) {
 		usage(argv[0]);
 		exit (-1);
 	}
@@ -51,25 +52,18 @@ int main(int argc,char **argv){
   m = atoi(argv[4]);
   n = atoi(argv[5]);
   d = atoi(argv[6]);
+  myDist = atoi(argv[7]);   //0 = euclid, 1 = manhattan
+  mySort = atoi(argv[8]);   //0 = quicksort, 1 = mergesort, 2 = bubblesort
 
   double** P;
   double** Q;
 
   //Get arrays
-  P = readInArray(pfile);
-  Q = readInArray(qfile);
-
-  double start_time, run_time;
+  P = readInArray(pfile,0);
+  Q = readInArray(qfile,1);
 
   //omp_set_num_threads(NUM_THREADS);
-
-  start_time = omp_get_wtime();
   int** kNN = parallel_kNN(P,Q,k);
-  run_time = omp_get_wtime() - start_time;
-
-  //Print Runtime
-  printf("%s runs in %f seconds for m = %i, n = %i, d = %i, k = %i\n",argv[0],run_time,m,n,d,k);
-  printf("Number of threads: %i\n\n",omp_get_num_threads());
 
   //Test
   /*
@@ -88,18 +82,25 @@ int main(int argc,char **argv){
 
 }
 
-//Takes in P, Q and k and returns the indices of P which arreadInArraye the k-nearest to each qi
+//Takes in P, Q and k and returns the indices of P which are the k-nearest to each qi
 int** parallel_kNN(double** P, double** Q, int k){
+  double start_time1, run_time1, start_time, run_time;
   //Calculate Distances
   double** dist = initDoubleStarStar(n,m);
   int i,j;
+  start_time = omp_get_wtime();
   #pragma omp parallel for private(i,j) collapse(2)
   for(int i=0;i<n;i++){
     for(int j=0;j<m;j++){
-      dist[i][j] = euclid(Q[i],P[j]);
-      //dist[i][j] = manhattan(Q[i],P[j]);
+      if(myDist==0){
+        dist[i][j] = euclid(Q[i],P[j]);
+      }
+      else{
+        dist[i][j] = manhattan(Q[i],P[j]);
+      }
     }
   }
+  run_time = omp_get_wtime() - start_time;
 
   //Initialize index array for sorting
   int** indices;
@@ -112,14 +113,22 @@ int** parallel_kNN(double** P, double** Q, int k){
   }
 
   //Sort
-  #pragma omp parallel
+  start_time1 = omp_get_wtime();
+  #pragma omp parallel shared(dist,indices)
   {
     for(int i=0;i<n;i++){
-      //myMergesort(indices[i],dist[i],m);
-      //bubble(indices[i],dist[i],m);
-      myQsort(indices[i],dist[i],0,m);
+      if(mySort==0){
+        myQsort(indices[i],dist[i],0,m);
+      }
+      else if(mySort==1){
+        myMergesort(indices[i],dist[i],m);
+      }
+      else{
+        bubble(indices[i],dist[i],m);
+      }
     }
   }
+  run_time1 = omp_get_wtime() - start_time1;
 
   //Test
   /*
@@ -130,6 +139,26 @@ int** parallel_kNN(double** P, double** Q, int k){
   */
 
   free(dist);
+
+  printf("Runtime for m = %i, n = %i, d = %i, k = %i\n",m,n,d,k);
+  if(myDist==0){
+    printf("Euclidean distance - ");
+  }
+  else{
+    printf("Manhattan distance - ");
+  }
+  if(mySort==0){
+    printf("Quicksort\n");
+  }
+  else if(mySort==1){
+    printf("Mergesort\n");
+  }
+  else{
+    printf("Bubblesort\n");
+  }
+  printf("Distance: %f seconds\n",run_time);
+  printf("Sorting: %f seconds\n",run_time1);
+  printf("Total: %f seconds\n\n\n",run_time+run_time1);
 
   //Pick k nearest indices:
   int** kIndices = (int**) malloc(n * sizeof(int*));
@@ -193,7 +222,7 @@ void bubble(int* indices, double* array, int size){
   //Odd-Even sort
   for(int i=0;i<size;i++){
     int j0 = i % 2;
-    #pragma omp for shared(array,indices,j0)
+    #pragma omp for
     for(int j=j0;j<size-1;j+=2){
       if(array[j]>array[j+1]){
         swapD(array,j,j+1);
@@ -299,9 +328,15 @@ double euclid(double* x, double* y){
 //Computes the Manhattan Distance
 double manhattan(double* x, double* y){
   double sum = 0.0;
+  double diff;
   for(int i=0;i<d;i++){
-    sum+=abs(x[i]-y[i]);
+    diff = x[i]-y[i];
+    if(diff<0){
+      diff = -1*diff;
+    }
+    sum+=diff;
   }
+  return sum;
 }
 
 /**
@@ -311,9 +346,8 @@ double manhattan(double* x, double* y){
 *
 */
 
-
 //Reads in the file and returns it as a double**
-double** readInArray(char filename[]){
+double** readInArray(char filename[], int type){
   FILE* f;
   char ch;
   f = fopen(filename,"r");
@@ -322,16 +356,18 @@ double** readInArray(char filename[]){
     exit(-1);
   }
 
-  char rs[maxline], cs[maxline];
-  fgets(rs,maxline,f);
-  fgets(cs,maxline,f);
-  int r = atoi(rs);
-  int c = atoi(cs);
+  int r;
+  if(type==0){
+    r = m;
+  }
+  else{
+    r = n;
+  }
 
-  double ** buf = initDoubleStarStar(r,c);
+  double ** buf = initDoubleStarStar(r,d);
   char* line = malloc(maxline*sizeof(char));
   for(int i=0;i<r;i++){
-    for(int j=0;j<c;j++){
+    for(int j=0;j<d;j++){
       fgets(line,maxline,f);
       buf[i][j] = atof(line);
     }
@@ -342,6 +378,7 @@ double** readInArray(char filename[]){
   fclose(f);
   return buf;
 }
+
 
 //All-purpose function for initializing a double** r x c
 double** initDoubleStarStar(int r,int c){
