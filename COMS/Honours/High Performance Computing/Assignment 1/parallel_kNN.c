@@ -97,6 +97,7 @@ int** parallel_kNN(double** P, double** Q, int k){
   for(int i=0;i<n;i++){
     for(int j=0;j<m;j++){
       dist[i][j] = euclid(Q[i],P[j]);
+      //dist[i][j] = manhattan(Q[i],P[j]);
     }
   }
 
@@ -111,10 +112,13 @@ int** parallel_kNN(double** P, double** Q, int k){
   }
 
   //Sort
-  for(int i=0;i<n;i++){
-    //myMergesort(indices[i],dist[i],m);
-    //bubble(indices[i],dist[i],m);
-    myQsort(indices[i],dist[i],0,m);
+  #pragma omp parallel
+  {
+    for(int i=0;i<n;i++){
+      //myMergesort(indices[i],dist[i],m);
+      //bubble(indices[i],dist[i],m);
+      myQsort(indices[i],dist[i],0,m);
+    }
   }
 
   //Test
@@ -156,7 +160,7 @@ void myQsort(int* indices, double* array, int low, int high){
       myQsort(indices,array, pivot+1, high);
     }
     else{
-      #pragma omp parallel sections
+      #pragma omp sections
       {
         #pragma omp section
           myQsort(indices,array, low, pivot - 1);
