@@ -190,15 +190,10 @@ int partition(int* indices, double* array,int low, int high){
 
 //Bubblesort
 void bubble(int* indices, double* array, int size){
-  /*
-  swapD(array,i,i+1);
-  swapI(indices,i,i+1);
-  */
   //Odd-Even sort
   for(int i=0;i<size;i++){
     int j0 = i % 2;
-    printf("Loop %i\n",i);
-    #pragma omp parallel for shared(array,indices,j0)
+    #pragma omp for shared(array,indices,j0)
     for(int j=j0;j<size-1;j+=2){
       if(array[j]>array[j+1]){
         swapD(array,j,j+1);
@@ -230,7 +225,7 @@ void myMsort(int* indices, int* indices2, double* array, double* b, int low, int
         myMsort(indices, indices2, array, b, mid+1, high);
       }
       else{
-        #pragma omp parallel sections
+        #pragma omp sections
         {
           #pragma omp section
             myMsort(indices, indices2, array, b, low, mid);
