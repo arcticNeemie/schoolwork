@@ -1,0 +1,20 @@
+\begin{thebibliography}{}
+
+\bibitem[Fontaine, 2012]{fontaine_2012}
+Fontaine, D. (2012).
+\newblock Solving every sudoku puzzle.
+\newblock \url{https://github.com/dimitri/sudoku}.
+
+\bibitem[Gary~McGuire, 2013]{sudoku_17}
+Gary~McGuire, Bastian~Tugemann, G.~C. (2013).
+\newblock Solving the sudoku minimum number of clues problem.
+\newblock \url{https://arxiv.org/abs/1201.0749}.
+
+\bibitem[Watanabe, 2013]{watanabe_2013}
+Watanabe, H. (2013).
+\newblock {\em Difficult Sudoku Puzzles Created by Replica Exchange Monte Carlo
+  Method}.
+\newblock Arxiv - Cornell University.
+\newblock \url {https://arxiv.org/abs/1303.1886}.
+
+\end{thebibliography}

@@ -1,0 +1,44 @@
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{#1}
+\csname url@rmstyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+
+\bibitem{altman92}
+N.~Altman, ``An introduction to kernel and nearest-neighbor nonparametric
+  regression,'' \emph{The American Statistician}, vol.~46, no.~3, pp. 175--185,
+  1992.
+
+
+\bibitem{kowalski72}
+B.~R. Kowalski and C.~F. Bender, ``K-nearest neighbor classification rule
+  (pattern recognition) applied to nuclear magnetic resonance spectral
+  interpretation,'' \emph{Analytical Chemistry}, 1972.
+
+
+\bibitem{kwon03}
+O.-W. Kwon and J.-H. Lee, ``Text categorization based on k-nearest neighbor
+  approach for web site classification,'' \emph{Information Processing and
+  Management}, 2003.
+
+
+\bibitem{liao02}
+Y.~Liao and V.~R. Vemuri, ``Use of k-nearest neighbor classifier for intrusion
+  detection,'' \emph{Computers and Security}, 2002.
+
+
+\end{thebibliography}
