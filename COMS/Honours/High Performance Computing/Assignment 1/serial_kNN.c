@@ -104,6 +104,7 @@ int** serial_kNN(double** P, double** Q, int k){
   //Sort
   start_time1 = omp_get_wtime();
   for(int i=0;i<n;i++){
+    //printf("Loop %i\n",i);
     if(mySort==0){
       myQsort(indices[i],dist[i],0,m);
     }
@@ -141,9 +142,10 @@ int** serial_kNN(double** P, double** Q, int k){
   else{
     printf("Bubblesort\n");
   }
-  printf("Distance: %f seconds\n",run_time);
-  printf("Sorting: %f seconds\n",run_time1);
-  printf("Total: %f seconds\n\n\n",run_time+run_time1);
+  double total = run_time+run_time1;
+  printf("Distance: %f seconds, %f percent \n",run_time,100.0*run_time/total);
+  printf("Sorting: %f seconds, %f percent\n",run_time1,100.0*run_time1/total);
+  printf("Total: %f seconds\n\n\n",total);
 
   //Pick k nearest indices:
   int** kIndices = (int**) malloc(n * sizeof(int*));
@@ -194,12 +196,18 @@ int partition(int* indices, double* array,int low, int high){
 //Bubblesort
 void bubble(int* indices, double* array, int size){
   //printf("Bubble!\n");
+  int sorted;
   for(int i = 0;i<size-1;i++){
+    sorted = 0;
     for (int j = 0; j < size-i-1; j++){
       if(array[j]>array[j+1]){
         swapD(array,j,j+1);
         swapI(indices,j,j+1);
+	sorted = 1;
       }
+    }
+    if(sorted==0){
+	break;
     }
   }
 }

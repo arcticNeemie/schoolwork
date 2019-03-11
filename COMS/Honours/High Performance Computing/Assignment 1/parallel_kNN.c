@@ -37,7 +37,7 @@ int maxline = 20;
 int m,n,d;
 int myDist,mySort;
 int CUT_OFF = 1000;
-int NUM_THREADS = 2;
+int NUM_THREADS = 4;
 
 int main(int argc,char **argv){
   //Check if enough args
@@ -62,7 +62,7 @@ int main(int argc,char **argv){
   P = readInArray(pfile,0);
   Q = readInArray(qfile,1);
 
-  //omp_set_num_threads(NUM_THREADS);
+  omp_set_num_threads(NUM_THREADS);
   int** kNN = parallel_kNN(P,Q,k);
 
   //Test
@@ -102,6 +102,7 @@ int** parallel_kNN(double** P, double** Q, int k){
   }
   run_time = omp_get_wtime() - start_time;
 
+
   //Initialize index array for sorting
   int** indices;
   indices = (int**) malloc(n * sizeof(int*));
@@ -112,23 +113,25 @@ int** parallel_kNN(double** P, double** Q, int k){
     }
   }
 
+
+
   //Sort
   start_time1 = omp_get_wtime();
-  #pragma omp parallel shared(dist,indices)
-  {
-    for(int i=0;i<n;i++){
-      if(mySort==0){
-        myQsort(indices[i],dist[i],0,m);
-      }
-      else if(mySort==1){
-        myMergesort(indices[i],dist[i],m);
-      }
-      else{
-        bubble(indices[i],dist[i],m);
-      }
+  for(int i=0;i<n;i++){
+    if(mySort==0){
+      myQsort(indices[i],dist[i],0,m);
+    }
+    else if(mySort==1){
+      myMergesort(indices[i],dist[i],m);
+    }
+    else{
+      //printf("Here %i\n",i);
+      bubble(indices[i],dist[i],m);
     }
   }
   run_time1 = omp_get_wtime() - start_time1;
+
+
 
   //Test
   /*
@@ -156,6 +159,7 @@ int** parallel_kNN(double** P, double** Q, int k){
   else{
     printf("Bubblesort\n");
   }
+  printf("Number of threads: %i\n",NUM_THREADS);
   printf("Distance: %f seconds\n",run_time);
   printf("Sorting: %f seconds\n",run_time1);
   printf("Total: %f seconds\n\n\n",run_time+run_time1);
@@ -189,7 +193,7 @@ void myQsort(int* indices, double* array, int low, int high){
       myQsort(indices,array, pivot+1, high);
     }
     else{
-      #pragma omp sections
+      #pragma omp parallel sections
       {
         #pragma omp section
           myQsort(indices,array, low, pivot - 1);
@@ -222,7 +226,7 @@ void bubble(int* indices, double* array, int size){
   //Odd-Even sort
   for(int i=0;i<size;i++){
     int j0 = i % 2;
-    #pragma omp for
+    #pragma omp parallel for shared(array,indices)
     for(int j=j0;j<size-1;j+=2){
       if(array[j]>array[j+1]){
         swapD(array,j,j+1);
@@ -254,7 +258,7 @@ void myMsort(int* indices, int* indices2, double* array, double* b, int low, int
         myMsort(indices, indices2, array, b, mid+1, high);
       }
       else{
-        #pragma omp sections
+        #pragma omp parallel sections
         {
           #pragma omp section
             myMsort(indices, indices2, array, b, low, mid);
