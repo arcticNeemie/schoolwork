@@ -13,7 +13,7 @@
 \usepackage{float}
 \usepackage{graphics} 
 \usepackage{tikz}
-\usepackage[width=14.8cm,left=3cm]{geometry}
+\usepackage[width=14.8cm,left=3cm,margin=1in]{geometry}
 \usetikzlibrary{automata,calc}
 %\usepackage{tgtermes} 
 \usepackage{listings}
@@ -67,8 +67,8 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 \renewcommand{\headrulewidth}{0.4pt}
 }
 
-\textwidth=16.8cm 
-\textheight=22.6cm 
+%\textwidth=16.8cm 
+%\textheight=22.6cm 
 \evensidemargin 0pt 
 \oddsidemargin 0pt 
 \leftmargin 0pt 
@@ -76,7 +76,7 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 \setlength{\topmargin}{0pt} 
 \setlength{\footskip}{50pt}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{1em}
+\setlength{\parskip}{0.5em}
 \linespread{1} 
 % 
 \makeatletter
@@ -93,9 +93,8 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 
 \begin{document}
 \title{COMS4040A Assignment 1 -- Report}
-\author{Tamlin Love\\1438243\\BSc Hons}
+\author{Tamlin Love (1438243) - BSc Hons}
 \date{\today} 
-
 \maketitle 
 %\thispagestyle{empty}
 \pagestyle{fancy}
@@ -106,37 +105,63 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 %\pagenumbering{roman}
 %\newpage
 \pagenumbering{arabic} 
+\vspace{-1.5cm}
 \section{Introduction}\label{Introduction}
 The k nearest neighbour (KNN) algorithm is a simple, widely used algorithm in used for classification and regression problems\cite{altman92}. Its applications vary from detecting intrusive programs\cite{liao02} to text classification \cite{kwon03} to the analysis of nuclear magnetic resonance spectra \cite{kowalski72}.
 \\
-The algorithm itself is very simple. Consider a set $P$ of $m$ reference points $p_{i}\in\mathbb{R}^{d}$ and a set $Q$ of $n$ query points $q_{j} \in \mathbb{R}^{d}$. The aim of the algorithm is to find the $k$ nearest (according to some distance measure) points in $P$ for each $q_{j}\in Q$, for some integer $k$. In the brute force approach, the algorithm proceeds as in \ref{alg:kNN} in Appendix \ref{app:Algorithms}.
+The algorithm itself is very simple. Consider a set $P$ of $m$ reference points $p_{i}\in\mathbb{R}^{d}$ and a set $Q$ of $n$ query points $q_{j} \in \mathbb{R}^{d}$. The aim of the algorithm is to find the $k$ nearest (according to some distance measure) points in $P$ for each $q_{j}\in Q$, for some integer $k$.
 \\
-In essence, we first compute the distance between each query point and each reference point and store it in a distance matrix of size $n \times m$. We then sort each row in the matrix before returning the $n \times k$ (keeping track of any swaps via the index matrix), before returning the $n \times k$ index sub-matrix containing the indices of the k-nearest neighbours to each query point.
+In the brute force approach we first compute the distance between each query point and each reference point and store it in a distance matrix of size $n \times m$. We then sort each row in the matrix before returning the $n \times k$ (keeping track of any swaps via the index matrix), before returning the $n \times k$ index sub-matrix containing the indices of the k-nearest neighbours to each query point.
 \\
-Special attention must be given to the distance measure and sorting functions applied above. In this report, we consider the Euclidean distance measure (Algorithm \ref{alg:euclid}) and the Manhattan distance measure (Algorithm \ref{alg:manhattan}), and for sorting we consider the quicksort (Algorithm \ref{alg:qsort}), bubblesort (Algorithm \ref{alg:bubblesort}) and mergesort (Algorithm \ref{alg:mergesort}) algorithms.
+Special attention must be given to the distance measure and sorting functions applied above. In this report, we consider the Euclidean and Manhattan distance measures, and for sorting we consider the quicksort, bubblesort and mergesort algorithms.
 \\
-Because any distance measure in $\mathbb{R}^{d}$ must take $\mathcal{O}(d)$ time to compute, algorithm \ref{alg:kNN} above must take $\mathcal{O}(mnd)$ time to compute distances. Since quicksort and mergesort are both $\mathcal{O}(mlog(m))$ on average, and bubblesort is $\mathcal{O}(m^2)$ on average, the final algorithm must take $\mathcal{O}(nmlog(m))$ time to sort using quicksort or mergesort, and $\mathcal{O}(nm^2)$ time to sort using bubblesort. For large $m$, $n$ and $d$, these complexities are problematic. However, as we shall see in Section \ref{Methodology}, this can be significantly improved upon using parallel algorithms.
+Because any distance measure in $\mathbb{R}^{d}$ must take $\mathcal{O}(d)$ time to compute, the k nearest neighbours algorithm must take $\mathcal{O}(mnd)$ time to compute distances. Since quicksort and mergesort are both $\mathcal{O}(mlog(m))$ on average, and bubblesort is $\mathcal{O}(m^2)$ on average, the final algorithm must take $\mathcal{O}(nmlog(m))$ time to sort using quicksort or mergesort, and $\mathcal{O}(nm^2)$ time to sort using bubblesort. For large $m$, $n$ and $d$, these complexities are problematic. However, as we shall see in Section \ref{Methodology}, this can be significantly improved upon using parallel algorithms.
 \section{Methodology}\label{Methodology}
-As mentioned in Section \ref{Introduction}, there are two computationally intensive sections in Algorithm \ref{alg:kNN}: the distance computation and the sorting component. We shall apply Foster's Design Methodology to each of these sections individually in the hope of improving the performance of the algorithm.
+As mentioned in Section \ref{Introduction}, there are two computationally intensive sections in the algorithm: the distance computation and the sorting component. We shall apply Foster's Design Methodology to each of these sections individually in the hope of improving the performance of the algorithm.
 \subsection{Distance Computation}
-Consider the two distance measures (Algorithms \ref{alg:euclid}) and \ref{alg:manhattan}). Because the only difference between these algorithms is the square of the difference in Algorithm \ref{alg:euclid} and the absolute value of the difference in Algorithm \ref{alg:manhattan}, they can be dealt with in the same way. No matter the algorithm used, the distance function is performed $nm$ times in lines 4-6 in Algorithm \ref{alg:kNN}. Furthermore, the computation of the distance between points $q_{i}$ and $p_{j}$ is in no way dependent on the computation of distance between points $q_{s}$ and $p_{t}$ for $s\neq i$ and $t\neq j$. We will collapse the for-loops in Algorithm \ref{alg:kNN} into $nm$ tasks which can be divided among processors. 
+Consider the two distance measures. Because the only difference between these algorithms is the square of the difference in the Eucidean metric and the absolute value of the difference in the Manhattan metric, they can be dealt with in the same way. No matter the algorithm used, the distance function is performed $nm$ times in the k nearest neighbours algorithm. Furthermore, the computation of the distance between points $q_{i}$ and $p_{j}$ is in no way dependent on the computation of distance between points $q_{s}$ and $p_{t}$ for $s\neq i$ and $t\neq j$. We will therefore collapse the for-loops in the algorithm which iterate over each  $q_{i}$ and $p_{j}$ into $nm$ tasks which can be divided among processors. 
 \\
 In practice, this partitioning is done by the OpenMP \textbf{for} directive with the \textbf{collapse(2)} clause. The communication, agglomeration and mapping steps are performed by the OpenMP compiler.
 \subsection{Sorting}
-Consider the sorting algorithms (Algorithms \ref{alg:qsort}, \ref{alg:bubblesort} and \ref{alg:mergesort}). These are all applied in lines 8-9 of Algorithm \ref{alg:kNN}, which are repeated $n$ times. Here, rather than focus on the loop in Algorithm \ref{alg:kNN}, we will focus on applying Foster's Design Methodology to each sorting algorithm individually.
-\subsubsection{Quicksort}
+Consider the sorting algorithms. These are all repeated $n$ times, once for each $q_{i}$. Here, rather than focus on the loop over each $i$, we will focus on applying Foster's Design Methodology to each sorting algorithm individually.
+\paragraph{Quicksort:}
 Here we note that each call to Quicksort recursively calls Quicksort on two portions of the list. We can therefore partition each recursive call into a separate task to be executed by a thread. This is done using the OpenMP \textbf{sections}/\textbf{section} construct. However, at a certain point, the overhead involved with scheduling threads becomes significant, so that sorting a small sublist in serial is actually faster than further partitioning the task. We therefore introduce a condition: if $high-low<c$ for some cut-off $c$, we will sort in serial. Otherwise, we will partition further. Communication, agglomeration and mapping is then handled by the OpenMP compiler.
-\subsubsection{Mergesort}
+\paragraph{Mergesort:}
 Here we note that Mergesort, like Quicksort, recursively calls Mergesort on two portions of the list. Therefore, we can parallelisze it identically: by partitioning each recursive call into a separate task using the OpenMP \textbf{sections}/\textbf{section} construct. Once again, we employ the cut-off condition to reduce overhead.
-\subsubsection{Bubblesort}
-Here we employ an algorithm known as the Odd-Even sort or the Parallel-Neighbour sort \cite{habermann72}, which essentially sorts pairs of numbers in the list in parallel. These pairs alternate from 0-1, 2-3, 4-5, etc. (even) to 1-2, 3-4, 5-6, etc. (odd). The algorithm, which can be thought of as the parallel version of the bubblesort, is listed as Algorithm \ref{alg:oddeven} in Appendix \ref{app:Algorithms}.
+\paragraph{Bubblesort:}
+Here we employ an algorithm known as the Odd-Even sort or the Parallel-Neighbour sort \cite{habermann72}, which essentially sorts pairs of numbers in the list in parallel. These pairs alternate from 0-1, 2-3, 4-5, etc. (even) to 1-2, 3-4, 5-6, etc. (odd). This can be thought of as the parallel version of the bubblesort.
 \\
-In this algorithm we partition each inner for-loop (lines 4-7) into a task using the OpenMP \textbf{for} directive. Once again, communication, agglomeration and mapping are handled by the OpenMP compiler.
+In this algorithm we partition each inner for-loop into a task using the OpenMP \textbf{for} directive. Once again, communication, agglomeration and mapping are handled by the OpenMP compiler.
 \section{Empirical Analysis}
-We begin this section with a description of the hardware upon which the experiments below will be run. We will then discuss the precise implementation of the aforementioned algorithms and finally we detail the experiments themselves.
+The following experiments were run on XXX with 4 cores and, therefore, 4 threads were used. Random points in $\mathbb{R}^{d}$ using the \textit{generatePoints.py} file and stored in text files which were read in by the programs. For each experiment, the time taken to calculate every distance and the time taken to sort every list were measured and tabulated. Thus the total time is comprised only of these two measures.
+\\
+In the first experiment, $n$ varied between $n = 200$, $n = 800$ and $n = 1600$, with constant $d = 32$ and $m = 1000$. All 3 sorting algorithms and both distance metrics are used in the serial and parallel (using OpenMP \textbf{sections} construct) approaches. The results are tabulated below.
+\begin{figure}[H]
+\caption{$d = 32$, $m = 1000$}
+\centering
+\includegraphics[scale=0.5]{d32m1000.png}
+\end{figure}
+What is immediately clear is that bubblesort is by far the slowest of the sorting algorithms, in both serial and parallel. Mergesort is on average slightly faster than quicksort in serial, and noticeably faster than quicksort in parallel. Overall, the parallel approach is much faster, with quicksort being 1.77 times as fast, bubblesort being 1.85 times as fast and mergesort being 2.59 times as fast. What is also clear is that the Euclidean distance metric is, on average, faster than the Manhattan metric, in both approaches.
+\\
+Consider now the same experiment with $m=10 000$.
+\begin{figure}[H]
+\caption{$d = 32$, $m = 10000$}
+\centering
+\includegraphics[scale=0.5]{d32m10000.png}
+\end{figure}
+Here it is even more clear that the bubblesort is inefficient, as its time complexity scales quadratically in $m$. With such a large $m$, the advantages of the parallel approach are even more apparent, with quicksort speeding up by a factor of 1.61, mergesort by 2.53 and bubblesort by 4.07.
+\\
+We now vary $d = 64, 128, 256, 512$ and keep $n=800$, $m=5000$ constant. For brevity's sake, we consider only the quicksort algorithm.
+\begin{figure}[H]
+\caption{$n=800$, $m=5000$}
+\centering
+\includegraphics[width=\textwidth]{n800m5000.png}
+\end{figure}
+Here it is easily observed that the Manhattan metric is much slower than the Euclidean one. This is likely due to the presence of a conditional statement when evaluating $|p_{i}-q_{i}|$. We also note the effectiveness of the parallelisation, which on average sped the Euclidean calculation by a factor of 2.74 and the Manhattan calculation by a factor of 3.19.
 \section{Summary}
 \bibliographystyle{IEEEannot}
 \bibliography{myBib}
+\begin{comment}
 \begin{appendices}
 \section{Algorithms}\label{app:Algorithms}
 \begin{algorithm}[H]
@@ -150,8 +175,7 @@ We begin this section with a description of the hardware upon which the experime
 			\State distance[$i$][$j$] $\gets$ dist($q_{i},p_{j}$)
 			\State index[$i$][$j$] $\gets j$
 		\EndFor
-	\EndFor
-	
+	\EndFor	
 	\For{each $i$ in distance[$i$]}
 		\State sort(distance[$i$],index[$i$])
 	\EndFor
@@ -291,5 +315,6 @@ We begin this section with a description of the hardware upon which the experime
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+\end{comment}
 \end{document} 
 
