@@ -133,7 +133,7 @@ Here we employ an algorithm known as the Odd-Even sort or the Parallel-Neighbour
 \\
 In this algorithm we partition each inner for-loop into a task using the OpenMP \textbf{for} directive. Once again, communication, agglomeration and mapping are handled by the OpenMP compiler.
 \section{Empirical Analysis}
-The following experiments were run on XXX with 4 cores and, therefore, 4 threads were used. Random points in $\mathbb{R}^{d}$ using the \textit{generatePoints.py} file and stored in text files which were read in by the programs. For each experiment, the time taken to calculate every distance and the time taken to sort every list were measured and tabulated. Thus the total time is comprised only of these two measures.
+The following experiments were run on an Intel i7-7700 CPU @ 3.60GHz with 4 cores and, therefore, 4 threads were used. Random points in $\mathbb{R}^{d}$ using the \textit{generatePoints.py} file and stored in text files which were read in by the programs. For each experiment, the time taken to calculate every distance and the time taken to sort every list were measured and tabulated. Thus the total time is comprised only of these two measures.
 \\
 In the first experiment, $n$ varied between $n = 200$, $n = 800$ and $n = 1600$, with constant $d = 32$ and $m = 1000$. All 3 sorting algorithms and both distance metrics are used in the serial and parallel (using OpenMP \textbf{sections} construct) approaches. The results are tabulated below.
 \begin{figure}[H]
@@ -158,7 +158,18 @@ We now vary $d = 64, 128, 256, 512$ and keep $n=800$, $m=5000$ constant. For bre
 \includegraphics[width=\textwidth]{n800m5000.png}
 \end{figure}
 Here it is easily observed that the Manhattan metric is much slower than the Euclidean one. This is likely due to the presence of a conditional statement when evaluating $|p_{i}-q_{i}|$. We also note the effectiveness of the parallelisation, which on average sped the Euclidean calculation by a factor of 2.74 and the Manhattan calculation by a factor of 3.19.
+\newpage
+Finally, we consider different approaches in parallelisation. Here, we test the serial version against the same parallel version used above (using the OpenMP \textbf{sections} construct) and against a parallel version which instead uses the OpenMP \textbf{task} construct. In this experiment, $n$ is varied, $d = 128$ and $m = 5000$. For brevity's sake, we consider only the Euclidean distance metric. We do not consider the bubblesort, as it is implemented with the OpenMP \textbf{for} construct.
+\begin{figure}[H]
+\caption{$d = 128$, $m=5000$}
+\centering
+\includegraphics[width=\textwidth]{d128m5000.png}
+\end{figure}
+The task approach does indeed improve performance, performing the quicksort algorithm 1.58 times faster and the mergesort algorithm 1.01 times faster than the sections approach.
 \section{Summary}
+From the above, we can conclude that parallelisation, especially with the OpenMP \textbf{task} and \textbf{for} constructs, vastly improves performance. As expected mergesort and quicksort (both $\mathcal{O}(mlog(m))$) greatly outperform the bubblesort ($\mathcal{O}(nm^2)$). This is especially noticeable for larger values of $m$ and $n$. We also conclude that the Euclidean distance metric is faster than the Manhattan distance.
+\\
+Despite the challenges of parallel computing (such as overcoming issues like false sharing and balancing the overhead of thread creation and scheduling against the benefits of parallelism), the above experiments are a testament to the advantages of the approach when dealing with larger data size. Further work could involve applying parallelism to other parts of the program, such as data reading. It could also involve experimenting with more distance metrics and sorting algorithms.
 \bibliographystyle{IEEEannot}
 \bibliography{myBib}
 \begin{comment}
