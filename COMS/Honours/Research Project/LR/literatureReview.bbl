@@ -1,0 +1,46 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Ajoodha and Rosman}{2017}]{ajoodha17}
+Ritesh Ajoodha and Benjamin Rosman.
+\newblock Tracking influence between naïve bayes models using score-based
+  structure learning.
+\newblock In {\em 2017 Pattern Recognition Association of South Africa and
+  Robotics and Mechatronics (PRASA-RobMech)}. IEEE, November 2017.
+
+
+\bibitem[\protect\citeauthoryear{Ajoodha and Rosman}{2018}]{ajoodha18}
+Ritesh Ajoodha and Benjamin Rosman.
+\newblock Learning the influence structure between partially observed
+  stochastic processes using iot sensor data.
+\newblock In {\em Workshops at the Thirty-Second AAAI Conference on Artificial
+  Intelligence}. AAAI Publications, 2018.
+
+
+\bibitem[\protect\citeauthoryear{Koller and Friedman}{2009a}]{koller09_01}
+Daphne Koller and Nir Friedman.
+\newblock {\em Probabilistic Graphical Models - Principles and Techniques -
+  Chapter 18: Structure Learning in Bayesian Networks}.
+\newblock MIT Press, 2009.
+
+
+\bibitem[\protect\citeauthoryear{Koller and Friedman}{2009b}]{koller09}
+Daphne Koller and Nir Friedman.
+\newblock {\em Probabilistic Graphical Models - Principles and Techniques -
+  Chapter 3: The Bayesian Network Representation}.
+\newblock MIT Press, 2009.
+
+
+\bibitem[\protect\citeauthoryear{Pan \bgroup \em et al.\egroup }{2005}]{Pan05}
+Rong Pan, Zhongli Ding, Yang Yu, and Yun Peng.
+\newblock A {B}ayesian network approach to ontology mapping.
+\newblock In {\em The Semantic Web -- ISWC 2005}, pages 563--577. Springer
+  Berlin Heidelberg, 2005.
+
+
+\bibitem[\protect\citeauthoryear{Schwarz}{1978}]{schwarz78}
+Gideon Schwarz.
+\newblock Estimating the dimension of a model.
+\newblock {\em The Annals of Statistics}, 6(2):461--464, 03 1978.
+
+
+\end{thebibliography}
