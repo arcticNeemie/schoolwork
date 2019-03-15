@@ -1,6 +1,7 @@
 \documentclass [11pt]{article}
 %Needed for fancy maths stuff
 \usepackage{amsmath}
+\usepackage{amssymb}
 %Needed for Wits Style
 \usepackage{url}
 \usepackage{natbib} \input{natbib-add}
@@ -37,7 +38,37 @@ One approach to the construction of model structures is the constraint-based app
 \\
 However, this approach is generally not preferred, as failure in the individual independence queries can lead to the construction of a network which poorly matches the data \citep{koller09}.
 \subsection{Score-Based Structure Learning}
-A more popular approach to the problem is score-based structure learning, in which entire networks are constructed and then evaluated and modified based on some scoring metric \citep{koller09}.
+A more popular approach to the problem is score-based structure learning, in which entire networks are constructed and then evaluated and modified based on some scoring metric \citep{koller09}. Two areas of interest in this approach are the choice of scoring function and the method of structure search.
+\subsubsection{Scoring Function}
+One possible scoring function would be the maximum likelihood function (most often in its logarithm form), finding graph $\mathcal{G}$ that maximises
+\begin{equation*}
+score_{L}(\mathcal{G}:\mathcal{D}) = l(\hat{\theta}_{\mathcal{G}}:\mathcal{D})
+\end{equation*}
+which decomposes to
+\begin{equation*}
+score_{L}(\mathcal{G}:\mathcal{D}) = M\sum_{i=1}^{n}[\mathbb{I}_{\hat{P}}(X_{i};Pa_{X_{i}}^{\mathcal{G}})-H_{\hat{P}}(X_{i})]
+\end{equation*}
+for number of variables $n$, number of samples $M$, mutual information $\mathbb{I}_{\hat{P}}$ and entropy $H_{\hat{P}}$ \citep{koller09}. However, this score always prefers a more connected network, and is thus prone to overfitting.
+\\
+Other scores designed to balance fit to data with network complexity are the Akaike Information Criterion (AIC), proposed by \citet{akaike98}
+\begin{equation*}
+score_{AIC}(\mathcal{G}:\mathcal{D}) = l(\hat{\theta}_{\mathcal{G}}:\mathcal{D}) - Dim(\mathcal{G})
+\end{equation*}
+and the Bayesian Information Criterion (BIC), proposed by \citet{schwarz78}
+\begin{equation*}
+score_{BIC}(\mathcal{G}:\mathcal{D}) = l(\hat{\theta}_{\mathcal{G}}:\mathcal{D}) - \frac{logM}{2}Dim(\mathcal{G})
+\end{equation*}
+where $Dim(\mathcal{G})$ denotes the dimension of $\mathcal{G}$. In particular, \citet{schwarz78} shows that the BIC is an assymptotic approximation of the Bayesian score under the assumptions of independent, identically distributed observations with a density function of the form
+\begin{equation*}
+f(x,\theta) = exp(\theta \cdot y(x) - b(\theta))
+\end{equation*}
+where $y$ is the sufficient statistic, and where it is also assumed that the penalty for guessing an incorrect model is fixed. The $\frac{logM}{2}$ term in the BIC ensures that, as $M$ grows, greater importance is placed on reducing the dimensionality of the model \citep{koller09}.
+\subsubsection{Structure Search}
+The problem of structure search is to find the graph $\mathcal{G}$ that maximises the chosen scoring function for the given data $\mathcal{D}$. In general, this problem is NP-hard for a graph whose variables have at most $d\geq 2$ parents \citep{chickering96}. Fortunately, there exist heuristic algorithms which can find assist in this regard. Some of the earliest of these algorithms include the K2 algorithm of \citet{cooper92}, which relied on a predetermined ordering of variables, and the local search algorithms proposed by \citet{heckerman95}.
+\\
+These algorithms define a search space of graphs, where each graph can be transformed into another by a set of operators \citep{koller09}. These operators commonly include edge addition, edge deletion and edge reversal. 
+\\
+A search procedure is then required to traverse the search space and select an optimal graph. A common choice is the greedy hill-climbing algorithm, which applies only the operations which maximise the score \citep{koller09}. This technique is prone to local maxima and the plateaus in score caused by I-equivalent graphs. Methods which work around this problem include the tabu search, proposed by \citet{glover86}, which keeps track of recent operations and does not allow them to be reversed until a certain number of iterations has passed, and the method of random restarts, which restarts the search with random initial conditions \citep{koller09}.
 \section{Bayesian Similarity}\label{BayesianSimilarity}
 \bibliographystyle{named-wits}
 \bibliography{annot}

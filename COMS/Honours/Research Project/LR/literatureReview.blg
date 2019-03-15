@@ -3,46 +3,54 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: literatureReview.aux
 The style file: named-wits.bst
 Database file #1: annot.bib
+Warning--can't use both author and editor fields in akaike98
+Warning--there's a url but no retrieval date in akaike98
+Warning--can't use both author and editor fields in chickering96
+Warning--there's a url but no retrieval date in chickering96
+Warning--there's a url but no retrieval date in cooper92
+Warning--there's a url but no retrieval date in glover86
+Warning--there's a url but no retrieval date in heckerman95
+Warning--there's a url but no retrieval date in schwarz78
 Warning--there's a url but no retrieval date in verma91
-You've used 5 entries,
+You've used 11 entries,
             2541 wiz_defined-function locations,
-            607 strings with 5455 characters,
-and the built_in function-call counts, 1742 in all, are:
-= -- 170
-> -- 53
-< -- 1
-+ -- 16
-- -- 16
-* -- 119
-:= -- 283
-add.period$ -- 16
-call.type$ -- 5
-change.case$ -- 25
-chr.to.int$ -- 5
-cite$ -- 6
-duplicate$ -- 84
-empty$ -- 154
-format.name$ -- 24
-if$ -- 370
+            661 strings with 6739 characters,
+and the built_in function-call counts, 4274 in all, are:
+= -- 435
+> -- 112
+< -- 3
++ -- 35
+- -- 34
+* -- 328
+:= -- 656
+add.period$ -- 35
+call.type$ -- 11
+change.case$ -- 56
+chr.to.int$ -- 11
+cite$ -- 20
+duplicate$ -- 190
+empty$ -- 376
+format.name$ -- 49
+if$ -- 909
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 8
-newline$ -- 33
-num.names$ -- 15
-pop$ -- 33
+missing$ -- 16
+newline$ -- 70
+num.names$ -- 33
+pop$ -- 59
 preamble$ -- 1
-purify$ -- 33
+purify$ -- 72
 quote$ -- 0
-skip$ -- 67
+skip$ -- 153
 stack$ -- 0
-substring$ -- 57
-swap$ -- 19
-text.length$ -- 1
+substring$ -- 254
+swap$ -- 51
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 28
-warning$ -- 1
-while$ -- 13
-width$ -- 8
-write$ -- 77
-(There was 1 warning)
+type$ -- 68
+warning$ -- 9
+while$ -- 38
+width$ -- 15
+write$ -- 171
+(There were 9 warnings)

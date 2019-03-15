@@ -1,5 +1,41 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\citeauthoryear{Akaike}{1998}]{akaike98}
+Hirotogu Akaike.
+\newblock {\em Information Theory and an Extension of the Maximum Likelihood
+  Principle}, pages 199--213.
+\newblock Springer New York, New York, NY, 1998.
+
+
+\bibitem[\protect\citeauthoryear{Chickering}{1996}]{chickering96}
+David~Maxwell Chickering.
+\newblock {\em Learning Bayesian Networks is NP-Complete}, pages 121--130.
+\newblock Springer New York, New York, NY, 1996.
+
+
+\bibitem[\protect\citeauthoryear{Cooper and Herskovits}{1992}]{cooper92}
+Gregory~F. Cooper and Edward Herskovits.
+\newblock A bayesian method for the induction of probabilistic networks from
+  data.
+\newblock {\em Machine Learning}, 9(4):309--347, Oct 1992.
+
+
+\bibitem[\protect\citeauthoryear{Glover}{1986}]{glover86}
+Fred Glover.
+\newblock Future paths for integer programming and links to artificial
+  intelligence.
+\newblock {\em Computers \& Operations Research}, 13(5):533 -- 549, 1986.
+\newblock Applications of Integer Programming.
+
+
+\bibitem[\protect\citeauthoryear{Heckerman \bgroup \em et al.\egroup
+  }{1995}]{heckerman95}
+David Heckerman, Dan Geiger, and David~M. Chickering.
+\newblock Learning bayesian networks: The combination of knowledge and
+  statistical data.
+\newblock {\em Machine Learning}, 20(3):197--243, Sep 1995.
+
+
 \bibitem[\protect\citeauthoryear{Koller and Friedman}{2009}]{koller09}
 Daphne Koller and Nir Friedman.
 \newblock {\em Probabilistic Graphical Models - Principles and Techniques}.
@@ -23,6 +59,12 @@ Judea Pearl.
 \newblock {\em Probabilistic Reasoning in Intelligent Systems: Networks of
   Plausible Inference}.
 \newblock Morgan Kaufmann, 1988.
+
+
+\bibitem[\protect\citeauthoryear{Schwarz}{1978}]{schwarz78}
+Gideon Schwarz.
+\newblock Estimating the dimension of a model.
+\newblock {\em The Annals of Statistics}, 6(2):461--464, 03 1978.
 
 
 \bibitem[\protect\citeauthoryear{Verma and Pearl}{1991}]{verma91}
