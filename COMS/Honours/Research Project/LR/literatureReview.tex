@@ -19,8 +19,6 @@
 \begin{document}
 \maketitle
 \section{Introduction}
-
-\section{Similarity Metrics}\label{SimilarityMetrics}
 \section{Bayesian Networks}\label{BayesianNetworks}
 When considering a joint probability distribution across $n$ random variables, classical probability states that the number of parameters needed to represent the distribution grows exponentially in $n$ \citep{koller09}. Even in the simple case of binary variables, we would still need $2^n -1$ parameters to describe the distribution. This is clearly unfeasible for practical applications, in which the number of random variables can grow very large. 
 \\
@@ -62,7 +60,7 @@ where $Dim(\mathcal{G})$ denotes the dimension of $\mathcal{G}$. In particular, 
 \begin{equation*}
 f(x,\theta) = exp(\theta \cdot y(x) - b(\theta))
 \end{equation*}
-where $y$ is the sufficient statistic, and where it is also assumed that the penalty for guessing an incorrect model is fixed. The $\frac{logM}{2}$ term in the BIC ensures that, as $M$ grows, greater importance is placed on reducing the dimensionality of the model \citep{koller09}.
+where $y$ is the sufficient statistic, and where it is also assumed that the penalty for guessing an incorrect model is fixed. The $\frac{logM}{2}$ term in the BIC ensures that, as $M$ grows, more consideration is placed in models of greater complexity \citep{koller09}.
 \subsubsection{Structure Search}
 The problem of structure search is to find the graph $\mathcal{G}$ that maximises the chosen scoring function for the given data $\mathcal{D}$. In general, this problem is NP-hard for a graph whose variables have at most $d\geq 2$ parents \citep{chickering96}. Fortunately, there exist heuristic algorithms which can find assist in this regard. Some of the earliest of these algorithms include the K2 algorithm of \citet{cooper92}, which relied on a predetermined ordering of variables, and the local search algorithms proposed by \citet{heckerman95}.
 \\
