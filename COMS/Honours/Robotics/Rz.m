@@ -8,5 +8,5 @@ function R = Rz(theta,dx,dy,dz)
     R = [cos(theta),-sin(theta),0,dx;
         sin(theta),cos(theta),0,dy;
         0,0,1,dz;
-        0,0,0,1]
+        0,0,0,1];
 end

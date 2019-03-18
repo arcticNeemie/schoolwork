@@ -8,5 +8,5 @@ function R = Ry(theta,dx,dy,dz)
     R = [cos(theta),0,sin(theta),dx;
         0,1,0,dy;
         -sin(theta),0,cos(theta),dz;
-        0,0,0,1]
+        0,0,0,1];
 end
