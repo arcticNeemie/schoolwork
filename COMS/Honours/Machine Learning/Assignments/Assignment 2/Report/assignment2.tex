@@ -2,6 +2,8 @@
 %Needed for fancy maths stuff
 \usepackage{amsmath}
 \usepackage{amssymb}
+%Needed to use the H thing
+\usepackage{float}
 
 \title{COMS 4030A: Assignment 2}
 \author{Tamlin Love\\1438243}
@@ -9,16 +11,158 @@
 
 \begin{document}
 \maketitle
-\section*{Question 1: K-Nearest Neighbour Classification}
-\paragraph*{Q1.1}
-\paragraph*{Q1.2}
-\paragraph*{Q1.3}
-\paragraph*{Q1.4}
-\section*{Question 2: Logistic Regression}
-\paragraph*{Q2.1}
-\paragraph*{Q2.2}
-\paragraph*{Q2.3}
-\section*{Question 3: Artificial Neural Networks}
-\paragraph*{Q3.1}
-\paragraph*{Q3.2}
+\textbf{Note: }Where applicable, numbers have been rounded to two decimal points. Thus, for example, $0.075$ is rounded to $0.08$.
+\section{Question 1: K-Nearest Neighbour Classification}
+\subsection{}
+\begin{table}[H]
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Record \#}      & \multicolumn{1}{l|}{\textbf{Distance}} & \textbf{Label}         \\ \hline
+\multicolumn{1}{|c|}{9} & 1.98                                   & \multicolumn{1}{c|}{0} \\ \hline
+\textbf{Prediction}     & \multicolumn{2}{c|}{0}                                          \\ \hline
+\end{tabular}
+\end{table}
+\subsection{}
+\begin{table}[H]
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{1}{|l|}{\textbf{Record \#}}  & \multicolumn{1}{l|}{\textbf{Distance}} & \multicolumn{1}{l|}{\textbf{Label}} \\ \hline
+23                                        & 0.92                                   & 1                                   \\ \hline
+28                                        & 1.75                                   & 1                                   \\ \hline
+21                                        & 1.82                                   & 1                                   \\ \hline
+\multicolumn{1}{|l|}{\textbf{Prediction}} & \multicolumn{2}{c|}{1}                                                       \\ \hline
+\end{tabular}
+\end{table}
+\subsection{}
+\begin{table}[H]
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{1}{|l|}{\textbf{Record \#}}  & \multicolumn{1}{l|}{\textbf{Distance}} & \multicolumn{1}{l|}{\textbf{Label}} \\ \hline
+32                                        & 0.81                                   & 1                                   \\ \hline
+39                                        & 0.95                                   & 1                                   \\ \hline
+21                                        & 1.00                                   & 1                                   \\ \hline
+28                                        & 1.22                                   & 1                                   \\ \hline
+23                                        & 2.20                                   & 1                                   \\ \hline
+\multicolumn{1}{|l|}{\textbf{Prediction}} & \multicolumn{2}{c|}{1}                                                       \\ \hline
+\end{tabular}
+\end{table}
+\subsection{}
+\begin{table}[H]
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{K-NN} & \multicolumn{1}{l|}{\textbf{Training Error Rate}} & \multicolumn{1}{l|}{\textbf{Test Error Rate}} \\ \hline
+1-NN          & 0.00                                              & 0.05                                          \\ \hline
+3-NN          & 0.00                                              & 0.08                                          \\ \hline
+5-NN          & 0.00                                              & 0.05                                          \\ \hline
+7-NN          & 0.00                                              & 0.05                                          \\ \hline
+9-NN          & 0.05                                              & 0.08                                          \\ \hline
+11-NN         & 0.05                                              & 0.08                                          \\ \hline
+13-NN         & 0.05                                              & 0.03                                          \\ \hline
+\end{tabular}
+\end{table}
+\section{Question 2: Logistic Regression}
+\subsection{}
+The range of $h_{\Theta}(x)$ is the interval $[0,1]$.
+\\
+The classifier cannot learn from an arbitrary data set if $\beta = 0$, as this causes $h_{\Theta}(x)=0.5$ for all values of $x$.
+\subsection{}
+We begin with the following definition for the cost function
+\begin{equation}\label{eq:costFunction}
+J(\Theta) = \frac{1}{4N} \sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})^4
+\end{equation}
+and the update rule
+\begin{equation}\label{eq:updateRule}
+\theta_{k} \gets \theta_{k} - \alpha \frac{\partial J(\Theta)}{\partial \theta_{k}}
+\end{equation}
+and the activation function
+\begin{equation}\label{eq:activationFunction}
+h_{\Theta}(x^{(n)}) = \frac{1}{1+e^{-\beta\Theta^{T}x^{(n)}}}
+\end{equation}
+Now, by the chain rule, we have that
+\begin{equation}\label{eq:chainRule}
+\frac{\partial J(\Theta)}{\partial \theta_{k}} = \frac{\partial J(\Theta)}{\partial h_{\Theta}(x^{(n)})} \frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{k}}
+\end{equation}
+The partial derivative of equation \ref{eq:costFunction} with respect to $h_{\Theta}(x^{(n)})$ is
+\begin{equation}\label{eq:dJdh}
+\frac{\partial J(\Theta)}{\partial h_{\Theta}(x^{(n)})} = \frac{1}{N} \sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})^3
+\end{equation}
+The partial derivative of equation \ref{eq:activationFunction} with respect to $\theta_{k}$ is
+\begin{equation}\label{eq:dhdth}
+\begin{split}
+\frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{k}} & = \frac{\partial}{\partial \theta_{k}}\Bigg(\frac{1}{1+e^{-\beta\Theta^{T}x^{(n)}}}\Bigg) \\
+& = \frac{\partial}{\partial \theta_{k}}\Bigg(\frac{1}{1+\prod_{i=0}^{d}e^{-\beta \theta_{i} x_{i}^{(n)}}}\Bigg) \\
+& = \frac{e^{-\Theta^{T}x^{(n)}}}{1+e^{-\Theta^{T}x^{(n)}}}\beta x_{k}^{(n)} \\
+& = \beta h_{\Theta}(x^{(n)})(1-h_{\Theta}(x^{(n)}))x_{k}^{(n)}
+\end{split}
+\end{equation}
+Substituting equations \ref{eq:dJdh} and \ref{eq:dhdth} back into equation \ref{eq:chainRule} yields
+\begin{equation}\label{eq:dJdth}
+\frac{\partial J(\Theta)}{\partial \theta_{k}} = \frac{\beta}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})^{3}h_{\Theta}(x^{(n)})(1-h_{\Theta}(x^{(n)}))x_{k}^{(n)}
+\end{equation}
+Finally, we substitute equation \ref{eq:dJdth} into equation \ref{eq:updateRule} to obtain the closed form update rule
+\begin{equation*}
+\theta_{k} \gets \theta_{k} - \frac{\alpha \beta}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})^{3}h_{\Theta}(x^{(n)})(1-h_{\Theta}(x^{(n)}))x_{k}^{(n)}
+\end{equation*}
+\subsection{}
+\begin{table}[H]
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Testing Record \#} & \multicolumn{1}{l|}{\textbf{Classifier Output $h_{\Theta}(x^{(n)})$}} & \multicolumn{1}{l|}{\textbf{Final Output}} \\ \hline
+5                          & 0.01                                            & 0                                          \\ \hline
+10                         & 0.06                                            & 0                                          \\ \hline
+15                         & 0.13                                            & 0                                          \\ \hline
+20                         & 0.09                                            & 0                                          \\ \hline
+25                         & 0.63                                            & 1                                          \\ \hline
+30                         & 0.87                                            & 1                                          \\ \hline
+35                         & 0.58                                            & 1                                          \\ \hline
+40                         & 0.57                                            & 1                                          \\ \hline
+\end{tabular}
+\end{table}
+\section{Question 3: Artificial Neural Networks}
+\subsection{}
+\begin{equation}\label{eq:ANN_h}
+\begin{split}
+h_{\Theta}(x) & = g_{3}(g_{2}(g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i})\theta_{6}+\theta_{5}x_{0})\theta_{7}+\theta_{8}x_{0}) \\
+& = \frac{\theta_{6}\theta_{7}}{1+e^{-\sum_{i=0}^{4}\theta_{i}x_{i}}} + (\theta_{5}\theta_{7}+\theta_{8})x_{0}
+\end{split}
+\end{equation}
+\subsection{}
+We define the cost function to be
+\begin{equation}\label{eq:ANN_costFunction}
+J(\Theta) = \frac{1}{2N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})^2
+\end{equation}
+we also note that the update rule remains the same as in equation \ref{eq:updateRule}, and that the value of $h_{\Theta}(x^{(n)})$ is the same as in equation \ref{eq:ANN_h}.
+\\
+Using the chain rule in equation \ref{eq:chainRule}, and substituting the appropriate values for $J(\Theta)$ and $h_{\Theta}(x^{(n)})$, we have the partial derivative with respect to $h_{\Theta}(x^{(n)})$
+\begin{equation}\label{eq:ANN_dJdh}
+\frac{\partial J(\Theta)}{\partial h_{\Theta}(x^{(n)})} = \frac{1}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})
+\end{equation}
+Now we take the partial derivative with respect to $\theta_{k}$ for $k = 5,6,7,8$
+\begin{equation}\label{eq:ANN_dhdth}
+\begin{split}
+\frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{5}} & = \theta_{7}x_{0}^{(n)} \\
+\frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{6}} & = \theta_{7}g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}) = \frac{\theta_{7}}{1+e^{-\sum_{i=0}^{4}\theta_{i}x_{i}}} \\
+\frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{7}} & = \theta_{5}x_{0}^{(n)}+\theta_{6}g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}) \\
+& = \theta_{5}x_{0}^{(n)} + \frac{\theta_{6}}{1+e^{-\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}}} \\
+\frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{8}} & = x_{0}^{(n)}
+\end{split}
+\end{equation}
+Substituting equations \ref{eq:ANN_dJdh} and \ref{eq:ANN_dhdth} into equation \ref{eq:chainRule}, we arrive at
+\begin{equation*}
+\begin{split}
+\frac{\partial J(\Theta)}{\partial \theta_{5}} & = \frac{1}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)}) \theta_{7}x_{0}^{(n)} \\
+\frac{\partial J(\Theta)}{\partial \theta_{6}} & = \frac{1}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})\theta_{7}g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}) \\
+\frac{\partial J(\Theta)}{\partial \theta_{7}} & = \frac{1}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})(\theta_{5}x_{0}^{(n)}+\theta_{6}g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)})) \\
+\frac{\partial J(\Theta)}{\partial \theta_{8}} & = \frac{1}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})x_{0}
+\end{split}
+\end{equation*}
+which, when substituted into equation \ref{eq:updateRule}, yields the closed form update rules for the selected $\theta_{i}$
+\begin{equation*}
+\begin{split}
+\theta_{5} & \gets \theta_{5} - \alpha \frac{1}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)}) \theta_{7}x_{0}^{(n)} \\
+\theta_{6} & \gets \theta_{6} - \alpha \frac{1}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})\theta_{7}g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}) \\
+\theta_{7} & \gets \theta_{7} - \alpha \frac{1}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})(\theta_{5}x_{0}^{(n)}+\theta_{6}g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)})) \\
+\theta_{8} & \gets \theta_{8} - \alpha \frac{1}{N}\sum_{n=1}^{N}(h_{\Theta}(x^{(n)})-y^{(n)})x_{0}
+\end{split}
+\end{equation*}
 \end{document}
