@@ -141,7 +141,7 @@ Now we take the partial derivative with respect to $\theta_{k}$ for $k = 5,6,7,8
 \begin{equation}\label{eq:ANN_dhdth}
 \begin{split}
 \frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{5}} & = \theta_{7}x_{0}^{(n)} \\
-\frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{6}} & = \theta_{7}g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}) = \frac{\theta_{7}}{1+e^{-\sum_{i=0}^{4}\theta_{i}x_{i}}} \\
+\frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{6}} & = \theta_{7}g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}) = \frac{\theta_{7}}{1+e^{-\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}}} \\
 \frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{7}} & = \theta_{5}x_{0}^{(n)}+\theta_{6}g_{1}(\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}) \\
 & = \theta_{5}x_{0}^{(n)} + \frac{\theta_{6}}{1+e^{-\sum_{i=0}^{4}\theta_{i}x_{i}^{(n)}}} \\
 \frac{\partial h_{\Theta}(x^{(n)})}{\partial \theta_{8}} & = x_{0}^{(n)}
