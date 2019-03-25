@@ -19,6 +19,7 @@
 \begin{document}
 \maketitle
 \section{Introduction}
+In section \ref{BayesianNetworks}, we discuss the concept of a Bayesian network and the properties of this type of model. In section \ref{StructureLearning}, we discuss methods by which Bayesian networks are constructed given a set of observations. In particular, we consider score-based structure learning techniques (section \ref{ScoreBasedStructureLearning}), including possible scoring criteria and structure search methods. Finally, in section \ref{BayesianSimilarity}, we discuss previous work on tracking influence or similarity using the Bayesian networks.
 \section{Bayesian Networks}\label{BayesianNetworks}
 When considering a joint probability distribution across $n$ random variables, classical probability states that the number of parameters needed to represent the distribution grows exponentially in $n$ \citep{koller09}. Even in the simple case of binary variables, we would still need $2^n -1$ parameters to describe the distribution. This is clearly unfeasible for practical applications, in which the number of random variables can grow very large. 
 \\
@@ -35,7 +36,7 @@ The manual construction of networks is generally unfeasible for a large number o
 One approach to the construction of model structures is the constraint-based approach, in which dependencies between variables are first queried and then, based on these dependencies, a PDAG is constructed \citep{koller09}. This strategy can be traced back to \citet{verma91}. 
 \\
 However, this approach is generally not preferred, as failure in the individual independence queries can lead to the construction of a network which poorly matches the data \citep{koller09}.
-\subsection{Score-Based Structure Learning}
+\subsection{Score-Based Structure Learning}\label{ScoreBasedStructureLearning}
 A more popular approach to the problem is score-based structure learning, in which entire networks are constructed and then evaluated and modified based on some scoring metric \citep{koller09}. Two areas of interest in this approach are the choice of scoring function and the method of structure search.
 \subsubsection{Scoring Function}
 One possible scoring function would be the maximum likelihood function (most often in its logarithm form), finding graph $\mathcal{G}$ that maximises
