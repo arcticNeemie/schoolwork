@@ -19,7 +19,7 @@
 \begin{document}
 \maketitle
 \section{Introduction}
-In section \ref{BayesianNetworks}, we discuss the concept of a Bayesian network and the properties of this type of model. In section \ref{StructureLearning}, we discuss methods by which Bayesian networks are constructed given a set of observations. In particular, we consider score-based structure learning techniques (section \ref{ScoreBasedStructureLearning}), including possible scoring criteria and structure search methods. Finally, in section \ref{BayesianSimilarity}, we discuss previous work on tracking influence or similarity using the Bayesian networks.
+In section \ref{BayesianNetworks}, we discuss the concept of a Bayesian network and the properties of this type of model. In section \ref{StructureLearning}, we discuss methods by which Bayesian networks are constructed given a set of observations. We briefly discuss constraint-based methods in section \ref{ConstraintBasedStructureLearning} before discussing score-based methods in greater depth in section \ref{ScoreBasedStructureLearning}. In section \ref{PartiallyObservedData}, we discuss parameter estimation techniques in the case of partially observed data. Finally, methods for the construction of networks of independently learned models are discussed in section \ref{InfluenceBetweenModels}.
 \section{Bayesian Networks}\label{BayesianNetworks}
 When considering a joint probability distribution across $n$ random variables, classical probability states that the number of parameters needed to represent the distribution grows exponentially in $n$ \citep{koller09}. Even in the simple case of binary variables, we would still need $2^n -1$ parameters to describe the distribution. This is clearly unfeasible for practical applications, in which the number of random variables can grow very large. 
 \\
@@ -32,7 +32,7 @@ Bayesian networks, originally developed by \citet{pearl88}, present a way of red
 An important notion in Bayesian networks is that of d-separation, first presented by \citet{pearl86}, which is used to find the set $\mathcal{I}(\mathcal{G})$ of conditional independencies in the graph $\mathcal{G}$. $\mathcal{I}(\mathcal{G})$ is used as the basis for an equivalence relation, I-equivalence, for which any two I-equivalent graphs represent the same independency assumptions \citep{verma91}. An important developement by \citet{pearl86} is that any I-equivalence class can be represented as a partially directed acyclic graph (PDAG) in which undirected edges represent edges that can be oriented any way and still result in a graph belonging to the same class.
 \section{Structure Learning}\label{StructureLearning}
 The manual construction of networks is generally unfeasible for a large number of variables \citep{koller09}. Fortunately, strategies exist to learn model structures from data $\mathcal{D}$.
-\subsection{Constraint-Based Structure Learning}
+\subsection{Constraint-Based Structure Learning}\label{ConstraintBasedStructureLearning}
 One approach to the construction of model structures is the constraint-based approach, in which dependencies between variables are first queried and then, based on these dependencies, a PDAG is constructed \citep{koller09}. This strategy can be traced back to \citet{verma91}. 
 \\
 However, this approach is generally not preferred, as failure in the individual independence queries can lead to the construction of a network which poorly matches the data \citep{koller09}.
@@ -68,7 +68,37 @@ The problem of structure search is to find the graph $\mathcal{G}$ that maximise
 These algorithms define a search space of graphs, where each graph can be transformed into another by a set of operators \citep{koller09}. These operators commonly include edge addition, edge deletion and edge reversal. 
 \\
 A search procedure is then required to traverse the search space and select an optimal graph. A common choice is the greedy hill-climbing algorithm, which applies only the operations which maximise the score \citep{koller09}. This technique is prone to local maxima and the plateaus in score caused by I-equivalent graphs. Methods which work around this problem include the tabu search, proposed by \citet{glover86}, which keeps track of recent operations and does not allow them to be reversed until a certain number of iterations has passed, and the method of random restarts, which restarts the search with random initial conditions \citep{koller09}.
-\section{Bayesian Similarity}\label{BayesianSimilarity}
+\section{Partially Observed Data}\label{PartiallyObservedData}
+The methods discussed in section \ref{StructureLearning} require data that are fully observed, in that every datum assigns a value to each variable \citep{koller09}. In practice, this is not always possible. Sometimes, these latent or hidden variables are simply impractical to measure. In other cases, these variables represent factors that cannot be measured quantitatively. 
+\\
+Unfortunately, the introduction of hidden variables complicates the structure learning process by introducing a number of terms to the maximum likelihood estimate, with the number of terms growing exponentially as more variables are hidden \citep{koller09}. Furthermore, the introduction of latent variables results in a likelihood function which is not locally decomposable, and this renders the techniques discussed in section \ref{StructureLearning} useless in general. Thus different methods must be applied for both the learning of parameters and the learning of structure. For the sake of relevance, we will discuss only the problem of parameter estimation, as the problem of structure learning is beyond the scope of this paper.
+\\
+Here we discuss two popular methods for parameter estimation. The first is gradient ascent, in which parameters are chosen by iteratively moving in the direction of the gradient of the likelihood function \citep{koller09}. Early applications of gradient methods to the likelihood function include the work of \cite{thiesson95} and \cite{binder97}. In these algorithms, the gradient of the likelihood function is given as
+\begin{equation*}
+\frac{\partial l(\boldsymbol{\theta}:\mathcal{D})}{\partial P(x|\boldsymbol{u})} = \frac{1}{P(x|\boldsymbol{u})}\sum_{m=1}^{M}P(x,\boldsymbol{u}|\boldsymbol{o}[m],\boldsymbol{\theta})
+\end{equation*}
+where $\boldsymbol{\theta}$ are the parameters, $\mathcal{D} = \{\boldsymbol{o}[1],...,\boldsymbol{o}[M]\}$ is the set of partially observed data, $x \in Val(X)$ for a variable $X \in \mathcal{X}$ and $\boldsymbol{u} \in Val(Pa_{X})$\citep{koller09}.
+\\
+The second method to be discussed is Expectation Maximisation (EM), introduced by \cite{dempster77} as a generalisation of several earlier methods such as those presented by \cite{baum70} and \cite{orchard72}. EM consists of two steps: Expectation (E-step) and Maximisation (M-step), which are repeated until convergence, starting from some initial $\boldsymbol{\theta}^{0}$  \citep{koller09}. 
+\\
+In the E-step, we compute the expected sufficient statistic for each $x\in X$ and $u \in U$
+\begin{equation*}
+\bar{M}_{\boldsymbol{\theta}^{t}}[x,\boldsymbol{u}] = \sum_{m=1}^{M}P(x,\boldsymbol{u}|\boldsymbol{o}[m],\boldsymbol{\theta}^{t})
+\end{equation*}
+where $\boldsymbol{\theta}^{t}$ denotes the value of $\boldsymbol{\theta}$ at iteration $t$.
+\\
+In the M-step, the $\bar{M}$ is treated as the observed sufficient statistic and is used to calculate $\boldsymbol{\theta}^{t+1}$ using maximum likelihood estimation.
+\\
+An important property of EM is that it is guaranteed to improve $l(\boldsymbol{\theta^{t}}:\mathcal{D})$ monotonically as $t$ increases \citep{koller09}.
+%For completeness, we briefly discuss the problem of learning network structure in the case of partially observed data.
+%\\
+%The introduction of the summations over unobserved variables in the likelihood function translates to a Bayesian score which is far more complex and difficult to calculate \citep{koller09}. Proposed approximations of the Bayesian score include the Laplace approximation, introduced by \cite{chickering97}, stated as
+%\begin{equation*}
+%logP(\mathcal{D}|\mathcal{G}) \approx logP(D|\tilde{\boldsymbol{\theta}}_{\mathcal{G}},\mathcal{G}) + logP(\tilde{\boldsymbol{\theta}}_{\mathcal{G}}|\mathcal{G}) + \frac{Dim(A)}{2}log(2\pi) + \frac{1}{2}log|A|
+%\end{equation*}
+%where $\tilde{\boldsymbol{\theta}}_{\mathcal{G}}$ is the maximum \textit{a posteriori} probability of $\boldsymbol{\theta}_{\mathcal{G}}$ and $A$ is the negative Hessian matrix of $l(\boldsymbol{\theta}_{\mathcal{G}}:\mathcal{D})$.
+\section{Influence between Models}\label{InfluenceBetweenModels}
+We now turn to the specific problem of tracking influence between models. A number of different approaches have been developed to suit different models. For example, \cite{Pan05} use Jeffrey's rule \citep{pearl90} to propagate beliefs on variables from one Bayesian network to another and thus map concepts between ontologies.However, the methods that are most relevant to this paper are those presented by \cite{ajoodha17} and extended by \citep{ajoodha18}.
 \bibliographystyle{named-wits}
 \bibliography{annot}
 \end{document}

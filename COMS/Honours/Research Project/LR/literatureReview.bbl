@@ -1,10 +1,41 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\citeauthoryear{Ajoodha and Rosman}{2017}]{ajoodha17}
+Ritesh Ajoodha and Benjamin Rosman.
+\newblock Tracking influence between naïve bayes models using score-based
+  structure learning.
+\newblock In {\em 2017 Pattern Recognition Association of South Africa and
+  Robotics and Mechatronics (PRASA-RobMech)}. IEEE, November 2017.
+
+
+\bibitem[\protect\citeauthoryear{Ajoodha and Rosman}{2018}]{ajoodha18}
+Ritesh Ajoodha and Benjamin Rosman.
+\newblock Learning the influence structure between partially observed
+  stochastic processes using iot sensor data.
+\newblock In {\em Workshops at the Thirty-Second AAAI Conference on Artificial
+  Intelligence}. AAAI Publications, 2018.
+
+
 \bibitem[\protect\citeauthoryear{Akaike}{1998}]{akaike98}
 Hirotogu Akaike.
 \newblock {\em Information Theory and an Extension of the Maximum Likelihood
   Principle}, pages 199--213.
 \newblock Springer New York, New York, NY, 1998.
+
+
+\bibitem[\protect\citeauthoryear{Baum \bgroup \em et al.\egroup
+  }{1970}]{baum70}
+Leonard~E. Baum, Ted Petrie, George Soules, and Norman Weiss.
+\newblock A maximization technique occurring in the statistical analysis of
+  probabilistic functions of markov chains.
+\newblock {\em The Annals of Mathematical Statistics}, 41(1):164--171, 1970.
+
+
+\bibitem[\protect\citeauthoryear{Binder \bgroup \em et al.\egroup
+  }{1997}]{binder97}
+John Binder, Daphne Koller, Stuart Russell, and Keiji Kanazawa.
+\newblock Adaptive probabilistic networks with hidden variables.
+\newblock {\em Machine Learning}, 29(2):213--244, Nov 1997.
 
 
 \bibitem[\protect\citeauthoryear{Chickering}{1996}]{chickering96}
@@ -18,6 +49,14 @@ Gregory~F. Cooper and Edward Herskovits.
 \newblock A bayesian method for the induction of probabilistic networks from
   data.
 \newblock {\em Machine Learning}, 9(4):309--347, Oct 1992.
+
+
+\bibitem[\protect\citeauthoryear{Dempster \bgroup \em et al.\egroup
+  }{1977}]{dempster77}
+Arthur Dempster, Nan Laird, and Donald Rubin.
+\newblock Maximum likelihood from incomplete data via the em algorithm.
+\newblock {\em Journal of the Royal Statistical Society: Series B
+  (Methodological)}, 39(1):1--22, 1977.
 
 
 \bibitem[\protect\citeauthoryear{Glover}{1986}]{glover86}
@@ -48,6 +87,21 @@ Peter Norvig and Stuart~J. Russell.
 \newblock Prentice Hall, December 1994.
 
 
+\bibitem[\protect\citeauthoryear{Orchard and Woodbury}{1972}]{orchard72}
+Terence Orchard and Max~A. Woodbury.
+\newblock A missing information principle: theory and applications.
+\newblock In {\em Proceedings of the Sixth Berkeley Symposium on Mathematical
+  Statistics and Probability, Volume 1: Theory of Statistics}, pages 697--715,
+  Berkeley, Calif., 1972. University of California Press.
+
+
+\bibitem[\protect\citeauthoryear{Pan \bgroup \em et al.\egroup }{2005}]{Pan05}
+Rong Pan, Zhongli Ding, Yang Yu, and Yun Peng.
+\newblock A {B}ayesian network approach to ontology mapping.
+\newblock In {\em The Semantic Web -- ISWC 2005}, pages 563--577. Springer
+  Berlin Heidelberg, 2005.
+
+
 \bibitem[\protect\citeauthoryear{Pearl}{1986}]{pearl86}
 Judea Pearl.
 \newblock Fusion, propagation, and structuring in belief networks.
@@ -61,10 +115,24 @@ Judea Pearl.
 \newblock Morgan Kaufmann, 1988.
 
 
+\bibitem[\protect\citeauthoryear{Pearl}{1990}]{pearl90}
+Judea Pearl.
+\newblock {\em Jeffrey's Rule, Passage of Experience, and Neo-Bayesianism},
+  pages 245--265.
+\newblock Springer Netherlands, Dordrecht, 1990.
+
+
 \bibitem[\protect\citeauthoryear{Schwarz}{1978}]{schwarz78}
 Gideon Schwarz.
 \newblock Estimating the dimension of a model.
 \newblock {\em The Annals of Statistics}, 6(2):461--464, 03 1978.
+
+
+\bibitem[\protect\citeauthoryear{Thiesson}{1995}]{thiesson95}
+Bo~Thiesson.
+\newblock {\em Accelerated quantification of Bayesian networks with incomplete
+  data}.
+\newblock Aalborg Universitetsforlag, 1995.
 
 
 \bibitem[\protect\citeauthoryear{Verma and Pearl}{1991}]{verma91}
