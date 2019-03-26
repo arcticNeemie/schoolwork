@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.27)  25 MAR 2019 17:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.27)  26 MAR 2019 10:27
 entering extended mode
 **./literatureReview.tex
 (literatureReview.tex
@@ -311,39 +311,45 @@ Package pdftex.def Info: sprinkler.jpg  used on input line 30.
  [1
 
 {C:/Users/Tamlin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-[2 <./sprinkler.jpg>] [3] (literatureReview.bbl [4] [5]) [6]
-(literatureReview.aux) ) 
+[2 <./sprinkler.jpg>] [3]
+<ajoodha.png, id=26, 429.40425pt x 261.97874pt>
+File: ajoodha.png Graphic file (type png)
+<use ajoodha.png>
+Package pdftex.def Info: ajoodha.png  used on input line 107.
+(pdftex.def)             Requested size: 341.43306pt x 208.32007pt.
+ [4] (literatureReview.bbl [5 <./ajoodha.png>]
+[6]) [7] (literatureReview.aux) ) 
 Here is how much of TeX's memory you used:
- 3247 strings out of 492946
- 44919 string characters out of 3125822
- 120607 words of memory out of 3000000
- 7080 multiletter control sequences out of 15000+200000
+ 3255 strings out of 492946
+ 45027 string characters out of 3125822
+ 120627 words of memory out of 3000000
+ 7086 multiletter control sequences out of 15000+200000
  14160 words of font info for 52 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,6n,32p,780b,225s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Tamlin/AppData/Local/Programs/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Tamlin/AppData/Lo
-cal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Tam
-lin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb
-><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
-/cm/cmmi6.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmmi8.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Users/Tamlin/AppData/Local/Progra
-ms/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb><C:/Users/Tamlin/A
-ppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/U
-sers/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
-r12.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmr17.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/t
-ype1/public/amsfonts/cm/cmr8.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX
- 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Tamlin/AppData/Local/P
-rograms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Tamlin/Ap
-pData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/U
-sers/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/symbo
-ls/msbm10.pfb>
-Output written on literatureReview.pdf (6 pages, 243758 bytes).
+ 41i,6n,32p,941b,233s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/Tamlin/AppData/Local/Programs/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Tamlin/AppData/Local/P
+rograms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Tamlin/A
+ppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/
+Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+mmi10.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public
+/amsfonts/cm/cmmi6.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts
+/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Users/Tamlin/AppData/Loc
+al/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb><C:/Users
+/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.
+pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
+nts/cm/cmr12.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmr17.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Tamlin/AppData/Local/Progra
+ms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Tamlin/AppDat
+a/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/
+Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.
+pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
+nts/symbols/msbm10.pfb>
+Output written on literatureReview.pdf (7 pages, 275294 bytes).
 PDF statistics:
- 86 PDF objects out of 1000 (max. 8388607)
+ 92 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
