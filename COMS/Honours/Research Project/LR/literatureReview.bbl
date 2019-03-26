@@ -51,6 +51,13 @@ Gregory~F. Cooper and Edward Herskovits.
 \newblock {\em Machine Learning}, 9(4):309--347, Oct 1992.
 
 
+\bibitem[\protect\citeauthoryear{Damghani \bgroup \em et al.\egroup
+  }{2012}]{damghani2012}
+Babak~Mahdavi Damghani, Daniella Welch, Ciaran O'Malley, and Stephen Knights.
+\newblock The misleading value of measured correlation.
+\newblock {\em Wilmott}, 2012(62):64--73, 2012.
+
+
 \bibitem[\protect\citeauthoryear{Dempster \bgroup \em et al.\egroup
   }{1977}]{dempster77}
 Arthur Dempster, Nan Laird, and Donald Rubin.
@@ -79,6 +86,26 @@ David Heckerman, Dan Geiger, and David~M. Chickering.
 Daphne Koller and Nir Friedman.
 \newblock {\em Probabilistic Graphical Models - Principles and Techniques}.
 \newblock MIT Press, 2009.
+
+
+\bibitem[\protect\citeauthoryear{Koonin}{1999}]{koonin1999}
+EV~Koonin.
+\newblock The emerging paradigm and open problems in comparative genomics.
+\newblock {\em Bioinformatics (Oxford, England)}, 15(4):265--266, 1999.
+
+
+\bibitem[\protect\citeauthoryear{Kullback and Leibler}{1951}]{kullback1951}
+Solomon Kullback and Richard~A Leibler.
+\newblock On information and sufficiency.
+\newblock {\em The annals of mathematical statistics}, 22(1):79--86, 1951.
+
+
+\bibitem[\protect\citeauthoryear{Merlo}{2007}]{merlo2007}
+Ettore Merlo.
+\newblock Detection of plagiarism in university projects using metrics-based
+  spectral similarity.
+\newblock In {\em Dagstuhl Seminar Proceedings}. Schloss
+  Dagstuhl-Leibniz-Zentrum f{\"u}r Informatik, 2007.
 
 
 \bibitem[\protect\citeauthoryear{Norvig and Russell}{1994}]{norvig94}
@@ -122,10 +149,31 @@ Judea Pearl.
 \newblock Springer Netherlands, Dordrecht, 1990.
 
 
+\bibitem[\protect\citeauthoryear{Pearson}{1895}]{pearson1895}
+Karl Pearson.
+\newblock Notes on regression and inheritance in the case of two parents.
+\newblock In {\em Proceedings of the Royal Society of London}, volume~58, pages
+  240--242, June 1895.
+
+
 \bibitem[\protect\citeauthoryear{Schwarz}{1978}]{schwarz78}
 Gideon Schwarz.
 \newblock Estimating the dimension of a model.
 \newblock {\em The Annals of Statistics}, 6(2):461--464, 03 1978.
+
+
+\bibitem[\protect\citeauthoryear{Slaney \bgroup \em et al.\egroup
+  }{2008}]{slaney2008}
+Malcolm Slaney, Kilian Weinberger, and William White.
+\newblock Learning a metric for music similarity.
+\newblock In {\em International Symposium on Music Information Retrieval
+  (ISMIR)}, 2008.
+
+
+\bibitem[\protect\citeauthoryear{Spearman}{1904}]{spearman1904}
+Charles Spearman.
+\newblock The proof and measurement of association between two things.
+\newblock {\em American journal of Psychology}, 15(1):72--101, 1904.
 
 
 \bibitem[\protect\citeauthoryear{Thiesson}{1995}]{thiesson95}
