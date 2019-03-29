@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.27)  27 MAR 2019 10:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.27)  29 MAR 2019 13:10
 entering extended mode
 **./literatureReview.tex
 (literatureReview.tex
@@ -302,15 +302,15 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 20.
  ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd
 "
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-<sprinkler.jpg, id=1, 910.40125pt x 693.59125pt>
+) [1
+
+{C:/Users/Tamlin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+<sprinkler.jpg, id=14, 910.40125pt x 693.59125pt>
 File: sprinkler.jpg Graphic file (type jpg)
 <use sprinkler.jpg>
 Package pdftex.def Info: sprinkler.jpg  used on input line 38.
 (pdftex.def)             Requested size: 227.62204pt x 173.40796pt.
- [1
 
-{C:/Users/Tamlin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 [2 <./sprinkler.jpg>] [3] [4]
 <ajoodha.png, id=31, 429.40425pt x 261.97874pt>
 File: ajoodha.png Graphic file (type png)
@@ -322,7 +322,7 @@ Package pdftex.def Info: ajoodha.png  used on input line 115.
 Here is how much of TeX's memory you used:
  3264 strings out of 492946
  45142 string characters out of 3125822
- 119857 words of memory out of 3000000
+ 119891 words of memory out of 3000000
  7095 multiletter control sequences out of 15000+200000
  14160 words of font info for 52 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -348,7 +348,7 @@ rs/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy
 8.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/ams
 fonts/cm/cmti10.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/symbols/msbm10.pfb>
-Output written on literatureReview.pdf (8 pages, 293050 bytes).
+Output written on literatureReview.pdf (8 pages, 295654 bytes).
 PDF statistics:
  99 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
