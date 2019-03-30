@@ -61,7 +61,7 @@ Babak~Mahdavi Damghani, Daniella Welch, Ciaran O'Malley, and Stephen Knights.
 \bibitem[\protect\citeauthoryear{Dempster \bgroup \em et al.\egroup
   }{1977}]{dempster77}
 Arthur Dempster, Nan Laird, and Donald Rubin.
-\newblock Maximum likelihood from incomplete data via the em algorithm.
+\newblock Maximum likelihood from incomplete data via the {EM} algorithm.
 \newblock {\em Journal of the Royal Statistical Society: Series B
   (Methodological)}, 39(1):1--22, 1977.
 

@@ -21,13 +21,19 @@
 \section{Introduction}
 The need to detect and recover influence structures arises in a number of applications, including plagiarism detection \citep{merlo2007}, comparison between genomes \citep{koonin1999}, and even automatic detection of similarity between pieces of music \citep{slaney2008}.
 
+The intent of this research is to investigate techniques in which complex models which capture underlying distributions can be learned from data and then can be compared to recover an overarching influence ontology. 
+
+In the case of plagiarism detection, for example, models showing similarities in student answers for each question could be learnt, and then overarching influence between these models could be used to detect patterns of plagiarism across an entire test or examination. In another example, considering the case of detecting influence between pieces of music, models of works of music could be learned from small time-slices of music, and could then be compared to recover overarching influence between these works.
+
 One of the simplest statistical measures for quantifying influence between random variables $X_{i}$ and $X_{j} \in \mathcal{X}$ is the correlation matrix $Corr(i,j)$. One such measure is the Pearson correlation coefficient, developed by \cite{pearson1895}, whose form is
 \begin{equation*}
 Corr(i,j) = \frac{cov(X_{i},X_{j})}{\sigma_{X_{i}} \sigma_{X_{j}}},
 \end{equation*}
-where $cov(X_{i},X_{j})$ denotes the covariance between $X_{i}$ and $X_{j}$ and $\sigma_{X_{k}}$ denotes the standard deviation of $X_{k}$. However, this measure is only equipped to measure influence in the case of a linear relationship, and even more complicated forms such as the Spearman rank correlation coefficient, developed by \cite{spearman1904}, can only measure influence in the case of monotonically related functions. Worse still, while these measures are able to detect correlation, they are unable to recover the underlying influence structure \citep{damghani2012}. We therefore require a method that can recover the ``ground truth" structure which produced the data.
+where $cov(X_{i},X_{j})$ denotes the covariance between $X_{i}$ and $X_{j}$ and $\sigma_{X_{k}}$ denotes the standard deviation of $X_{k}$. However, this measure is only equipped to measure influence in the case of a linear relationship, and even more complicated forms such as the Spearman rank correlation coefficient \citep{spearman1904} can only measure influence in the case of monotonically related functions. Worse still, while these measures are able to detect correlation, they are unable to recover the underlying influence structure \citep{damghani2012}.
 
-The remainder of this chapter will focus on Bayesian methods in the recovering of influence structures. Section \ref{BayesianNetworks} provides a brief introduction to Bayesian networks and discusses some of their properties. In section \ref{StructureLearning}, we discuss methods by which Bayesian networks are constructed given a set of observations. We briefly discuss constraint-based methods in section \ref{ConstraintBasedStructureLearning} before discussing score-based methods in greater depth in section \ref{ScoreBasedStructureLearning}. In section \ref{PartiallyObservedData}, we discuss parameter estimation techniques in the case of partially observed data, leading up to a description of the Expectation Maximisation algorithm. Finally, methods for the construction of networks of independently learned models are discussed in section \ref{InfluenceBetweenModels}, with the Kullback–Leibler divergence metric for measuring similarity between distributions discussed in section \ref{ModelEvaluation}.
+In order to be able to recover the ``ground truth" influence structure which produced the data, we require both a data structure to represent the complexities of the model and methods to learn this model from observations. We propose modelling the influence structure as a Bayesian network, and thus the remainder of this chapter will focus on these structures and techniques used to learn them from data. 
+
+Section \ref{BayesianNetworks} provides a brief introduction to Bayesian networks and discusses some of their properties. In section \ref{StructureLearning}, we discuss methods by which Bayesian network structures are constructed from data. We briefly discuss constraint-based methods in section \ref{ConstraintBasedStructureLearning} before discussing score-based methods - the methods which will be used in this research - in greater depth in section \ref{ScoreBasedStructureLearning}. In section \ref{PartiallyObservedData}, we discuss parameter estimation techniques in the case of partially observed data, leading up to a description of the Expectation Maximisation algorithm. Finally, methods for the construction of networks of independently learned models are discussed in section \ref{InfluenceBetweenModels}, with the Kullback–Leibler divergence metric for measuring similarity between distributions discussed in section \ref{ModelEvaluation}.
 \section{Bayesian Networks}\label{BayesianNetworks}
 When considering a joint probability distribution across $n$ random variables, classical probability states that the number of parameters needed to represent the distribution grows exponentially in $n$ \citep{koller09}. Even in the simple case of binary variables, we would still need $2^n -1$ parameters to describe the distribution. This is clearly unfeasible for practical applications, in which the number of random variables can grow very large. 
 
@@ -38,8 +44,10 @@ Bayesian networks, originally developed by \citet{pearl88}, present a way of red
 \includegraphics[width=8cm]{sprinkler.jpg}
 \end{figure}
 An important notion in Bayesian networks is that of d-separation, first presented by \citet{pearl86}, which is used to find the set $\mathcal{I}(\mathcal{G})$ of conditional independencies in the graph $\mathcal{G}$. $\mathcal{I}(\mathcal{G})$ is used as the basis for an equivalence relation, I-equivalence, for which any two I-equivalent graphs represent the same independency assumptions \citep{verma91}. An important developement by \citet{pearl86} is that any I-equivalence class can be represented as a partially directed acyclic graph (PDAG) in which undirected edges represent edges that can be oriented any way and still result in a graph belonging to the same class.
+
+A crucial consequence of these results is that any method that learns a single DAG from data (for example, those discussed in section \ref{ScoreBasedStructureLearning}) may not necessarily recover the ``ground truth" structure, but may instead recover one which is I-equivalent \citep{verma91}.
 \section{Structure Learning}\label{StructureLearning}
-The manual construction of networks is generally unfeasible for a large number of variables \citep{koller09}. Fortunately, strategies exist to learn model structures from data $\mathcal{D}$.
+A major component of this research is the construction of a Bayesian network in order to model influence. However, the manual construction of networks is generally unfeasible for a large number of variables \citep{koller09}. Fortunately, strategies exist to learn model structures from data $\mathcal{D}$.
 \subsection{Constraint-Based Structure Learning}\label{ConstraintBasedStructureLearning}
 One approach to the construction of model structures is the constraint-based approach, in which dependencies between variables are first queried and then, based on these dependencies, a PDAG is constructed \citep{koller09}. This strategy can be traced back to \citet{verma91}. 
 
@@ -49,27 +57,29 @@ A more popular approach to the problem is score-based structure learning, in whi
 \subsubsection{Scoring Function}
 One possible scoring function would be the maximum likelihood function (most often in its logarithm form), finding graph $\mathcal{G}$ that maximises
 \begin{equation*}
-score_{L}(\mathcal{G}:\mathcal{D}) = l(\hat{\theta}_{\mathcal{G}}:\mathcal{D})
+score_{L}(\mathcal{G}:\mathcal{D}) = l(\hat{\theta}_{\mathcal{G}}:\mathcal{D}),
 \end{equation*}
 which decomposes to
 \begin{equation*}
-score_{L}(\mathcal{G}:\mathcal{D}) = M\sum_{i=1}^{n}[\mathbb{I}_{\hat{P}}(X_{i};Pa_{X_{i}}^{\mathcal{G}})-H_{\hat{P}}(X_{i})]
+score_{L}(\mathcal{G}:\mathcal{D}) = M\sum_{i=1}^{n}[\mathbb{I}_{\hat{P}}(X_{i};Pa_{X_{i}}^{\mathcal{G}})-H_{\hat{P}}(X_{i})],
 \end{equation*}
 for number of variables $n$, number of samples $M$, mutual information $\mathbb{I}_{\hat{P}}$ and entropy $H_{\hat{P}}$ \citep{koller09}. However, this score always prefers a more connected network, and is thus prone to overfitting.
 
 Other scores designed to balance fit to data with network complexity are the Akaike Information Criterion (AIC), proposed by \citet{akaike98}
 \begin{equation*}
-score_{AIC}(\mathcal{G}:\mathcal{D}) = l(\hat{\theta}_{\mathcal{G}}:\mathcal{D}) - Dim(\mathcal{G})
+score_{AIC}(\mathcal{G}:\mathcal{D}) = l(\hat{\theta}_{\mathcal{G}}:\mathcal{D}) - Dim(\mathcal{G}),
 \end{equation*}
 and the Bayesian Information Criterion (BIC), proposed by \citet{schwarz78}
 \begin{equation*}
-score_{BIC}(\mathcal{G}:\mathcal{D}) = l(\hat{\theta}_{\mathcal{G}}:\mathcal{D}) - \frac{logM}{2}Dim(\mathcal{G})
+score_{BIC}(\mathcal{G}:\mathcal{D}) = l(\hat{\theta}_{\mathcal{G}}:\mathcal{D}) - \frac{logM}{2}Dim(\mathcal{G}),
 \end{equation*}
 where $Dim(\mathcal{G})$ denotes the dimension of $\mathcal{G}$. In particular, \citet{schwarz78} shows that the BIC is an assymptotic approximation of the Bayesian score under the assumptions of independent, identically distributed observations with a density function of the form
 \begin{equation*}
-f(x,\theta) = exp(\theta \cdot y(x) - b(\theta))
+f(x,\theta) = exp(\theta \cdot y(x) - b(\theta)),
 \end{equation*}
 where $y$ is the sufficient statistic, and where it is also assumed that the penalty for guessing an incorrect model is fixed. The $\frac{logM}{2}$ term in the BIC ensures that, as $M$ grows, more consideration is placed in models of greater complexity \citep{koller09}.
+
+It is for this reason that the BIC will be chosen as the scoring function when applying score-based structure learning techniques in this research.
 \subsubsection{Structure Search}\label{StructureSearch}
 The problem of structure search is to find the graph $\mathcal{G}$ that maximises the chosen scoring function for the given data $\mathcal{D}$. In general, this problem is NP-hard for a graph whose variables have at most $d\geq 2$ parents \citep{chickering96}. Fortunately, there exist heuristic algorithms which can assist in this regard. Some of the earliest of these algorithms include the K2 algorithm of \citet{cooper92}, which relied on a predetermined ordering of variables, and the local search algorithms proposed by \citet{heckerman95}.
 
@@ -77,13 +87,13 @@ These algorithms define a search space of graphs, where each graph can be transf
 
 A search procedure is then required to traverse the search space and select an optimal graph. A common choice is the greedy hill-climbing algorithm, which applies only the operations which maximise the score \citep{koller09}. This technique is prone to local maxima and the plateaus in score caused by I-equivalent graphs. Methods which work around this problem include the tabu search, proposed by \citet{glover86}, which keeps track of recent operations and does not allow them to be reversed until a certain number of iterations has passed, and random restarts, which restart the search several times with random initial conditions \citep{koller09}.
 \section{Partially Observed Data}\label{PartiallyObservedData}
-The methods discussed in section \ref{StructureLearning} require fully-observed data, in that every observation assigns a value to each variable \citep{koller09}. In practice, this is not always possible. Sometimes, these latent or hidden variables are simply impractical to measure. In other cases, these variables represent factors that cannot be measured quantitatively. 
+The methods discussed in section \ref{StructureLearning} require fully-observed data, in that every observation assigns a value to each variable \citep{koller09}. In practice, this is not always possible. Sometimes, these latent or hidden variables are simply impractical to measure. In other cases, these variables represent factors that cannot be measured quantitatively. If a latent variable at all affects the influence structure we are attempting to recover, then it is important to address the problem of learning from partially observed data in this research.
 
 Unfortunately, the introduction of hidden variables complicates the structure learning process by introducing a number of terms to the maximum likelihood estimate, with the number of terms growing exponentially as more variables are hidden \citep{koller09}. Furthermore, the introduction of latent variables results in a likelihood function which is not locally decomposable, and this renders the techniques discussed in section \ref{StructureLearning} useless in general. Thus different methods must be applied for both the learning of parameters and the learning of structure. For the sake of relevance, we will discuss only the problem of parameter estimation, as the problem of structure learning is beyond the scope of this paper.
 
 Here we discuss two popular methods for parameter estimation. The first is gradient ascent, in which parameters are chosen by iteratively moving in the direction of the gradient of the likelihood function \citep{koller09}. Early applications of gradient methods to the likelihood function include the work of \cite{thiesson95} and \cite{binder97}. In these algorithms, the gradient of the likelihood function is given as
 \begin{equation*}
-\frac{\partial l(\boldsymbol{\theta}:\mathcal{D})}{\partial P(x|\boldsymbol{u})} = \frac{1}{P(x|\boldsymbol{u})}\sum_{m=1}^{M}P(x,\boldsymbol{u}|\boldsymbol{o}[m],\boldsymbol{\theta})
+\frac{\partial l(\boldsymbol{\theta}:\mathcal{D})}{\partial P(x|\boldsymbol{u})} = \frac{1}{P(x|\boldsymbol{u})}\sum_{m=1}^{M}P(x,\boldsymbol{u}|\boldsymbol{o}[m],\boldsymbol{\theta}),
 \end{equation*}
 where $\boldsymbol{\theta}$ are the parameters, $\mathcal{D} = \{\boldsymbol{o}[1],...,\boldsymbol{o}[M]\}$ is the set of partially observed data, $x \in Val(X)$ for a variable $X \in \mathcal{X}$ and $\boldsymbol{u} \in Val(Pa_{X})$ \citep{koller09}.
 
@@ -91,7 +101,7 @@ The second method to be discussed is Expectation Maximisation (EM), introduced b
 
 In the E-step, we compute the expected sufficient statistic for each $x\in X$ and $u \in U$
 \begin{equation*}
-\bar{M}_{\boldsymbol{\theta}^{t}}[x,\boldsymbol{u}] = \sum_{m=1}^{M}P(x,\boldsymbol{u}|\boldsymbol{o}[m],\boldsymbol{\theta}^{t})
+\bar{M}_{\boldsymbol{\theta}^{t}}[x,\boldsymbol{u}] = \sum_{m=1}^{M}P(x,\boldsymbol{u}|\boldsymbol{o}[m],\boldsymbol{\theta}^{t}),
 \end{equation*}
 where $\boldsymbol{\theta}^{t}$ denotes the value of $\boldsymbol{\theta}$ at iteration $t$.
 
@@ -106,7 +116,9 @@ An important property of EM is that it is guaranteed to improve $l(\boldsymbol{\
 %\end{equation*}
 %where $\tilde{\boldsymbol{\theta}}_{\mathcal{G}}$ is the maximum \textit{a posteriori} probability of $\boldsymbol{\theta}_{\mathcal{G}}$ and $A$ is the negative Hessian matrix of $l(\boldsymbol{\theta}_{\mathcal{G}}:\mathcal{D})$.
 \section{Influence between Models}\label{InfluenceBetweenModels}
-We now turn to the specific problem of tracking influence between models. A number of different approaches have been developed to suit different models. For example, \cite{Pan05} use Jeffrey's rule \citep{pearl90} to propagate beliefs on variables from one Bayesian network to another and thus map concepts between ontologies. 
+Having completed an introduction to the various concepts and algorithms relating to the problem of constructing influence structures, we now turn to specific implementations in which influence structures have been recovered from data. In particular, this research is concerned with the recovering of influence structure between models, and thus methods which achieve this are the focus of this section.
+
+A number of different approaches have been developed to suit different models. For example, \cite{Pan05} use Jeffrey's rule \citep{pearl90} to propagate beliefs on variables from one Bayesian network to another and thus map concepts between ontologies. 
 
 However, the methods that are most relevant to this paper are those presented by \cite{ajoodha17}. In this work, the authors track influence between a set of na\"{i}ve Bayes models (NBMs). They do so by first partitioning the observable data into $k$ sets and learning each of the $k$ NBMs independently through the use of EM. They then compute the score of the overarching network (see figure \ref{fig:ajoodha}) using the BIC, relearn model parameters for the new independence assertions using EM, use the search operators discussed in section \ref{StructureSearch} to try and improve the network's score, and then repeat this process until no more improvement can be made to the score. This process is thus a greedy hill-climbing heuristic, although in their final implementation, the authors also made use of tabu lists and random restarts to avoid the pitfalls discussed in section \ref{StructureSearch}.
 \begin{figure}[H]
@@ -118,7 +130,7 @@ Interesting extensions to this work include the work of \cite{ajoodha18}, who ex
 \subsection{Model Evaluation}\label{ModelEvaluation}
 When constructing an influence network, it is important to measure how well one's learned model recovers the ``ground truth" structure. A useful measure for evaluating this is the Kullback–Leibler divergence, also known as relative entropy, developed by \cite{kullback1951}, which sees use in both \cite{ajoodha17} and \cite{ajoodha18} discussed above. The relative entropy between two distributions, $P_{1}$ and $P_{2}$, over a shared variable space $\mathcal{X}$ is given by
 \begin{equation*}
-\mathbb{D}(P_{1}||P_{2}) = \mathbb{E}_{P_{1}}\Bigg(log\frac{P_{1}(\mathcal{X})}{P_{2}(\mathcal{X})}\Bigg) = \sum_{x\in\mathcal{X}}P_{1}(x)log\frac{P_{1}(x)}{P_{2}(x)}
+\mathbb{D}(P_{1}||P_{2}) = \mathbb{E}_{P_{1}}\Bigg(log\frac{P_{1}(\mathcal{X})}{P_{2}(\mathcal{X})}\Bigg) = \sum_{x\in\mathcal{X}}P_{1}(x)log\frac{P_{1}(x)}{P_{2}(x)},
 \end{equation*}
 in the discrete case \citep{koller09}. There are two important observations to make about the measure. Firstly, $\mathbb{D}(P_{1}||P_{2}) \geq 0$ in all cases and, secondly, because probabilities must sum to $1$, $\mathbb{D}(P_{1}||P_{2}) = 0$ if and only if $P_{1}(x) = P_{2}(x)$ $\forall x\in\mathcal{X}$ \citep{koller09}. Thus the closer the relative entropy between a reconstructed model and the underlying distribution gets to $0$, the more confidently we can say that our model has recovered the ``ground truth" structure.
 \section{Conclusion}
