@@ -7,7 +7,7 @@
  *     y: the product vector
  *     Elapsed time for the computation
  *
- * Compile:  
+ * Compile:
  *    gcc -g -Wall -o mat_vect mat_vect.c -fopenmp
  * Usage:
  *    mat_vect <thread_count> <m> <n>
@@ -19,7 +19,7 @@
 #include <omp.h>
 
 /* Serial functions */
-void Get_args(int argc, char* argv[], int* thread_count_p, 
+void Get_args(int argc, char* argv[], int* thread_count_p,
       int* m_p, int* n_p);
 void Usage(char* prog_name);
 void Gen_matrix(double A[], int m, int n);
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
    A = malloc(m*n*sizeof(double));
    x = malloc(n*sizeof(double));
    y = malloc(m*sizeof(double));
-   
+
  # ifdef DEBUG
       Read_matrix("Enter the matrix", A, m, n);
       Print_matrix("We read", A, m, n);
@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
  * In args:   argc, argv
  * Out args:  thread_count_p, m_p, n_p
  */
-void Get_args(int argc, char* argv[], int* thread_count_p, 
+void Get_args(int argc, char* argv[], int* thread_count_p,
       int* m_p, int* n_p)  {
 
    if (argc != 4) Usage(argv[0]);
@@ -113,7 +113,7 @@ void Read_matrix(char* prompt, double A[], int m, int n) {
    int             i, j;
 
    printf("%s\n", prompt);
-   for (i = 0; i < m; i++) 
+   for (i = 0; i < m; i++)
       for (j = 0; j < n; j++)
          scanf("%lf", &A[i*n+j]);
 }  /* Read_matrix */
@@ -155,7 +155,7 @@ void Read_vector(char* prompt, double x[], int n) {
    int   i;
 
    printf("%s\n", prompt);
-   for (i = 0; i < n; i++) 
+   for (i = 0; i < n; i++)
       scanf("%lf", &x[i]);
 }  /* Read_vector */
 
@@ -172,11 +172,28 @@ void mat_vect(double A[], double x[], double y[],
    double start, finish, elapsed;
 
    start = omp_get_wtime();
+   /*
    for (i = 0; i < m; i++) {
       y[i] = 0.0;
       for (j = 0; j < n; j++)
          y[i] += A[i*n+j]*x[j];
    }
+   */
+
+   //Initialize
+   #pragma omp parallel for private(i)
+     for(i=0;i<m;i++){
+       y[i] = 0.0;
+     }
+
+   #pragma omp parallel for private(i,j) collapse(2)
+     for(i=0;i<m;i++){
+       for(j=0;j<n;j++){
+         y[i] += A[i*n+j]*x[j];
+       }
+     }
+
+
    finish = omp_get_wtime();
    elapsed = finish - start;
    printf("Elapsed time = %e seconds\n", elapsed);
