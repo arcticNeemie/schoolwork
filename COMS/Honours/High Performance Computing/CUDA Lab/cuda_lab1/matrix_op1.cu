@@ -34,6 +34,11 @@ __global__ void multiplyGPU(const float *g_v1, const float *g_v2, float *g_out) 
     // YOUR CODE GOES HERE
     // Implement GPU version of multiplyCPU
     // (a)
+    unsigned int i = threadIdx.x + blockDim.x*blockIdx.x;
+
+    if(i<N){
+      g_out[i] = g_v1[i]*g_v2[i];
+    }
 
 }
 
@@ -41,7 +46,13 @@ __global__ void expensiveFunctionGPU(const float *g_v1, const float *g_v2, float
     // YOUR CODE GOES HERE
     // Implement GPU version of expensiveFunctionCPU
     // (c)
-    
+    unsigned int i = threadIdx.x + blockDim.x*blockIdx.x;
+
+    if(i<N){
+      float a = g_v1[i], b = g_v2[i];
+      g_out[i] = (a * b) * (sqrt(a + b) + sqrt(a) + sqrt(b - a) + sqrt(b));
+    }
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,7 +72,7 @@ int main( int argc, char** argv) {
     // pointers to device output
     float *d_multiply_out, *d_expensive_out;
 
-    
+
 
     // Number of test iterations to use for timing
     int testIterations = 3;
@@ -91,10 +102,10 @@ int main( int argc, char** argv) {
         // zero memory for outputs
         memset(h_multiply_correct,  0, N * sizeof(float));
         memset(h_expensive_correct,  0, N * sizeof(float));
-        
+
 				// run cpu kernel
         multiplyCPU(h_v1, h_v2, h_multiply_correct);
-        
+
         // run cpu kernel
         expensiveFunctionCPU(h_v1, h_v2, h_expensive_correct);
     }
@@ -110,7 +121,7 @@ int main( int argc, char** argv) {
         // zero input memory
         cudaMemset(d_v1, 0, N * sizeof(float));
         cudaMemset(d_v2, 0, N * sizeof(float));
-        
+
         // transfer data to GPU
         cudaMemcpy(d_v1, h_v1, N * sizeof(float), cudaMemcpyHostToDevice);
         cudaMemcpy(d_v2, h_v2, N * sizeof(float), cudaMemcpyHostToDevice);
@@ -118,7 +129,25 @@ int main( int argc, char** argv) {
         // YOUR CODE GOES HERE
         // Execute multiply kernel
         // (b)
-       
+        const size_t block_size = 256;
+        size_t grid_size = N / block_size;
+
+        // time the kernel launches using CUDA events
+        cudaEvent_t launch_begin, launch_end;
+        cudaEventCreate(&launch_begin);
+        cudaEventCreate(&launch_end);
+        // record a CUDA event immediately before and after the kernel launch
+        cudaEventRecord(launch_begin,0);
+        // launch the kernel
+        multiplyGPU<<<grid_size,block_size>>>(d_v1,d_v2,d_multiply_out);
+        cudaEventRecord(launch_end,0);
+        cudaEventSynchronize(launch_end);
+      	// measure the time (ms) spent in the kernel
+        float time = 0;
+      	cudaEventElapsedTime(&time, launch_begin, launch_end);
+
+        printf("Completed multiplication in %f ms\n",time);
+
         // transfer data from GPU
         cudaMemcpy(h_multiply_out, d_multiply_out, N * sizeof(float), cudaMemcpyDeviceToHost);
 
@@ -137,7 +166,8 @@ int main( int argc, char** argv) {
         // YOUR CODE GOES HERE
         // Execute expensive function kernel
         // (d)
-        
+        expensiveFunctionGPU<<<grid_size,block_size>>>(d_v1,d_v2,d_expensive_out);
+
 
         // transfer data from GPU
         cudaMemcpy(h_expensive_out, d_expensive_out, N * sizeof(float), cudaMemcpyDeviceToHost);
@@ -146,18 +176,18 @@ int main( int argc, char** argv) {
         checkCUDAError("expensiveFunctionGPU");
     }
 
-    
+
     /////////////////////////////// VALIDATION ///////////////////////////////
 
     // check if output from gpu kernels is correct
     for (int i = 0; i < N; i++) {
         if (!(abs(h_multiply_out[i] - h_multiply_correct[i]) <= 0.0001)) {
-            printf("Test failed (h_multiply_out[%d]:%f != h_multiply_correct[%d]:%f)!\n", 
+            printf("Test failed (h_multiply_out[%d]:%f != h_multiply_correct[%d]:%f)!\n",
                    i, h_multiply_out[i], i, h_multiply_correct[i]);
             exit(1);
         }
         if (!(abs(h_expensive_out[i] - h_expensive_correct[i]) <= 0.00001 * abs(h_expensive_correct[i]))) {
-            printf("Test failed (h_expensive_out[%d]:%f != h_expensive_correct[%d]:%f)!\n", 
+            printf("Test failed (h_expensive_out[%d]:%f != h_expensive_correct[%d]:%f)!\n",
                    i, h_expensive_out[i], i, h_expensive_correct[i]);
             exit(1);
         }
