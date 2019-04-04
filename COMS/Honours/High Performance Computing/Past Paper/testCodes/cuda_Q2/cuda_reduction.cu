@@ -32,24 +32,24 @@ int main(int argc, char** argv) {
 	// pointers to host memory
 	float *h_in, *h_correct;
 	// pointer for device memory
-	
+
 	// allocate memory for pointers
 	h_in       = (float *)malloc(N * sizeof(float));
 	h_correct  = (float *)malloc(sizeof(float));
-	
+
 	// Initialize h_in
 	srand(9999);
 	for (int i = 0; i < N; i++) {
 		h_in[i] = 1.0f;
 	}
-	// memset to 0	
+	// memset to 0
 	memset(h_correct, 0, sizeof(float));
-	
+
 	// calculate correct output
 	sumReductionCPU(h_in, h_correct);
-	
+
 	// you may validate your results by changing the following if structure
-	if (!(abs((*h_correct) - (*h_correct)) <= 0.0001) || 
+	if (!(abs((*h_correct) - (*h_correct)) <= 0.0001) ||
 				!(abs((*h_correct) - (*h_correct)) <= 0.0001) ) {
 		printf("Test failed");
 		exit(1);

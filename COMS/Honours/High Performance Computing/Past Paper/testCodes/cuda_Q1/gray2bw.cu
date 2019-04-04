@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * This sample takes an input PGM image (image_filename) and generates
  * an output PGM image (image_filename_out).  This CUDA kernel performs
  * a simple 2D transform (thresholding).
@@ -27,6 +27,7 @@
 #include "helper_cuda.h"         // helper functions for CUDA error check
 
 #define MAX_EPSILON_ERROR 5e-3f
+#define THRESHOLD 0.5
 
 
 // Define the files that are to be save and the reference images for validation
@@ -47,7 +48,18 @@ __global__ void transformKernel(float *outputData,
                                 int width,
                                 int height)
 {
-    
+    unsigned int i = threadIdx.x + blockDim.x*blockIdx.x;
+    unsigned int j = threadIdx.y + blockDim.y*blockIdx.y;
+    if(i<height && j<width){
+      int index = i*width+j;
+      if(outputData[index]>THRESHOLD){
+        outputData[index] = 1;
+      }
+      else{
+        outputData[index] = 0;
+      }
+    }
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////

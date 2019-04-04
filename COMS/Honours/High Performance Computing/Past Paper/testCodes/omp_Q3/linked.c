@@ -1,10 +1,10 @@
 /* File:     linked.c
- * Purpose:  Traverses a list and computes a sequence (starting from 38) 
-						 of Fibonacci numbers at each node. 
+ * Purpose:  Traverses a list and computes a sequence (starting from 38)
+						 of Fibonacci numbers at each node.
  *
  * Compile:  gcc -g -Wall -o linked linked.c
  * Run:      ./linked
- *    
+ *
  */
 
 #include <stdlib.h>
@@ -35,25 +35,26 @@ int fib(int n) {
    }
 }
 
-void processwork(struct node* p) 
+void processwork(struct node* p)
 {
    int n;
    n = p->data;
    p->fibdata = fib(n);
 }
 
-void processwork_par(struct node* p) 
+void processwork_par(struct node* p)
 {
    int n;
    n = p->data;
-   p->fibdata = fib(n);
+   #pragma omp task firstprivate(n)
+    p->fibdata = fib(n);
 }
 
 struct node* init_list(struct node* p) {
     int i;
     struct node* head = NULL;
     struct node* temp = NULL;
-    
+
     head = malloc(sizeof(struct node));
     p = head;
     p->data = FS;
@@ -74,19 +75,27 @@ int main(int argc, char *argv[]) {
      struct node *p=NULL;
      struct node *temp=NULL;
      struct node *head=NULL;
-     
+
 	 printf("Process linked list\n");
      printf("  Each linked list node will be processed by function 'processwork()'\n");
-     printf("  Each linked  node will compute %d fibonacci numbers beginning with %d\n",N,FS);      
- 
+     printf("  Each linked  node will compute %d fibonacci numbers beginning with %d\n",N,FS);
+
      p = init_list(p);
      head = p;
 
      start = omp_get_wtime();
-     while (p != NULL) {
-		   processwork(p);
-		   p = p->next;
+     #pragma omp parallel
+     {
+       #pragma omp single
+       {
+         while (p != NULL) {
+           #pragma omp task firstprivate(p)
+    		     processwork_par(p);
+    		   p = p->next;
+         }
+       }
      }
+
      stime = omp_get_wtime()-start;
      p = head;
 	 while (p != NULL) {
@@ -94,11 +103,10 @@ int main(int argc, char *argv[]) {
         temp = p->next;
         free (p);
         p = temp;
-     }  
+     }
 	 free (p);
 
      printf("Compute Time: %f seconds\n", stime);
 
      return 0;
 }
-
