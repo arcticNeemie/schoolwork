@@ -26,12 +26,12 @@
 #include "helper_cuda.h"         // helper functions for CUDA error check
 
 #define MAX_EPSILON_ERROR 5e-3f
-float *hData = NULL;
-    unsigned int width, height;
-    char *imagePath = sdkFindFilePath(imageFilename, argv[0]);
 
 //Image files
 const char *imageFilename = "lena_bw.pgm";
+
+//Functions
+void printImage(float* hData, int width, int height);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Program main
@@ -47,5 +47,21 @@ int main(int argc, char **argv)
     if (imagePath == NULL){
         printf("Unable to source image file: %s\n", imageFilename);
         exit(EXIT_FAILURE);
+    }
+    sdkLoadPGM(imagePath, &hData, &width, &height);
+    unsigned int size = width * height * sizeof(float);
+    printf("Loaded '%s', %d x %d pixels\n", imageFilename, width, height);
+    
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Utility Functions
+////////////////////////////////////////////////////////////////////////////////
+void printImage(float* hData, int width, int height){
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
+            printf("%f",hData[i*height+j]);
+        }
+        printf("\n");
     }
 }
