@@ -68,6 +68,7 @@ for i=1:N
   CPT{i}=t.CPT;
 end
 
+%Display CPTs for comparison
 dispcpt(CPT2{F})
 disp("-")
 dispcpt(CPT{F})
