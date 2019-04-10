@@ -29,21 +29,28 @@
 #define FILTERSIZE 3
 
 //Image files
-const char *imageFilename = "lena_bw.pgm";
 const char *sobelName = "_sobel_";
 const char *sharpenName = "_sharpen_";
 const char *averageName = "_average_";
 
 //Functions
 void printImage(float* hData, int width, int height);
-void saveImage(float* dData,char* imagePath,const char* filter,int width, int height);
+void saveImage(float* dData,char* imagePath,const char* filter,int width, int height, float time);
 void convolveCPU(float* dData, float*hData, float* filter, int width, int height);
+void applySerialConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Program main
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
+    const char* imageFilename;
+    if(argc>1){
+      imageFilename = argv[1];
+    }
+    else{
+      imageFilename = "lena_bw.pgm";
+    }
     printf("Starting execution\n");
     //Load Image
     printf("Loading image: %s\n",imageFilename);
@@ -64,21 +71,9 @@ int main(int argc, char **argv)
     float sobelFilter[] = {-1,0,1,-2,0,2,-1,0,1}; //Sobel Filter
 
     //Apply serial convolution
-    float *dDataAverage = (float*) malloc(size); //Output
-    convolveCPU(dDataAverage,hData,averagingFilter,width,height);
-
-    float *dDataSharpen = (float*) malloc(size); //Output
-    convolveCPU(dDataSharpen,hData,sharpeningFilter,width,height);
-
-    float *dDataSobel = (float*) malloc(size); //Output
-    convolveCPU(dDataSobel,hData,sobelFilter,width,height);
-
-    // Write result to file
-    saveImage(dDataAverage,imagePath,averageName,width,height);
-    saveImage(dDataSharpen,imagePath,sharpenName,width,height);
-    saveImage(dDataSobel,imagePath,sobelName,width,height);
-
-
+    applySerialConvolution(hData,averagingFilter,imagePath,averageName,width,height,size);
+    applySerialConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size);
+    applySerialConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size);
 
 }
 
@@ -123,7 +118,7 @@ void printImage(float* hData, int width, int height){
 }
 
 //Save image to file
-void saveImage(float* dData,char* imagePath,const char* filter,int width, int height){
+void saveImage(float* dData,char* imagePath,const char* filter,int width, int height, float time){
   char outputFilename[1024];
   char* sub = (char*) malloc(strlen(filter)+strlen("out"));
   strcpy(sub,filter);
@@ -134,5 +129,18 @@ void saveImage(float* dData,char* imagePath,const char* filter,int width, int he
   strcat(outputFilename,sub);
   strcat(outputFilename,imagePath+offset);
   sdkSavePGM(outputFilename, dData, width, height);
-  printf("Convolved in serial, saved to '%s'\n", outputFilename);
+  printf("Convolved in serial in %f s, saved to '%s'\n", time, outputFilename);
+}
+
+//Apply a filter in serial, time it and save result
+void applySerialConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size){
+  float *dData = (float*) malloc(size); //Output
+  StopWatchInterface *timer = NULL;
+  sdkCreateTimer(&timer);
+  sdkStartTimer(&timer);
+  convolveCPU(dData,hData,filter,width,height);
+  sdkStopTimer(&timer);
+  float time = sdkGetTimerValue(&timer) / 1000.0f;
+  sdkDeleteTimer(&timer);
+  saveImage(dData,imagePath,name,width,height,time);
 }
