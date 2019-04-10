@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     }
     sdkLoadPGM(imagePath, &hData, &width, &height);
     unsigned int size = width * height * sizeof(float);
-    printf("Loaded '%s', %d x %d pixels\n", imageFilename, width, height);
+    printf("Loaded '%s', %d x %d pixels\n\n", imageFilename, width, height);
 
     //Define Filter
     float averagingFilter[] = {1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9}; //Averaging Filter
@@ -71,9 +71,23 @@ int main(int argc, char **argv)
     float sobelFilter[] = {-1,0,1,-2,0,2,-1,0,1}; //Sobel Filter
 
     //Apply serial convolution
+    printf("Beginning serial convolution...\n");
     applySerialConvolution(hData,averagingFilter,imagePath,averageName,width,height,size);
     applySerialConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size);
     applySerialConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size);
+    printf("Finished serial convolution!\n\n");
+
+    //Apply naive parallelization implementation
+    //TODO
+
+    //Apply shared memory implementation
+    //TODO
+
+    //Apply constant memory implementation
+    //TODO
+
+    //Apply texture memory implementation
+    //TODO
 
 }
 
@@ -122,7 +136,7 @@ void saveImage(float* dData,char* imagePath,const char* filter,int width, int he
   char outputFilename[1024];
   char* sub = (char*) malloc(strlen(filter)+strlen("out"));
   strcpy(sub,filter);
-  strcat(sub,"out");
+  strcat(sub,"serial_out");
   int offset = strlen(imagePath)/sizeof(char) - 4;
   strncpy(outputFilename,imagePath,offset);
   outputFilename[offset] = '\0';
