@@ -30,10 +30,13 @@
 
 //Image files
 const char *imageFilename = "lena_bw.pgm";
+const char *sobelName = "_sobel_";
+const char *sharpenName = "_sharpen_";
+const char *averageName = "_average_";
 
 //Functions
 void printImage(float* hData, int width, int height);
-void saveImage(float* dData,char* imagePath,int filter,int width, int height);
+void saveImage(float* dData,char* imagePath,const char* filter,int width, int height);
 void convolveCPU(float* dData, float*hData, float* filter, int width, int height);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +61,7 @@ int main(int argc, char **argv)
     //Define Filter
     float averagingFilter[] = {1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9}; //Averaging Filter
     float sharpeningFilter[] = {-1,-1,-1,-1,9,-1,-1,-1,-1}; //Sharpening Filter
-    float sobelFilter[] = {-1,0,1,-2,0,2,-1,0,1};
+    float sobelFilter[] = {-1,0,1,-2,0,2,-1,0,1}; //Sobel Filter
 
     //Apply serial convolution
     float *dDataAverage = (float*) malloc(size); //Output
@@ -69,8 +72,11 @@ int main(int argc, char **argv)
 
     float *dDataSobel = (float*) malloc(size); //Output
     convolveCPU(dDataSobel,hData,sobelFilter,width,height);
+
     // Write result to file
-    saveImage(dDataAverage,imagePath,1,width,height);
+    saveImage(dDataAverage,imagePath,averageName,width,height);
+    saveImage(dDataSharpen,imagePath,sharpenName,width,height);
+    saveImage(dDataSobel,imagePath,sobelName,width,height);
 
 
 
@@ -117,10 +123,16 @@ void printImage(float* hData, int width, int height){
 }
 
 //Save image to file
-void saveImage(float* dData,char* imagePath,int filter,int width, int height){
+void saveImage(float* dData,char* imagePath,const char* filter,int width, int height){
   char outputFilename[1024];
-  strcpy(outputFilename, imagePath);
-  strcpy(outputFilename + strlen(imagePath) - 3, "_out1.pgm");
+  char* sub = (char*) malloc(strlen(filter)+strlen("out"));
+  strcpy(sub,filter);
+  strcat(sub,"out");
+  int offset = strlen(imagePath)/sizeof(char) - 4;
+  strncpy(outputFilename,imagePath,offset);
+  outputFilename[offset] = '\0';
+  strcat(outputFilename,sub);
+  strcat(outputFilename,imagePath+offset);
   sdkSavePGM(outputFilename, dData, width, height);
-  printf("Wrote '%s'\n", outputFilename);
+  printf("Convolved in serial, saved to '%s'\n", outputFilename);
 }
