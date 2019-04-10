@@ -36,8 +36,11 @@ const char *averageName = "_average_";
 //Functions
 void printImage(float* hData, int width, int height);
 void saveImage(float* dData,char* imagePath,const char* filter,int width, int height, float time);
+
 void convolveCPU(float* dData, float*hData, float* filter, int width, int height);
+
 void applySerialConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size);
+void applyNaiveParallelConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Program main
@@ -79,6 +82,7 @@ int main(int argc, char **argv)
 
     //Apply naive parallelization implementation
     //TODO
+    printf("Beginning naive parallel convolution...\n");
 
     //Apply shared memory implementation
     //TODO
@@ -146,6 +150,10 @@ void saveImage(float* dData,char* imagePath,const char* filter,int width, int he
   printf("Convolved in serial in %f s, saved to '%s'\n", time, outputFilename);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Application Functions
+////////////////////////////////////////////////////////////////////////////////
+
 //Apply a filter in serial, time it and save result
 void applySerialConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size){
   float *dData = (float*) malloc(size); //Output
@@ -157,4 +165,31 @@ void applySerialConvolution(float* hData, float* filter, char* imagePath, const 
   float time = sdkGetTimerValue(&timer) / 1000.0f;
   sdkDeleteTimer(&timer);
   saveImage(dData,imagePath,name,width,height,time);
+}
+
+//Apply a filter in the naive parallel approach, time it and save result
+void applyNaiveParallelConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size){
+  //int devID = findCudaDevice(argc, (const char **) argv);
+  // Allocate device memory for result
+  float *dData = NULL;
+  // Allocate device memory and copy image data
+  checkCudaErrors(cudaMalloc((void **) &dData, size));
+  checkCudaErrors(cudaMemcpy(dData,hData,size,cudaMemcpyHostToDevice));
+  dim3 dimBlock(8, 8, 1);
+  dim3 dimGrid(width / dimBlock.x, height / dimBlock.y, 1);
+  checkCudaErrors(cudaDeviceSynchronize());
+  //Time
+  StopWatchInterface *timer = NULL;
+  sdkCreateTimer(&timer);
+  sdkStartTimer(&timer);
+  //Execute kernel
+  convolveGPUNaive<<<dimGrid, dimBlock, 0>>>(dData,hData,filter,width,height);
+  // Check if kernel execution generated an error
+  getLastCudaError("Kernel execution failed");
+
+  checkCudaErrors(cudaDeviceSynchronize());
+  sdkStopTimer(&timer);
+
+
+  cudaDeviceReset();
 }
