@@ -1,7 +1,7 @@
 /*
  *
  * This program takes an input grayscale image and applies a sepcified filter
- * using image convolution
+ * using image convolution, applying various parallelization approaches on the GPU
  */
 
 // Includes, system
@@ -26,6 +26,7 @@
 #include "helper_cuda.h"         // helper functions for CUDA error check
 
 #define MAX_EPSILON_ERROR 5e-3f
+#define CONST_FILTERSIZE 3
 
 //Image files
 const char *sobelName = "sobel";
@@ -33,8 +34,10 @@ const char *sharpenName = "sharpen";
 const char *averageName = "average";
 
 //Constant memory
-__constant__ float* constantImage;
-__constant__ float* constantFilter;
+__device__ __constant__ float constantFilter[9];
+
+// Texture reference for 2D float texture
+texture<float, 2, cudaReadModeElementType> tex;
 
 //Functions
 void printImage(float* hData, int width, int height);
@@ -53,6 +56,8 @@ float* applySerialConvolution(float* hData, float* filter, char* imagePath,
 void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, char* imagePath,
     const char* name, int width, int height, unsigned int size, int filtersize);
 void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath,
+    const char* name, int width, int height, unsigned int size, int filtersize);
+void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath,
     const char* name, int width, int height, unsigned int size, int filtersize);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -101,8 +106,36 @@ __global__ void convolveGPUNaive(float* dData,float* hData,float* filter,int wid
         x1 = x-s+adjust;
         y1 = y-t+adjust;
         if((x1>=0) && (x1<height) && (y1>=0) && (y1<width)){
+          sum += hData[x1*width+y1]*filter[s*filtersize+t];
+        }
+      }
+    }
+    if(sum>1){
+        sum = 1;
+    }
+    else if(sum<0){
+        sum = 0;
+    }
+    dData[x*width+y] = sum;
+  }
+}
+
+//Constant convolution
+__global__ void convolveGPUConstant(float* dData, float* image, int width, int height, int filtersize){
+  unsigned int x = threadIdx.x + blockDim.x*blockIdx.x;
+  unsigned int y = threadIdx.y + blockDim.y*blockIdx.y;
+
+  int adjust = filtersize/2;
+  int x1,y1;
+  if(x<height && y<width){
+    float sum = 0;
+    for(int s=0;s<filtersize;s++){
+      for(int t=0;t<filtersize;t++){
+        x1 = x-s+adjust;
+        y1 = y-t+adjust;
+        if((x1>=0) && (x1<height) && (y1>=0) && (y1<width)){
           if(x1*width+y1<width*height && s*filtersize+t<filtersize*filtersize){
-            sum += hData[x1*width+y1]*filter[s*filtersize+t];
+            sum += image[x1*width+y1]*constantFilter[s*filtersize+t];
           }
           else{
             printf("Hello\n");
@@ -121,38 +154,12 @@ __global__ void convolveGPUNaive(float* dData,float* hData,float* filter,int wid
   }
 }
 
-//Global convolution
-__global__ void convolveGPUConstant(float* dData, int width, int height, int filtersize){
+//Texture convolution
+__global__ void convolveGPUTexture(float* dData, float* image, int width, int height, int filtersize){
   unsigned int x = threadIdx.x + blockDim.x*blockIdx.x;
   unsigned int y = threadIdx.y + blockDim.y*blockIdx.y;
 
-  int adjust = filtersize/2;
-  int x1,y1;
-  if(x<height && y<width){
-    float sum = 0;
-    for(int s=0;s<filtersize;s++){
-      for(int t=0;t<filtersize;t++){
-        x1 = x-s+adjust;
-        y1 = y-t+adjust;
-        if((x1>=0) && (x1<height) && (y1>=0) && (y1<width)){
-          if(x1*width+y1<width*height && s*filtersize+t<filtersize*filtersize){
-            sum += constantImage[x1*width+y1]*constantFilter[s*filtersize+t];
-          }
-          else{
-            printf("Hello\n");
-          }
-
-        }
-      }
-    }
-    if(sum>1){
-        sum = 1;
-    }
-    else if(sum<0){
-        sum = 0;
-    }
-    dData[x*width+y] = sum;
-  }
+  
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -172,6 +179,7 @@ int main(int argc, char **argv)
     else{
       imageFilename = "lena_bw.pgm";
     }
+    printDivider();
     printf("Starting execution\n");
     //Load Image
     printf("Loading image: %s\n",imageFilename);
@@ -184,7 +192,7 @@ int main(int argc, char **argv)
     }
     sdkLoadPGM(imagePath, &hData, &width, &height);
     unsigned int size = width * height * sizeof(float);
-    printf("Loaded '%s', %d x %d pixels\n\n", imageFilename, width, height);
+    printf("Loaded '%s', %d x %d pixels", imageFilename, width, height);
 
     if(customFilter == 0){
       //Define Filter
@@ -194,6 +202,7 @@ int main(int argc, char **argv)
       float sobelFilter[] = {-1,0,1,-2,0,2,-1,0,1}; //Sobel Filter
 
       //Apply serial convolution
+      printDivider();
       printf("Beginning serial convolution...\n\n");
       float* refAverage = applySerialConvolution(hData,averagingFilter,imagePath,averageName,width,height,size,filtersize);
       float* refSharpen = applySerialConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size,filtersize);
@@ -213,13 +222,21 @@ int main(int argc, char **argv)
       //TODO
 
       //Apply constant memory implementation
-      //TODO
       printf("Beginning constant memory parallel convolution...\n\n");
       applyConstantMemoryConvolution(refAverage,hData,averagingFilter,imagePath,"averaging",width,height,size,filtersize);
+      applyConstantMemoryConvolution(refSharpen,hData,sharpeningFilter,imagePath,"sharpening",width,height,size,filtersize);
+      applyConstantMemoryConvolution(refSobel,hData,sobelFilter,imagePath,"Sobel",width,height,size,filtersize);
       printf("Finished constant memory parallel convolution!");
+      printDivider();
 
       //Apply texture memory implementation
       //TODO
+      printf("Beginning texture memory parallel convolution...\n\n");
+      applyTextureMemoryConvolution(refAverage,hData,averagingFilter,imagePath,"averaging",width,height,size,filtersize);
+      applyTextureMemoryConvolution(refSharpen,hData,sharpeningFilter,imagePath,"sharpening",width,height,size,filtersize);
+      applyTextureMemoryConvolution(refSobel,hData,sobelFilter,imagePath,"Sobel",width,height,size,filtersize);
+      printf("Finished texture memory parallel convolution!");
+      printDivider();
     }
     else{
       filtersize = atoi(argv[2]);
@@ -238,16 +255,12 @@ int main(int argc, char **argv)
       printf("Finished naive parallel convolution!");
       printDivider();
 
-      //Apply constant memory implementation
-      printf("Beginning constant memory parallel convolution...\n\n");
-      applyConstantMemoryConvolution(refCustom,hData,filter,imagePath,filterName,width,height,size,filtersize);
-      printf("Finished constant memory parallel convolution!");
-      printDivider();
-
     }
 
     //Free
     free(imagePath);
+
+    printf("Finished all tests!\n");
 
 }
 
@@ -407,10 +420,17 @@ void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, 
 void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
   //int devID = findCudaDevice(argc, (const char **) argv);
   // Allocate device memory for result
-  checkCudaErrors(cudaMemcpyToSymbol(constantImage,hData,size));
+  float *dData = NULL;
+  // Allocate device memory and copy image data
+  checkCudaErrors(cudaMalloc((void **) &dData, size));
+  checkCudaErrors(cudaMemcpy(dData,hData,size,cudaMemcpyHostToDevice));
 
   int fsize = filtersize*filtersize*sizeof(float);
-  checkCudaErrors(cudaMemcpyToSymbol(constantFilter,filter,fsize));
+  float my_filter[CONST_FILTERSIZE*CONST_FILTERSIZE];
+  for(int i=0;i<CONST_FILTERSIZE*CONST_FILTERSIZE;i++){
+    my_filter[i] = filter[i];
+  }
+  checkCudaErrors(cudaMemcpyToSymbol(constantFilter,my_filter,fsize));
 
   float *dOutput = NULL;
   checkCudaErrors(cudaMalloc((void **) &dOutput, size));
@@ -423,7 +443,7 @@ void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter,
   sdkCreateTimer(&timer);
   sdkStartTimer(&timer);
   //Execute kernel
-  convolveGPUConstant<<<dimGrid, dimBlock>>>(dOutput,width,height,filtersize);
+  convolveGPUConstant<<<dimGrid, dimBlock>>>(dOutput,dData,width,height,filtersize);
   // Check if kernel execution generated an error
   getLastCudaError("Kernel execution failed");
 
@@ -443,4 +463,63 @@ void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter,
   free(hOutput);
   checkCudaErrors(cudaFree(dOutput));
   cudaDeviceReset();
+}
+
+//Apply a filter in the texture memory parallel approach, time it and compare against serial version
+void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
+  // Allocate device memory for result
+  float *dData = NULL;
+  checkCudaErrors(cudaMalloc((void **) &dData, size));
+
+  // Allocate array and copy image data
+  cudaChannelFormatDesc channelDesc =
+      cudaCreateChannelDesc(32, 0, 0, 0, cudaChannelFormatKindFloat);
+  cudaArray *cuArray;
+  checkCudaErrors(cudaMallocArray(&cuArray,&channelDesc,width,height));
+  checkCudaErrors(cudaMemcpyToArray(cuArray,0,0,hData,size,cudaMemcpyHostToDevice));
+  // Set texture parameters
+  tex.addressMode[0] = cudaAddressModeWrap;
+  tex.addressMode[1] = cudaAddressModeWrap;
+  tex.filterMode = cudaFilterModeLinear;
+  tex.normalized = true;    // access with normalized texture coordinates
+  // Bind the array to the texture
+  checkCudaErrors(cudaBindTextureToArray(tex, cuArray, channelDesc));
+  //Grid and block stuff
+  dim3 dimBlock(8, 8, 1);
+  dim3 dimGrid(height / dimBlock.x, width / dimBlock.y, 1);
+  // Warmup
+  convolveGPUTexture<<<dimGrid, dimBlock>>>(dData,hData,width,height,filtersize);
+
+  checkCudaErrors(cudaDeviceSynchronize());
+  StopWatchInterface *timer = NULL;
+  sdkCreateTimer(&timer);
+  sdkStartTimer(&timer);
+
+  // Execute the kernel
+  convolveGPUTexture<<<dimGrid, dimBlock>>>(dData,hData,width,height,filtersize);
+
+  // Check if kernel execution generated an error
+  getLastCudaError("Kernel execution failed");
+
+  checkCudaErrors(cudaDeviceSynchronize());
+  sdkStopTimer(&timer);
+  float time = sdkGetTimerValue(&timer)/1000.0f;
+
+  // Allocate mem for the result on host side
+  float *hOutputData = (float *) malloc(size);
+  // copy result from device to host
+  checkCudaErrors(cudaMemcpy(hOutputData,dData,size,cudaMemcpyDeviceToHost));
+
+  compare(name,oldImage, hOutputData, width, height, time);
+  //saveImage(hOutput,imagePath,name,type,width,height,time);
+  sdkDeleteTimer(&timer);
+
+  free(hOutputData);
+
+  //Free
+  checkCudaErrors(cudaFree(dData));
+  checkCudaErrors(cudaFreeArray(cuArray));
+
+  cudaDeviceReset();
+
 }
