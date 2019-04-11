@@ -160,16 +160,16 @@ int main(int argc, char **argv)
       float* refSharpen = applySerialConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size,filtersize);
       float* refSobel = applySerialConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size,filtersize);
       printf("\nFinished serial convolution!");
-
       printDivider();
+
       //Apply naive parallelization implementation
       printf("Beginning naive parallel convolution...\n\n");
       applyNaiveParallelConvolution(refAverage,hData,averagingFilter,imagePath,"averaging",width,height,size,filtersize);
       applyNaiveParallelConvolution(refSharpen,hData,sharpeningFilter,imagePath,"sharpening",width,height,size,filtersize);
       applyNaiveParallelConvolution(refSobel,hData,sobelFilter,imagePath,"Sobel",width,height,size,filtersize);
       printf("Finished naive parallel convolution!");
-
       printDivider();
+
       //Apply shared memory implementation
       //TODO
 
@@ -191,13 +191,18 @@ int main(int argc, char **argv)
       printf("Beginning serial convolution...\n\n");
       float* refCustom = applySerialConvolution(hData,filter,imagePath,filterName,width,height,size,filtersize);
       printf("\nFinished serial convolution!");
-
       printDivider();
+
       //Apply naive parallelization implementation
       printf("Beginning naive parallel convolution...\n\n");
       applyNaiveParallelConvolution(refCustom,hData,filter,imagePath,filterName,width,height,size,filtersize);
       printf("Finished naive parallel convolution!");
+      printDivider();
 
+      //Apply constant memory implementation
+      printf("Beginning constant memory parallel convolution...\n\n");
+      applyConstantMemoryConvolution(refCustom,hData,averagingFilter,imagePath,filterName,width,height,size,filtersize);
+      printf("Finished constant memory parallel convolution!");
       printDivider();
 
     }
@@ -359,7 +364,52 @@ void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, 
   cudaDeviceReset();
 }
 
-//Apply a filter in the naive parallel approach, time it and compare against serial version
+//Apply a filter in the constant memory parallel approach, time it and compare against serial version
 void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
+  //int devID = findCudaDevice(argc, (const char **) argv);
+  // Allocate device memory for result
+  float* dData;
+  checkCudaErrors(cudaMalloc((void**) &dData, size));
 
+  __constant__ float* dData;
+  checkCudaErrors(cudaMemcpyToSymbol(dData,hData,size));
+
+  int fsize = filtersize*filtersize*sizeof(float);
+  float *dFilter = NULL;
+  checkCudaErrors(cudaMalloc((void **) &dFilter, fsize));
+  checkCudaErrors(cudaMemcpy(dFilter,filter,fsize,cudaMemcpyHostToDevice));
+
+  float *dOutput = NULL;
+  checkCudaErrors(cudaMalloc((void **) &dOutput, size));
+
+  dim3 dimBlock(8, 8, 1);
+  dim3 dimGrid(height / dimBlock.x, width / dimBlock.y, 1);
+  checkCudaErrors(cudaDeviceSynchronize());
+  //Time
+  StopWatchInterface *timer = NULL;
+  sdkCreateTimer(&timer);
+  sdkStartTimer(&timer);
+  //Execute kernel
+  convolveGPUNaive<<<dimGrid, dimBlock>>>(dOutput,dData,dFilter,width,height,filtersize);
+  // Check if kernel execution generated an error
+  getLastCudaError("Kernel execution failed");
+
+  checkCudaErrors(cudaDeviceSynchronize());
+  sdkStopTimer(&timer);
+  float time = sdkGetTimerValue(&timer)/1000.0f;
+  //const char* type = "naive";
+
+  // Allocate mem for the result on host side
+  float* hOutput = (float*) malloc(size);
+  checkCudaErrors(cudaMemcpy(hOutput,dOutput,size,cudaMemcpyDeviceToHost));
+
+  compare(name,oldImage, hOutput, width, height, time);
+  //saveImage(hOutput,imagePath,name,type,width,height,time);
+  sdkDeleteTimer(&timer);
+
+  free(hOutput);
+  checkCudaErrors(cudaFree(dData));
+  checkCudaErrors(cudaFree(dFilter));
+  checkCudaErrors(cudaFree(dOutput));
+  cudaDeviceReset();
 }
