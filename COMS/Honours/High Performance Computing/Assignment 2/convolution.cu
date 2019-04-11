@@ -41,9 +41,11 @@ void printDivider();
 void convolveCPU(float* dData, float*hData, float* filter,
     int width, int height, int filtersize);
 
-void applySerialConvolution(float* hData, float* filter, char* imagePath,
+void compare(const char* filterName, float* oldImage, float* newImage, int width, int height, float time);
+
+float* applySerialConvolution(float* hData, float* filter, char* imagePath,
     const char* name, int width, int height, unsigned int size, int filtersize);
-void applyNaiveParallelConvolution(float* hData, float* filter, char* imagePath,
+void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, char* imagePath,
     const char* name, int width, int height, unsigned int size, int filtersize);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -144,18 +146,18 @@ int main(int argc, char **argv)
     float sobelFilter[] = {-1,0,1,-2,0,2,-1,0,1}; //Sobel Filter
 
     //Apply serial convolution
-    printf("Beginning serial convolution...\n");
-    applySerialConvolution(hData,averagingFilter,imagePath,averageName,width,height,size,filtersize);
-    applySerialConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size,filtersize);
-    applySerialConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size,filtersize);
-    printf("Finished serial convolution!");
+    printf("Beginning serial convolution...\n\n");
+    float* refAverage = applySerialConvolution(hData,averagingFilter,imagePath,averageName,width,height,size,filtersize);
+    float* refSharpen = applySerialConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size,filtersize);
+    float* refSobel = applySerialConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size,filtersize);
+    printf("\nFinished serial convolution!");
 
     printDivider();
     //Apply naive parallelization implementation
-    printf("Beginning naive parallel convolution...\n");
-    applyNaiveParallelConvolution(hData,averagingFilter,imagePath,averageName,width,height,size,filtersize);
-    applyNaiveParallelConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size,filtersize);
-    applyNaiveParallelConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size,filtersize);
+    printf("Beginning naive parallel convolution...\n\n");
+    applyNaiveParallelConvolution(refAverage,hData,averagingFilter,imagePath,"averaging",width,height,size,filtersize);
+    applyNaiveParallelConvolution(refSharpen,hData,sharpeningFilter,imagePath,"sharpening",width,height,size,filtersize);
+    applyNaiveParallelConvolution(refSobel,hData,sobelFilter,imagePath,"Sobel",width,height,size,filtersize);
     printf("Finished naive parallel convolution!");
 
     printDivider();
@@ -171,6 +173,24 @@ int main(int argc, char **argv)
     //Free
     free(imagePath);
 
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Testing
+////////////////////////////////////////////////////////////////////////////////
+
+//Compare two images and print an accuracy
+void compare(const char* filterName, float* oldImage, float* newImage, int width, int height, float time){
+  //Compare data
+  float accurate = 0;
+  for(int i=0;i<height*width;i++){
+    if(abs(newImage[i]-oldImage[i])<MAX_EPSILON_ERROR){
+      accurate++;
+    }
+  }
+  //Print Accuracy
+  printf("Convolved image using %s filter in %f seconds!\n",filterName,time);
+  printf("Compared image to serial implementation: accuracy = %f percent\n\n",(100.0*accurate)/(width*height));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -214,7 +234,7 @@ void printDivider(){
 ////////////////////////////////////////////////////////////////////////////////
 
 //Apply a filter in serial, time it and save result
-void applySerialConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
+float* applySerialConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
   const char* type = "serial";
   float *dData = (float*) malloc(size); //Output
   StopWatchInterface *timer = NULL;
@@ -225,11 +245,11 @@ void applySerialConvolution(float* hData, float* filter, char* imagePath, const 
   float time = sdkGetTimerValue(&timer) / 1000.0f;
   sdkDeleteTimer(&timer);
   saveImage(dData,imagePath,name,type,width,height,time);
-  free(dData);
+  return dData;
 }
 
 //Apply a filter in the naive parallel approach, time it and save result
-void applyNaiveParallelConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
+void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
   //int devID = findCudaDevice(argc, (const char **) argv);
   // Allocate device memory for result
   float *dData = NULL;
@@ -260,13 +280,14 @@ void applyNaiveParallelConvolution(float* hData, float* filter, char* imagePath,
   checkCudaErrors(cudaDeviceSynchronize());
   sdkStopTimer(&timer);
   float time = sdkGetTimerValue(&timer)/1000.0f;
-  const char* type = "naive";
+  //const char* type = "naive";
 
   // Allocate mem for the result on host side
   float* hOutput = (float*) malloc(size);
   checkCudaErrors(cudaMemcpy(hOutput,dOutput,size,cudaMemcpyDeviceToHost));
 
-  saveImage(hOutput,imagePath,name,type,width,height,time);
+  compare(name,oldImage, hOutput, width, height, time);
+  //saveImage(hOutput,imagePath,name,type,width,height,time);
   sdkDeleteTimer(&timer);
 
   free(hOutput);
