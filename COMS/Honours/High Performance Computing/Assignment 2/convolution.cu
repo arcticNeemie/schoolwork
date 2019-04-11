@@ -48,6 +48,8 @@ float* applySerialConvolution(float* hData, float* filter, char* imagePath,
     const char* name, int width, int height, unsigned int size, int filtersize);
 void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, char* imagePath,
     const char* name, int width, int height, unsigned int size, int filtersize);
+void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath,
+    const char* name, int width, int height, unsigned int size, int filtersize);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Convolutions
@@ -173,6 +175,9 @@ int main(int argc, char **argv)
 
       //Apply constant memory implementation
       //TODO
+      printf("Beginning constant memory parallel convolution...\n\n");
+      applyConstantMemoryConvolution(refAverage,hData,averagingFilter,imagePath,"averaging",width,height,size,filtersize);
+      printf("Finished constant memory parallel convolution!");
 
       //Apply texture memory implementation
       //TODO
@@ -305,7 +310,7 @@ float* applySerialConvolution(float* hData, float* filter, char* imagePath, cons
   return dData;
 }
 
-//Apply a filter in the naive parallel approach, time it and save result
+//Apply a filter in the naive parallel approach, time it and compare against serial version
 void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
   //int devID = findCudaDevice(argc, (const char **) argv);
   // Allocate device memory for result
@@ -352,4 +357,9 @@ void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, 
   checkCudaErrors(cudaFree(dFilter));
   checkCudaErrors(cudaFree(dOutput));
   cudaDeviceReset();
+}
+
+//Apply a filter in the naive parallel approach, time it and compare against serial version
+void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
+
 }
