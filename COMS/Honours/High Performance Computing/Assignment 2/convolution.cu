@@ -28,15 +28,16 @@
 #define MAX_EPSILON_ERROR 5e-3f
 
 //Image files
-const char *sobelName = "_sobel_";
-const char *sharpenName = "_sharpen_";
-const char *averageName = "_average_";
+const char *sobelName = "sobel";
+const char *sharpenName = "sharpen";
+const char *averageName = "average";
 
 //Functions
 void printImage(float* hData, int width, int height);
 void saveImage(float* dData,char* imagePath,const char* filter,
     const char* type, int width, int height, float time);
 void printDivider();
+float* readCustomFilter(int filtersize, const char* filename);
 
 void convolveCPU(float* dData, float*hData, float* filter,
     int width, int height, int filtersize);
@@ -119,8 +120,13 @@ __global__ void convolveGPUNaive(float* dData,float* hData,float* filter,int wid
 int main(int argc, char **argv)
 {
     const char* imageFilename;
+    int customFilter = 0;
+    int filtersize;
     if(argc>1){
       imageFilename = argv[1];
+      if(argc>3){
+        customFilter = 1;
+      }
     }
     else{
       imageFilename = "lena_bw.pgm";
@@ -139,36 +145,57 @@ int main(int argc, char **argv)
     unsigned int size = width * height * sizeof(float);
     printf("Loaded '%s', %d x %d pixels\n\n", imageFilename, width, height);
 
-    //Define Filter
-    int filtersize = 3;
-    float averagingFilter[] = {1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9}; //Averaging Filter
-    float sharpeningFilter[] = {-1,-1,-1,-1,9,-1,-1,-1,-1}; //Sharpening Filter
-    float sobelFilter[] = {-1,0,1,-2,0,2,-1,0,1}; //Sobel Filter
+    if(customFilter == 0){
+      //Define Filter
+      filtersize = 3;
+      float averagingFilter[] = {1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9}; //Averaging Filter
+      float sharpeningFilter[] = {-1,-1,-1,-1,9,-1,-1,-1,-1}; //Sharpening Filter
+      float sobelFilter[] = {-1,0,1,-2,0,2,-1,0,1}; //Sobel Filter
 
-    //Apply serial convolution
-    printf("Beginning serial convolution...\n\n");
-    float* refAverage = applySerialConvolution(hData,averagingFilter,imagePath,averageName,width,height,size,filtersize);
-    float* refSharpen = applySerialConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size,filtersize);
-    float* refSobel = applySerialConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size,filtersize);
-    printf("\nFinished serial convolution!");
+      //Apply serial convolution
+      printf("Beginning serial convolution...\n\n");
+      float* refAverage = applySerialConvolution(hData,averagingFilter,imagePath,averageName,width,height,size,filtersize);
+      float* refSharpen = applySerialConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size,filtersize);
+      float* refSobel = applySerialConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size,filtersize);
+      printf("\nFinished serial convolution!");
 
-    printDivider();
-    //Apply naive parallelization implementation
-    printf("Beginning naive parallel convolution...\n\n");
-    applyNaiveParallelConvolution(refAverage,hData,averagingFilter,imagePath,"averaging",width,height,size,filtersize);
-    applyNaiveParallelConvolution(refSharpen,hData,sharpeningFilter,imagePath,"sharpening",width,height,size,filtersize);
-    applyNaiveParallelConvolution(refSobel,hData,sobelFilter,imagePath,"Sobel",width,height,size,filtersize);
-    printf("Finished naive parallel convolution!");
+      printDivider();
+      //Apply naive parallelization implementation
+      printf("Beginning naive parallel convolution...\n\n");
+      applyNaiveParallelConvolution(refAverage,hData,averagingFilter,imagePath,"averaging",width,height,size,filtersize);
+      applyNaiveParallelConvolution(refSharpen,hData,sharpeningFilter,imagePath,"sharpening",width,height,size,filtersize);
+      applyNaiveParallelConvolution(refSobel,hData,sobelFilter,imagePath,"Sobel",width,height,size,filtersize);
+      printf("Finished naive parallel convolution!");
 
-    printDivider();
-    //Apply shared memory implementation
-    //TODO
+      printDivider();
+      //Apply shared memory implementation
+      //TODO
 
-    //Apply constant memory implementation
-    //TODO
+      //Apply constant memory implementation
+      //TODO
 
-    //Apply texture memory implementation
-    //TODO
+      //Apply texture memory implementation
+      //TODO
+    }
+    else{
+      filtersize = atoi(argv[2]);
+      const char* filterName = argv[3];
+      //Load custom filter from file
+      float* filter = readCustomFilter(filtersize,filterName);
+      //Apply serial convolution
+      printf("Beginning serial convolution...\n\n");
+      float* refCustom = applySerialConvolution(hData,filter,imagePath,filterName,width,height,size,filtersize);
+      printf("\nFinished serial convolution!");
+
+      printDivider();
+      //Apply naive parallelization implementation
+      printf("Beginning naive parallel convolution...\n\n");
+      applyNaiveParallelConvolution(refCustom,hData,filter,imagePath,filterName,width,height,size,filtersize);
+      printf("Finished naive parallel convolution!");
+
+      printDivider();
+
+    }
 
     //Free
     free(imagePath);
@@ -210,8 +237,10 @@ void printImage(float* hData, int width, int height){
 //Save image to file
 void saveImage(float* dData,char* imagePath,const char* filter, const char* type, int width, int height, float time){
   char outputFilename[1024];
-  char* sub = (char*) malloc(strlen(filter)+strlen("out"));
-  strcpy(sub,filter);
+  char* sub = (char*) malloc(strlen(filter)+strlen("out")+2*sizeof(char));
+  strcpy(sub,"_");
+  strcat(sub,filter);
+  strcat(sub,"_");
   strcat(sub,type);
   strcat(sub,"_out");
   int offset = strlen(imagePath)/sizeof(char) - 4;
@@ -227,6 +256,34 @@ void saveImage(float* dData,char* imagePath,const char* filter, const char* type
 //Used to divide output in the terminal
 void printDivider(){
   printf("\n\n=========================\n\n");
+}
+
+//Read in from file
+float* readCustomFilter(int filtersize, const char* filename){
+  FILE* f;
+  char* newFilename = (char*)malloc(strlen(filename));
+  strncpy(newFilename,filename,strlen(filename));
+  newFilename[strlen(filename)/sizeof(char)] = '\0';
+  strcat(newFilename,".txt");
+  f = fopen(newFilename,"r");
+  if(f==NULL){
+    printf("Error reading custom filter %s\n",newFilename);
+    exit(-1);
+  }
+
+  char* line = (char*)malloc(1024*sizeof(char));
+
+  float* filter = (float*) malloc(filtersize*filtersize*sizeof(float));
+  for(int i=0;i<filtersize*filtersize;i++){
+    fgets(line,1024,f);
+    filter[i] = atof(line);
+  }
+
+  free(line);
+  free(newFilename);
+
+  fclose(f);
+  return filter;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
