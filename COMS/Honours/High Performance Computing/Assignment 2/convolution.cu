@@ -32,6 +32,10 @@ const char *sobelName = "sobel";
 const char *sharpenName = "sharpen";
 const char *averageName = "average";
 
+//Constant memory
+__constant__ float* constantImage;
+__constant__ float* constantFilter;
+
 //Functions
 void printImage(float* hData, int width, int height);
 void saveImage(float* dData,char* imagePath,const char* filter,
@@ -83,6 +87,7 @@ void convolveCPU(float* dData, float*hData, float* filter, int width, int height
   }
 }
 
+//Naive Parallel convolution
 __global__ void convolveGPUNaive(float* dData,float* hData,float* filter,int width,int height, int filtersize){
   unsigned int x = threadIdx.x + blockDim.x*blockIdx.x;
   unsigned int y = threadIdx.y + blockDim.y*blockIdx.y;
@@ -98,6 +103,40 @@ __global__ void convolveGPUNaive(float* dData,float* hData,float* filter,int wid
         if((x1>=0) && (x1<height) && (y1>=0) && (y1<width)){
           if(x1*width+y1<width*height && s*filtersize+t<filtersize*filtersize){
             sum += hData[x1*width+y1]*filter[s*filtersize+t];
+          }
+          else{
+            printf("Hello\n");
+          }
+
+        }
+      }
+    }
+    if(sum>1){
+        sum = 1;
+    }
+    else if(sum<0){
+        sum = 0;
+    }
+    dData[x*width+y] = sum;
+  }
+}
+
+//Global convolution
+__global__ void convolveGPUConstant(float* dData, int width, int height, int filtersize){
+  unsigned int x = threadIdx.x + blockDim.x*blockIdx.x;
+  unsigned int y = threadIdx.y + blockDim.y*blockIdx.y;
+
+  int adjust = filtersize/2;
+  int x1,y1;
+  if(x<height && y<width){
+    float sum = 0;
+    for(int s=0;s<filtersize;s++){
+      for(int t=0;t<filtersize;t++){
+        x1 = x-s+adjust;
+        y1 = y-t+adjust;
+        if((x1>=0) && (x1<height) && (y1>=0) && (y1<width)){
+          if(x1*width+y1<width*height && s*filtersize+t<filtersize*filtersize){
+            sum += constantImage[x1*width+y1]*constantFilter[s*filtersize+t];
           }
           else{
             printf("Hello\n");
@@ -201,7 +240,7 @@ int main(int argc, char **argv)
 
       //Apply constant memory implementation
       printf("Beginning constant memory parallel convolution...\n\n");
-      applyConstantMemoryConvolution(refCustom,hData,averagingFilter,imagePath,filterName,width,height,size,filtersize);
+      applyConstantMemoryConvolution(refCustom,hData,filter,imagePath,filterName,width,height,size,filtersize);
       printf("Finished constant memory parallel convolution!");
       printDivider();
 
@@ -368,16 +407,10 @@ void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, 
 void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
   //int devID = findCudaDevice(argc, (const char **) argv);
   // Allocate device memory for result
-  float* dData;
-  checkCudaErrors(cudaMalloc((void**) &dData, size));
-
-  __constant__ float* dData;
-  checkCudaErrors(cudaMemcpyToSymbol(dData,hData,size));
+  checkCudaErrors(cudaMemcpyToSymbol(constantImage,hData,size));
 
   int fsize = filtersize*filtersize*sizeof(float);
-  float *dFilter = NULL;
-  checkCudaErrors(cudaMalloc((void **) &dFilter, fsize));
-  checkCudaErrors(cudaMemcpy(dFilter,filter,fsize,cudaMemcpyHostToDevice));
+  checkCudaErrors(cudaMemcpyToSymbol(constantFilter,filter,fsize));
 
   float *dOutput = NULL;
   checkCudaErrors(cudaMalloc((void **) &dOutput, size));
@@ -390,7 +423,7 @@ void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter,
   sdkCreateTimer(&timer);
   sdkStartTimer(&timer);
   //Execute kernel
-  convolveGPUNaive<<<dimGrid, dimBlock>>>(dOutput,dData,dFilter,width,height,filtersize);
+  convolveGPUConstant<<<dimGrid, dimBlock>>>(dOutput,width,height,filtersize);
   // Check if kernel execution generated an error
   getLastCudaError("Kernel execution failed");
 
@@ -408,8 +441,6 @@ void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter,
   sdkDeleteTimer(&timer);
 
   free(hOutput);
-  checkCudaErrors(cudaFree(dData));
-  checkCudaErrors(cudaFree(dFilter));
   checkCudaErrors(cudaFree(dOutput));
   cudaDeviceReset();
 }
