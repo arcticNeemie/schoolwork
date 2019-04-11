@@ -36,6 +36,7 @@ const char *averageName = "_average_";
 void printImage(float* hData, int width, int height);
 void saveImage(float* dData,char* imagePath,const char* filter,
     const char* type, int width, int height, float time);
+void printDivider();
 
 void convolveCPU(float* dData, float*hData, float* filter,
     int width, int height, int filtersize);
@@ -89,7 +90,7 @@ __global__ void convolveGPUNaive(float* dData,float* hData,float* filter,int wid
       for(int t=0;t<filtersize;t++){
         x1 = x-s+adjust;
         y1 = y-t+adjust;
-        if(x1>=0 && x1<height && y1>=0 && y1<width){
+        if((x1>=0) && (x1<height) && (y1>=0) && (y1<width)){
           if(x1*width+y1<width*height && s*filtersize+t<filtersize*filtersize){
             sum += hData[x1*width+y1]*filter[s*filtersize+t];
           }
@@ -147,13 +148,17 @@ int main(int argc, char **argv)
     applySerialConvolution(hData,averagingFilter,imagePath,averageName,width,height,size,filtersize);
     applySerialConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size,filtersize);
     applySerialConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size,filtersize);
-    printf("Finished serial convolution!\n\n");
+    printf("Finished serial convolution!");
 
+    printDivider();
     //Apply naive parallelization implementation
-    //TODO
     printf("Beginning naive parallel convolution...\n");
     applyNaiveParallelConvolution(hData,averagingFilter,imagePath,averageName,width,height,size,filtersize);
+    applyNaiveParallelConvolution(hData,sharpeningFilter,imagePath,sharpenName,width,height,size,filtersize);
+    applyNaiveParallelConvolution(hData,sobelFilter,imagePath,sobelName,width,height,size,filtersize);
+    printf("Finished naive parallel convolution!");
 
+    printDivider();
     //Apply shared memory implementation
     //TODO
 
@@ -172,7 +177,7 @@ int main(int argc, char **argv)
 // Utility Functions
 ////////////////////////////////////////////////////////////////////////////////
 
-//Print out the image as a matrix
+//Print out the image as a matrix (for testing purposes)
 void printImage(float* hData, int width, int height){
     for(int i=0;i<height;i++){
         for(int j=0;j<width;j++){
@@ -197,6 +202,11 @@ void saveImage(float* dData,char* imagePath,const char* filter, const char* type
   sdkSavePGM(outputFilename, dData, width, height);
   printf("Convolved in serial in %f s, saved to '%s'\n", time, outputFilename);
   free(sub);
+}
+
+//Used to divide output in the terminal
+void printDivider(){
+  printf("\n\n=========================\n\n");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -232,6 +242,9 @@ void applyNaiveParallelConvolution(float* hData, float* filter, char* imagePath,
   checkCudaErrors(cudaMalloc((void **) &dFilter, fsize));
   checkCudaErrors(cudaMemcpy(dFilter,filter,fsize,cudaMemcpyHostToDevice));
 
+  float *dOutput = NULL;
+  checkCudaErrors(cudaMalloc((void **) &dOutput, size));
+
   dim3 dimBlock(8, 8, 1);
   dim3 dimGrid(height / dimBlock.x, width / dimBlock.y, 1);
   checkCudaErrors(cudaDeviceSynchronize());
@@ -240,7 +253,7 @@ void applyNaiveParallelConvolution(float* hData, float* filter, char* imagePath,
   sdkCreateTimer(&timer);
   sdkStartTimer(&timer);
   //Execute kernel
-  convolveGPUNaive<<<dimGrid, dimBlock,0>>>(dData,hData,dFilter,width,height,filtersize);
+  convolveGPUNaive<<<dimGrid, dimBlock>>>(dOutput,dData,dFilter,width,height,filtersize);
   // Check if kernel execution generated an error
   getLastCudaError("Kernel execution failed");
 
@@ -250,12 +263,15 @@ void applyNaiveParallelConvolution(float* hData, float* filter, char* imagePath,
   const char* type = "naive";
 
   // Allocate mem for the result on host side
-  float *hOutputData = (float *) malloc(size);
-  //Copy result from device to host
-  checkCudaErrors(cudaMemcpy(hOutputData,dData,size,cudaMemcpyDeviceToHost));
+  float* hOutput = (float*) malloc(size);
+  checkCudaErrors(cudaMemcpy(hOutput,dOutput,size,cudaMemcpyDeviceToHost));
 
-  saveImage(hOutputData,imagePath,name,type,width,height,time);
+  saveImage(hOutput,imagePath,name,type,width,height,time);
   sdkDeleteTimer(&timer);
 
+  free(hOutput);
+  checkCudaErrors(cudaFree(dData));
+  checkCudaErrors(cudaFree(dFilter));
+  checkCudaErrors(cudaFree(dOutput));
   cudaDeviceReset();
 }
