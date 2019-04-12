@@ -134,13 +134,7 @@ __global__ void convolveGPUConstant(float* dData, float* image, int width, int h
         x1 = x-s+adjust;
         y1 = y-t+adjust;
         if((x1>=0) && (x1<height) && (y1>=0) && (y1<width)){
-          if(x1*width+y1<width*height && s*filtersize+t<filtersize*filtersize){
-            sum += image[x1*width+y1]*constantFilter[s*filtersize+t];
-          }
-          else{
-            printf("Hello\n");
-          }
-
+          sum += image[x1*width+y1]*constantFilter[s*filtersize+t];
         }
       }
     }
@@ -155,18 +149,38 @@ __global__ void convolveGPUConstant(float* dData, float* image, int width, int h
 }
 
 //Texture convolution
-__global__ void convolveGPUTexture(float* dData, float* image, int width, int height, int filtersize){
+__global__ void convolveGPUTexture(float* dData,float* hData,float* filter,int width,int height, int filtersize){
   unsigned int x = threadIdx.x + blockDim.x*blockIdx.x;
   unsigned int y = threadIdx.y + blockDim.y*blockIdx.y;
-
-  
+  int adjust = filtersize/2;
+  int x1,y1;
+  float coords = 0.5;
+  if(x<height && y<width){
+    float sum = 0;
+    for(int s=0;s<filtersize;s++){
+      for(int t=0;t<filtersize;t++){
+        x1 = x-s+adjust;
+        y1 = y-t+adjust;
+        if((x1>=0) && (x1<height) && (y1>=0) && (y1<width)){
+            sum += tex2D(tex,(y1+coords)/(float)width,(x1+coords)/(float)height)*filter[s*filtersize+t];
+        }
+      }
+    }
+    if(sum>1){
+        sum = 1;
+    }
+    else if(sum<0){
+        sum = 0;
+    }
+    dData[x*width+y] = sum;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Program main
 ////////////////////////////////////////////////////////////////////////////////
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
+
     const char* imageFilename;
     int customFilter = 0;
     int filtersize;
@@ -471,6 +485,12 @@ void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, 
   float *dData = NULL;
   checkCudaErrors(cudaMalloc((void **) &dData, size));
 
+  //Allocate device memory for filter
+  int fsize = filtersize*filtersize*sizeof(float);
+  float *dFilter = NULL;
+  checkCudaErrors(cudaMalloc((void **) &dFilter, fsize));
+  checkCudaErrors(cudaMemcpy(dFilter,filter,fsize,cudaMemcpyHostToDevice));
+
   // Allocate array and copy image data
   cudaChannelFormatDesc channelDesc =
       cudaCreateChannelDesc(32, 0, 0, 0, cudaChannelFormatKindFloat);
@@ -487,8 +507,6 @@ void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, 
   //Grid and block stuff
   dim3 dimBlock(8, 8, 1);
   dim3 dimGrid(height / dimBlock.x, width / dimBlock.y, 1);
-  // Warmup
-  convolveGPUTexture<<<dimGrid, dimBlock>>>(dData,hData,width,height,filtersize);
 
   checkCudaErrors(cudaDeviceSynchronize());
   StopWatchInterface *timer = NULL;
@@ -496,7 +514,7 @@ void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, 
   sdkStartTimer(&timer);
 
   // Execute the kernel
-  convolveGPUTexture<<<dimGrid, dimBlock>>>(dData,hData,width,height,filtersize);
+  convolveGPUTexture<<<dimGrid, dimBlock>>>(dData,hData,dFilter,width,height,filtersize);
 
   // Check if kernel execution generated an error
   getLastCudaError("Kernel execution failed");
@@ -511,7 +529,7 @@ void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, 
   checkCudaErrors(cudaMemcpy(hOutputData,dData,size,cudaMemcpyDeviceToHost));
 
   compare(name,oldImage, hOutputData, width, height, time);
-  //saveImage(hOutput,imagePath,name,type,width,height,time);
+  //saveImage(hOutputData,imagePath,name,"texture",width,height,time);
   sdkDeleteTimer(&timer);
 
   free(hOutputData);
