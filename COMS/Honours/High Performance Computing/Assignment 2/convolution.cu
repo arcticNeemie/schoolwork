@@ -27,6 +27,7 @@
 
 #define MAX_EPSILON_ERROR 5e-3f
 #define CONST_FILTERSIZE 3
+#define TILEWIDTH 16
 
 //Image files
 const char *sobelName = "sobel";
@@ -45,6 +46,7 @@ void saveImage(float* dData,char* imagePath,const char* filter,
     const char* type, int width, int height, float time);
 void printDivider();
 float* readCustomFilter(int filtersize, const char* filename);
+float* padArray(float* array, int pad, int width, int height);
 
 void convolveCPU(float* dData, float*hData, float* filter,
     int width, int height, int filtersize);
@@ -178,6 +180,66 @@ __global__ void convolveGPUTexture(float* dData,float* hData,float* filter,int w
   }
 }
 
+//Shared memory convolution
+__global__ void convolveGPUShared(float* dData,float* hData,float* filter,int width,int height, int filtersize){
+  unsigned int bx = blockIdx.x;
+  unsigned int by = blockIdx.y;
+  unsigned int tx = threadIdx.x;
+  unsigned int ty = threadIdx.y;
+  int x = tx+bx*blockDim.x;
+  int y = ty+by*blockDim.y;
+
+  int adjust = filtersize/2;
+  const int tileAdjust = 2*(CONST_FILTERSIZE/2);
+  int tx1,ty1;
+  __shared__ float image[TILEWIDTH+tileAdjust][TILEWIDTH+tileAdjust];
+  int adjustedTilesize = (TILEWIDTH+tileAdjust);
+  if(x<=adjust || x>=height || y<=adjust || y>=width){
+    dData[x*width+y] = 0;
+  }
+  else{
+    //Load into shared memory
+    int blockID = by + adjustedTilesize*bx;
+    int ix,iy;
+    for(int i=blockID;i<adjustedTilesize*adjustedTilesize;i+=adjustedTilesize){
+      ix = (i - adjustedTilesize*(i/adjustedTilesize))+blockDim.x*bx;
+      iy = (i/adjustedTilesize)+blockDim.y*by;
+      image[(i - adjustedTilesize*(i/adjustedTilesize))][(i/adjustedTilesize)] = hData[ix*width+iy];
+    }
+    /*
+    for(int i=0;i<TILEWIDTH+tileAdjust;i++){
+      for(int j=0;j<TILEWIDTH+tileAdjust;j++){
+        if(i==0 || i==TILEWIDTH+tileAdjust-1 || j==0 || j==TILEWIDTH+tileAdjust-1){
+          image[i][j] = hData[((TILEWIDTH-adjust)*bx+i)*width+(TILEWIDTH-adjust)+by+j];
+        }
+      }
+    }
+    */
+    //image[tx+adjust][ty+adjust] = hData[(row-adjust)*width+(col-adjust)];
+    __syncthreads();
+
+    float sum = 0;
+    for(int s=0;s<filtersize;s++){
+      for(int t=0;t<filtersize;t++){
+        tx1 = tx-s+adjust;
+        ty1 = ty-t+adjust;
+        if(tx1>=0 && tx1<TILEWIDTH && ty1>=0 && ty1<TILEWIDTH){
+          sum += image[tx1+adjust][ty1+adjust]*filter[s*filtersize+t];
+        }
+      }
+    }
+    __syncthreads();
+    if(sum>1){
+        sum = 1;
+    }
+    else if(sum<0){
+        sum = 0;
+    }
+    dData[x*width+y] = sum;
+  }
+
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // Program main
 ////////////////////////////////////////////////////////////////////////////////
@@ -236,6 +298,12 @@ int main(int argc, char **argv){
 
       //Apply shared memory implementation
       //TODO
+      printf("Beginning shared memory parallel convolution...\n\n");
+      applySharedMemoryConvolution(refAverage,hData,averagingFilter,imagePath,"averaging",width,height,size,filtersize);
+      applySharedMemoryConvolution(refSharpen,hData,sharpeningFilter,imagePath,"sharpening",width,height,size,filtersize);
+      applySharedMemoryConvolution(refSobel,hData,sobelFilter,imagePath,"Sobel",width,height,size,filtersize);
+      printf("Finished shared memory parallel convolution!");
+      printDivider();
 
       //Apply constant memory implementation
       printf("Beginning constant memory parallel convolution...\n\n");
@@ -311,7 +379,7 @@ void compare(const char* filterName, float* oldImage, float* newImage, int width
 void printImage(float* hData, int width, int height){
     for(int i=0;i<height;i++){
         for(int j=0;j<width;j++){
-            printf("%f",hData[i*height+j]);
+            printf("%f ",hData[i*height+j]);
         }
         printf("\n");
     }
@@ -367,6 +435,38 @@ float* readCustomFilter(int filtersize, const char* filename){
 
   fclose(f);
   return filter;
+}
+
+//Pads an array with 0s
+float* padArray(float* array, int pad, int width, int height){
+  int newWidth = width + 2*pad;
+  int newHeight = height + 2*pad;
+  float* newArray = (float*) malloc(newWidth*newHeight*sizeof(float));
+  for(int i=0;i<newHeight;i++){
+    for(int j=0;j<newWidth;j++){
+      if(i==0 || i==newHeight-1){
+        newArray[i*newWidth+j] = 0;
+      }
+      else if(j==0 || j==newWidth-1){
+        newArray[i*newWidth+j] = 0;
+      }
+      else{
+        newArray[i*newWidth+j] = array[(i-1)*width+(j-1)];
+      }
+    }
+  }
+  return newArray;
+}
+
+//Removes padding
+float* unPad(float* array, int pad, int width, int height){
+  float* newArray = (float*) malloc(width*height*sizeof(float));
+  for(int i=0;i<height;i++){
+    for(int j=0;j<width;j++){
+      newArray[i*width+j] = array[(i+pad)*(width+2*pad)+(j+pad)];
+    }
+  }
+  return newArray;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -545,6 +645,64 @@ void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, 
   checkCudaErrors(cudaFree(dData));
   checkCudaErrors(cudaFreeArray(cuArray));
 
+  cudaDeviceReset();
+}
+
+//Apply a filter in the shared memory parallel approach, time it and compare against serial version
+void applySharedMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size, int filtersize){
+  int adjust = filtersize/2;
+  int padSize = (width+2*adjust)*(height+2*adjust)*sizeof(float);
+  float* padHData = padArray(hData,adjust,width,height);
+  //Image
+  float *dData = NULL;
+  checkCudaErrors(cudaMalloc((void **) &dData, padSize));
+  checkCudaErrors(cudaMemcpy(dData,padHData,padSize,cudaMemcpyHostToDevice));
+
+  //Filter
+  int fsize = filtersize*filtersize*sizeof(float);
+  float *dFilter = NULL;
+  checkCudaErrors(cudaMalloc((void **) &dFilter, fsize));
+  checkCudaErrors(cudaMemcpy(dFilter,filter,fsize,cudaMemcpyHostToDevice));
+
+  //Output
+  float *dOutput = NULL;
+  checkCudaErrors(cudaMalloc((void **) &dOutput, padSize));
+
+  //Block
+  dim3 dimBlock(TILEWIDTH, TILEWIDTH, 1);
+  dim3 dimGrid(height / dimBlock.x, width / dimBlock.y, 1);
+  //printf("dimBlock: %i,%i,%i\n",dimBlock.x,dimBlock.y,dimBlock.z);
+  //printf("dimGrid: %i,%i,%i\n",dimGrid.x,dimGrid.y,dimGrid.z);
+  checkCudaErrors(cudaDeviceSynchronize());
+
+  //Time
+  StopWatchInterface *timer = NULL;
+  sdkCreateTimer(&timer);
+  sdkStartTimer(&timer);
+  //Execute kernel
+  convolveGPUShared<<<dimGrid, dimBlock>>>(dOutput,dData,dFilter,width+2*adjust,height+2*adjust,filtersize);
+  // Check if kernel execution generated an error
+  getLastCudaError("Kernel execution failed");
+
+  checkCudaErrors(cudaDeviceSynchronize());
+  sdkStopTimer(&timer);
+  float time = sdkGetTimerValue(&timer)/1000.0f;
+  //const char* type = "naive";
+
+  // Allocate mem for the result on host side
+  float* hOutput = (float*) malloc(padSize);
+  checkCudaErrors(cudaMemcpy(hOutput,dOutput,padSize,cudaMemcpyDeviceToHost));
+
+  float* finalImage = unPad(hOutput,adjust,width,height);
+
+  compare(name,oldImage, finalImage, width, height, time);
+  saveImage(finalImage,imagePath,name,"shared",width,height,time);
+  sdkDeleteTimer(&timer);
+
+  free(hOutput);
+  checkCudaErrors(cudaFree(dData));
+  checkCudaErrors(cudaFree(dFilter));
+  checkCudaErrors(cudaFree(dOutput));
   cudaDeviceReset();
 
 }
