@@ -59,6 +59,8 @@ void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter,
     const char* name, int width, int height, unsigned int size, int filtersize);
 void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath,
     const char* name, int width, int height, unsigned int size, int filtersize);
+void applySharedMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath,
+    const char* name, int width, int height, unsigned int size, int filtersize);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Convolutions
@@ -244,7 +246,6 @@ int main(int argc, char **argv){
       printDivider();
 
       //Apply texture memory implementation
-      //TODO
       printf("Beginning texture memory parallel convolution...\n\n");
       applyTextureMemoryConvolution(refAverage,hData,averagingFilter,imagePath,"averaging",width,height,size,filtersize);
       applyTextureMemoryConvolution(refSharpen,hData,sharpeningFilter,imagePath,"sharpening",width,height,size,filtersize);
@@ -267,6 +268,12 @@ int main(int argc, char **argv){
       printf("Beginning naive parallel convolution...\n\n");
       applyNaiveParallelConvolution(refCustom,hData,filter,imagePath,filterName,width,height,size,filtersize);
       printf("Finished naive parallel convolution!");
+      printDivider();
+
+      //Apply texture memory parallelization implementation
+      printf("Beginning texture memory parallel convolution...\n\n");
+      applyTextureMemoryConvolution(refCustom,hData,filter,imagePath,filterName,width,height,size,filtersize);
+      printf("Finished texture memory parallel convolution!");
       printDivider();
 
     }
