@@ -21,13 +21,13 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass{resume} % Use the custom resume.cls style
-
+\usepackage{hyperref}
 \usepackage[left=0.75in,top=0.6in,right=0.75in,bottom=0.6in]{geometry} % Document margins
 \newcommand{\tab}[1]{\hspace{.2667\textwidth}\rlap{#1}}
 \newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
 \name{Tamlin Love} % Your name
 %\address{156 Kasturi, Balajinagar, Sangli 416416} % Your address
-\address{\textbf{Github: }https://github.com/tamlinlove} % Your secondary addess (optional)
+\address{\textbf{Github: }\url{https://github.com/tamlinlove}} % Your secondary addess (optional)
 \address{(+27)79 226 3814 \\ tamlinlollislove@gmail.com} % Your phone number and email
 
 \begin{document}
@@ -56,6 +56,9 @@
 \begin{rSection}{Projects}
 {\bf Building Bayesian Influence Ontologies}
 \\This project, which is currently in progess under supervision by Dr. Ritesh Ajoodha, aims to develop a method by which the influence between interacting models can be modeled as a Bayesian network and learned from data using score-based structure learning techniques. Example applications include plagiarism detection and detecting influence between musical pieces.\\
+{\bf Wits Moodle Marker Extension}
+\\ \url{https://github.com/theWronskians/moodle_dev}
+\\This project extended the existing moodle plugin used by Wits to automatically mark code submissions. It was extended to incorporate more feedback, integrate with multiple marking servers and better handle the marking of Matlab code.\\
 
 \end{rSection}
 %----------------------------------------------------------------------------------------
@@ -63,7 +66,7 @@
 %----------------------------------------------------------------------------------------
 
 \begin{rSection}{Technical Skills}
-\textbf{Programming} - Python, C, C++, Java, Matlab, Javascript
+\textbf{Programming} - Python, C, C++, Java, Matlab, Javascript, PHP
 \\
 \textbf{Computer Science} - Machine Learning (specialising in probabilistic graphical models), Image Processing, High Performance Computing, Software Design
 \end{rSection}
@@ -86,15 +89,45 @@
 
 %	EXAMPLE SECTION
 %----------------------------------------------------------------------------------------
-
-\begin{rSection}{Academic Achievements} 
+\newpage
+\begin{rSection}{Marks}
 {\bf University of the Witwatersrand}
-\item 2018 - Recipient of the Liberty Life Gold Medal for outstanding performance in Computer Science III
-\item 2018 - Awarded the prize for top student in Computational and Applied Mathematics III
-\item 2018 - Recipient of the Herbert Le May Prize for the best third year science student majoring in Applied Mathematics
-\item 2016-2018 - Achieved a spot on the Dean's List in the 1st, 2nd and 3rd years of study
-\\{\bf St John's College}
-\item 2015 - Received 8 distinctions in the 2015 NSC IEB Matric Examinations with an aggregate of 90\%
+\item 2018
+\begin{itemize}
+	\item Computational and Applied Mathematics III - 86\%
+	\item Formal Languages and Automata III - 90\%
+	\item Advanced Analysis of Algorithms III - 84\%
+	\item Computer Graphics and Visualisation III - 90\%
+	\item Machine Learning III - 90\%
+	\item Software Design III - 70\%
+\end{itemize}
+\item 2017
+\begin{itemize}
+	\item Computational and Applied Mathematics II - 81\%
+	\item Operating Systems II - 82\%
+	\item Database Fundamentals II - 93\%
+	\item Mobile Computing II - 98\%
+	\item Computer Networks II - 84\%
+	\item Analysis of Algorithms II - 96\%
+	\item Abstract Mathematics II - 88\%
+	\item Linear Algebra II - 75\%
+	\item Multivariable Calculus II - 63\%
+	\item Introductory Analysis II - 61\%
+	\item Introduction to Mathematical Statistics II - 85\%
+\end{itemize}
+\item 2016
+\begin{itemize}
+	\item Computational and Applied Mathematics I - 80\%
+	\item Basic Computer Organisation I - 90\%
+	\item Discrete Computational Structures I - 89\%
+	\item Introduction to Data Structures and Algorithms I - 94\%
+	\item Introduction to Algorithms and Programming I - 95\%
+	\item Algebra I - 70\%
+	\item Calculus I - 73\%
+	\item Physics I - 75\%
+\end{itemize}
+{\bf St John's College}
+\item 2015
 \begin{itemize}
   \item Mathematics - 92\%
   \item Physical Science  - 83\%
@@ -107,6 +140,23 @@
   \item Afrikaans - 79\%
   \item Advanced Program Mathematics - 76\%
 \end{itemize}
+
+\end{rSection}
+
+
+\begin{rSection}{Academic Achievements} 
+{\bf University of the Witwatersrand}
+\item 2018 - Recipient of the Liberty Life Gold Medal for outstanding performance in Computer Science III
+\item 2018 - Awarded the prize for top student in Computational and Applied Mathematics III
+\item 2018 - Recipient of the Herbert Le May Prize for the best third year science student majoring in Applied Mathematics
+\item 2018 - Certificate of First Class for Formal Languages and Automata III, Advanced Analysis of Algorithms III, Computer Graphics and Visualization III and Machine Learning III
+\item 2018 - Certificate of Merit for Computational and Applied Mathematics III
+\item 2017 - Recipient of the Psybergate Computer Science II prize
+\item 2017 - Certificate of First Class for Operating Systems II, Abstract Mathematics II and Linear Algebra II
+\item 2017 - Certificate of Merit for Computational and Applied Mathematics II, Database Fundamentals II, Mobile Computing II, Computer Networks II, Analysis of Algorithms II and Introduction to Mathematical Statistics II
+\item 2016-2018 - Achieved a spot on the Dean's List in the 1st, 2nd and 3rd years of study
+\\{\bf St John's College}
+\item 2015 - Received 8 distinctions in the 2015 NSC IEB Matric Examinations with an aggregate of 90\%
 \item 2015 - Awarded 5 colours: Music, Academic, Drama, Public Speaking and Cultural
 \item 2015 - Awarded 2 honours: Academic, Music
 \item 2015 - Was made a house prefect
