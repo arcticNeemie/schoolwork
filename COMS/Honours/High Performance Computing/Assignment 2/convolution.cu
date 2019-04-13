@@ -26,7 +26,7 @@
 #include "helper_cuda.h"         // helper functions for CUDA error check
 
 #define MAX_EPSILON_ERROR 5e-3f
-#define CONST_FILTERSIZE 5
+#define CONST_FILTERSIZE 3
 #define TILE_WIDTH 16
 
 //Constant memory
@@ -357,7 +357,7 @@ void compare(const char* filterName, float* oldImage, float* newImage, int width
   }
   //Print Accuracy
   printf("Convolved image using %s filter in %f seconds!\n",filterName,time);
-  printf("Compared image to serial implementation: accuracy = %f percent\n\n",(100.0*accurate)/(width*height));
+  printf("Compared image to serial implementation: accuracy = %f percent\n",(100.0*accurate)/(width*height));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -503,21 +503,41 @@ float* unPad(float* array, int pad, int width, int height){
 
 //Apply a filter in serial, time it and save result
 float* applySerialConvolution(float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size){
+  //Overhead
+  StopWatchInterface *overhead = NULL;
+  sdkCreateTimer(&overhead);
+  sdkStartTimer(&overhead);
+
   const char* type = "serial";
   float *dData = (float*) malloc(size); //Output
+
+  sdkStopTimer(&overhead);
+  float oTime = sdkGetTimerValue(&overhead) / 1000.0f;
+  sdkDeleteTimer(&overhead);
+
+  //Kernel
   StopWatchInterface *timer = NULL;
   sdkCreateTimer(&timer);
   sdkStartTimer(&timer);
+
   convolveCPU(dData,hData,filter,width,height);
+
   sdkStopTimer(&timer);
   float time = sdkGetTimerValue(&timer) / 1000.0f;
   sdkDeleteTimer(&timer);
   saveImage(dData,imagePath,name,type,width,height,time);
+
+  printf("Overhead time: %f seconds\n",oTime);
+
   return dData;
 }
 
 //Apply a filter in the naive parallel approach, time it and compare against serial version
 void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size){
+  //Overhead
+  StopWatchInterface *overhead = NULL;
+  sdkCreateTimer(&overhead);
+  sdkStartTimer(&overhead);
   //int devID = findCudaDevice(argc, (const char **) argv);
   // Allocate device memory for result
   float *dData = NULL;
@@ -536,6 +556,11 @@ void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, 
   dim3 dimBlock(8, 8, 1);
   dim3 dimGrid(height / dimBlock.x, width / dimBlock.y, 1);
   checkCudaErrors(cudaDeviceSynchronize());
+
+  sdkStopTimer(&overhead);
+  float oTime = sdkGetTimerValue(&overhead) / 1000.0f;
+  sdkDeleteTimer(&overhead);
+
   //Time
   StopWatchInterface *timer = NULL;
   sdkCreateTimer(&timer);
@@ -548,15 +573,23 @@ void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, 
   checkCudaErrors(cudaDeviceSynchronize());
   sdkStopTimer(&timer);
   float time = sdkGetTimerValue(&timer)/1000.0f;
+  sdkDeleteTimer(&timer);
   //const char* type = "naive";
+  StopWatchInterface *overhead1 = NULL;
+  sdkCreateTimer(&overhead1);
+  sdkStartTimer(&overhead1);
 
   // Allocate mem for the result on host side
   float* hOutput = (float*) malloc(size);
   checkCudaErrors(cudaMemcpy(hOutput,dOutput,size,cudaMemcpyDeviceToHost));
 
+  sdkStopTimer(&overhead1);
+  float oTime1 = sdkGetTimerValue(&overhead1) / 1000.0f;
+  sdkDeleteTimer(&overhead1);
+
   compare(name,oldImage, hOutput, width, height, time);
   //saveImage(hOutput,imagePath,name,type,width,height,time);
-  sdkDeleteTimer(&timer);
+  printf("Overhead time: %f seconds\n",oTime+oTime1);
 
   free(hOutput);
   checkCudaErrors(cudaFree(dData));
@@ -567,6 +600,10 @@ void applyNaiveParallelConvolution(float* oldImage,float* hData, float* filter, 
 
 //Apply a filter in the constant memory parallel approach, time it and compare against serial version
 void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size){
+  //Overhead
+  StopWatchInterface *overhead = NULL;
+  sdkCreateTimer(&overhead);
+  sdkStartTimer(&overhead);
   //int devID = findCudaDevice(argc, (const char **) argv);
   // Allocate device memory for result
   float *dData = NULL;
@@ -587,6 +624,11 @@ void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter,
   dim3 dimBlock(8, 8, 1);
   dim3 dimGrid(height / dimBlock.x, width / dimBlock.y, 1);
   checkCudaErrors(cudaDeviceSynchronize());
+
+  sdkStopTimer(&overhead);
+  float oTime = sdkGetTimerValue(&overhead) / 1000.0f;
+  sdkDeleteTimer(&overhead);
+
   //Time
   StopWatchInterface *timer = NULL;
   sdkCreateTimer(&timer);
@@ -599,15 +641,23 @@ void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter,
   checkCudaErrors(cudaDeviceSynchronize());
   sdkStopTimer(&timer);
   float time = sdkGetTimerValue(&timer)/1000.0f;
+  sdkDeleteTimer(&timer);
   //const char* type = "naive";
+  StopWatchInterface *overhead1 = NULL;
+  sdkCreateTimer(&overhead1);
+  sdkStartTimer(&overhead1);
 
   // Allocate mem for the result on host side
   float* hOutput = (float*) malloc(size);
   checkCudaErrors(cudaMemcpy(hOutput,dOutput,size,cudaMemcpyDeviceToHost));
 
+  sdkStopTimer(&overhead1);
+  float oTime1 = sdkGetTimerValue(&overhead1) / 1000.0f;
+  sdkDeleteTimer(&overhead1);
+
   compare(name,oldImage, hOutput, width, height, time);
   //saveImage(hOutput,imagePath,name,type,width,height,time);
-  sdkDeleteTimer(&timer);
+  printf("Overhead time: %f seconds\n",oTime+oTime1);
 
   free(hOutput);
   checkCudaErrors(cudaFree(dOutput));
@@ -616,6 +666,10 @@ void applyConstantMemoryConvolution(float* oldImage,float* hData, float* filter,
 
 //Apply a filter in the texture memory parallel approach, time it and compare against serial version
 void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size){
+  //Overhead
+  StopWatchInterface *overhead = NULL;
+  sdkCreateTimer(&overhead);
+  sdkStartTimer(&overhead);
   // Allocate device memory for result
   float *dData = NULL;
   checkCudaErrors(cudaMalloc((void **) &dData, size));
@@ -644,6 +698,11 @@ void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, 
   dim3 dimGrid(height / dimBlock.x, width / dimBlock.y, 1);
 
   checkCudaErrors(cudaDeviceSynchronize());
+
+  sdkStopTimer(&overhead);
+  float oTime = sdkGetTimerValue(&overhead) / 1000.0f;
+  sdkDeleteTimer(&overhead);
+
   StopWatchInterface *timer = NULL;
   sdkCreateTimer(&timer);
   sdkStartTimer(&timer);
@@ -657,15 +716,24 @@ void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, 
   checkCudaErrors(cudaDeviceSynchronize());
   sdkStopTimer(&timer);
   float time = sdkGetTimerValue(&timer)/1000.0f;
+  sdkDeleteTimer(&timer);
+
+  StopWatchInterface *overhead1 = NULL;
+  sdkCreateTimer(&overhead1);
+  sdkStartTimer(&overhead1);
 
   // Allocate mem for the result on host side
   float *hOutputData = (float *) malloc(size);
   // copy result from device to host
   checkCudaErrors(cudaMemcpy(hOutputData,dData,size,cudaMemcpyDeviceToHost));
 
+  sdkStopTimer(&overhead1);
+  float oTime1 = sdkGetTimerValue(&overhead1) / 1000.0f;
+  sdkDeleteTimer(&overhead1);
+
   compare(name,oldImage, hOutputData, width, height, time);
   //saveImage(hOutputData,imagePath,name,"texture",width,height,time);
-  sdkDeleteTimer(&timer);
+  printf("Overhead time: %f seconds\n",oTime+oTime1);
 
   free(hOutputData);
 
@@ -678,6 +746,10 @@ void applyTextureMemoryConvolution(float* oldImage,float* hData, float* filter, 
 
 //Apply a filter in the shared memory parallel approach, time it and compare against serial version
 void applySharedMemoryConvolution(float* oldImage,float* hData, float* filter, char* imagePath, const char* name, int width, int height, unsigned int size){
+  //Overhead
+  StopWatchInterface *overhead = NULL;
+  sdkCreateTimer(&overhead);
+  sdkStartTimer(&overhead);
   //int adjust = CONST_FILTERSIZE/2;
   //int padSize = (width+2*adjust)*(height+2*adjust)*sizeof(float);
   //float* padHData = padArray(hData,adjust,width,height);
@@ -701,6 +773,11 @@ void applySharedMemoryConvolution(float* oldImage,float* hData, float* filter, c
   dim3 dimGrid(ceil(height / TILE_WIDTH), ceil(width / TILE_WIDTH), 1);
   //printf("dimBlock: %i,%i,%i\n",dimBlock.x,dimBlock.y,dimBlock.z);
   //printf("dimGrid: %i,%i,%i\n",dimGrid.x,dimGrid.y,dimGrid.z);
+
+  sdkStopTimer(&overhead);
+  float oTime = sdkGetTimerValue(&overhead) / 1000.0f;
+  sdkDeleteTimer(&overhead);
+
   checkCudaErrors(cudaDeviceSynchronize());
 
   //Time
@@ -713,19 +790,28 @@ void applySharedMemoryConvolution(float* oldImage,float* hData, float* filter, c
   getLastCudaError("Kernel execution failed");
 
   checkCudaErrors(cudaDeviceSynchronize());
+
   sdkStopTimer(&timer);
   float time = sdkGetTimerValue(&timer)/1000.0f;
-  //const char* type = "naive";
+  sdkDeleteTimer(&timer);
 
+    //const char* type = "naive";
+  StopWatchInterface *overhead1 = NULL;
+  sdkCreateTimer(&overhead1);
+  sdkStartTimer(&overhead1);
   // Allocate mem for the result on host side
   float* hOutput = (float*) malloc(size);
   checkCudaErrors(cudaMemcpy(hOutput,dOutput,size,cudaMemcpyDeviceToHost));
+
+  sdkStopTimer(&overhead1);
+  float oTime1 = sdkGetTimerValue(&overhead1) / 1000.0f;
+  sdkDeleteTimer(&overhead1);
 
   //float* finalImage = unPad(hOutput,adjust,width,height);
 
   compare(name,oldImage, hOutput, width, height, time);
   //saveImage(hOutput,imagePath,name,"shared",width,height,time);
-  sdkDeleteTimer(&timer);
+  printf("Overhead time: %f seconds\n",oTime+oTime1);
 
   free(hOutput);
   checkCudaErrors(cudaFree(dData));

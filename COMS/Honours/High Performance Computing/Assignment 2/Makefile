@@ -13,4 +13,4 @@ simpleTexture: simpleTexture.cu
 	$(CC) simpleTexture.o  $(LDFLAGS) $(IFLAGS) -o simpleTexture
 
 clean:
-	$(RM) convolution simpleTexture*.o *.~
+	$(RM) convolution simpleTexture *.o *.~
