@@ -26,11 +26,11 @@
 #include "helper_cuda.h"         // helper functions for CUDA error check
 
 #define MAX_EPSILON_ERROR 5e-3f
-#define CONST_FILTERSIZE 3
+#define CONST_FILTERSIZE 5
 #define TILE_WIDTH 16
 
 //Constant memory
-__device__ __constant__ float constantFilter[9];
+__device__ __constant__ float constantFilter[CONST_FILTERSIZE*CONST_FILTERSIZE];
 
 // Texture reference for 2D float texture
 texture<float, 2, cudaReadModeElementType> tex;
@@ -265,13 +265,14 @@ int main(int argc, char **argv){
 
     const char* imageFilename;
     const char* filterType;
+    int filterNum;
     if(argc>2){
       imageFilename = argv[1];
-      filterType = argv[2];
+      filterNum = atoi(argv[2]);
     }
     else{
-      imageFilename = "lena_bw.pgm";
-      filterType = "average";
+      imageFilename = "lena.pgm";
+      filterNum = 0;
     }
     printDivider();
     printf("Starting execution\n");
@@ -286,17 +287,21 @@ int main(int argc, char **argv){
     }
     sdkLoadPGM(imagePath, &hData, &width, &height);
     unsigned int size = width * height * sizeof(float);
-    printf("Loaded '%s', %d x %d pixels", imageFilename, width, height);
+    printf("Loaded '%s', %d x %d pixels\n", imageFilename, width, height);
+    printf("Filter size: %i x %i\n",CONST_FILTERSIZE,CONST_FILTERSIZE);
 
     float* filter;
-    if(filterType=="average"){
+    if(filterNum==0){
       filter = createAverageFilter();
+      filterType = "average";
     }
-    else if(filterType=="sharpen"){
+    else if(filterNum==1){
       filter = createSharpenFilter();
+      filterType = "sharpen";
     }
-    else if(filterType=="Sobel"){
+    else if(filterNum==2){
       filter = createSobelFilter();
+      filterType = "Sobel";
     }
     else{
       printf("Error: filter name not valid\n");
