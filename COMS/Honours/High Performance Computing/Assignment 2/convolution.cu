@@ -27,7 +27,7 @@
 
 #define MAX_EPSILON_ERROR 5e-3f
 #define CONST_FILTERSIZE 3
-#define TILEWIDTH 16
+#define TILE_WIDTH 32
 
 //Image files
 const char *sobelName = "sobel";
@@ -186,49 +186,40 @@ __global__ void convolveGPUShared(float* dData,float* hData,float* filter,int wi
   unsigned int by = blockIdx.y;
   unsigned int tx = threadIdx.x;
   unsigned int ty = threadIdx.y;
-  int x = tx+bx*blockDim.x;
-  int y = ty+by*blockDim.y;
 
   int adjust = filtersize/2;
-  const int tileAdjust = 2*(CONST_FILTERSIZE/2);
-  int tx1,ty1;
-  __shared__ float image[TILEWIDTH+tileAdjust][TILEWIDTH+tileAdjust];
-  int adjustedTilesize = (TILEWIDTH+tileAdjust);
-  if(x<=adjust || x>=height || y<=adjust || y>=width){
-    dData[x*width+y] = 0;
-  }
-  else{
-    //Load into shared memory
-    int blockID = by + adjustedTilesize*bx;
-    int ix,iy;
-    for(int i=blockID;i<adjustedTilesize*adjustedTilesize;i+=adjustedTilesize){
-      ix = (i - adjustedTilesize*(i/adjustedTilesize))+blockDim.x*bx;
-      iy = (i/adjustedTilesize)+blockDim.y*by;
-      image[(i - adjustedTilesize*(i/adjustedTilesize))][(i/adjustedTilesize)] = hData[ix*width+iy];
-    }
-    /*
-    for(int i=0;i<TILEWIDTH+tileAdjust;i++){
-      for(int j=0;j<TILEWIDTH+tileAdjust;j++){
-        if(i==0 || i==TILEWIDTH+tileAdjust-1 || j==0 || j==TILEWIDTH+tileAdjust-1){
-          image[i][j] = hData[((TILEWIDTH-adjust)*bx+i)*width+(TILEWIDTH-adjust)+by+j];
-        }
-      }
-    }
-    */
-    //image[tx+adjust][ty+adjust] = hData[(row-adjust)*width+(col-adjust)];
-    __syncthreads();
+  const int BDIM = TILE_WIDTH + 2*adjust;
+  __shared__ float* image[BDIM][BDIM];
+  //Initialize Image
+  for(int i=0;i<2;i++){
+    int imPos = tx*TILE_WIDTH + ty + i*TILE_WIDTH*TILE_WIDTH;
+    int tileY = imPos % BDIM; //Shared memory index
+    int tileX = imPos / BDIM; //Shared memory index
+    int x = bx*TILE_WIDTH + tileX - adjust; //Convert to image coordinates
+    int y = by*TILE_WIDTH + tileY - adjust; //Convert to image coordinates
 
+    if(x>=0 && x<height && y>=0 && y<width){ //Check if out of bounds
+      image[tileX][tileY] = hData[x*width+y];
+    }
+    else{
+      image[tileX][tileY] = 0;
+    }
+  }
+  //Now must set remaining pixels as number of threads less than BDIM^2
+
+
+  //Calculations
+  if(x<height && y<width){
     float sum = 0;
     for(int s=0;s<filtersize;s++){
       for(int t=0;t<filtersize;t++){
-        tx1 = tx-s+adjust;
-        ty1 = ty-t+adjust;
-        if(tx1>=0 && tx1<TILEWIDTH && ty1>=0 && ty1<TILEWIDTH){
-          sum += image[tx1+adjust][ty1+adjust]*filter[s*filtersize+t];
+        x1 = x-s+adjust;
+        y1 = y-t+adjust;
+        if((x1>=0) && (x1<height) && (y1>=0) && (y1<width)){
+            sum += image[x1][y1]*filter[s*filtersize+t];
         }
       }
     }
-    __syncthreads();
     if(sum>1){
         sum = 1;
     }
@@ -237,6 +228,7 @@ __global__ void convolveGPUShared(float* dData,float* hData,float* filter,int wi
     }
     dData[x*width+y] = sum;
   }
+
 
 }
 
@@ -669,7 +661,7 @@ void applySharedMemoryConvolution(float* oldImage,float* hData, float* filter, c
   checkCudaErrors(cudaMalloc((void **) &dOutput, padSize));
 
   //Block
-  dim3 dimBlock(TILEWIDTH, TILEWIDTH, 1);
+  dim3 dimBlock(TILE_WIDTH, TILE_WIDTH, 1);
   dim3 dimGrid(height / dimBlock.x, width / dimBlock.y, 1);
   //printf("dimBlock: %i,%i,%i\n",dimBlock.x,dimBlock.y,dimBlock.z);
   //printf("dimGrid: %i,%i,%i\n",dimGrid.x,dimGrid.y,dimGrid.z);
