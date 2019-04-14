@@ -1,0 +1,274 @@
+\documentclass[10pt]{article}
+\usepackage{amscd,amsfonts,amssymb,amstext,latexsym} 
+\usepackage{amsmath,mathbbol,mathrsfs,stmaryrd, mathtools} 
+
+\usepackage {algorithm} 
+\usepackage{theoremref}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel} 
+\usepackage {enumerate}
+\usepackage{url}
+\usepackage[noend]{algpseudocode}
+\usepackage{float}
+\usepackage{graphics} 
+\usepackage{tikz}
+\usepackage[width=14.8cm,left=3cm,margin=1in]{geometry}
+\usetikzlibrary{automata,calc}
+%\usepackage{tgtermes} 
+\usepackage{listings}
+\usepackage{mathptmx}
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[flushleft]{threeparttable}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage{fancyhdr}
+\usepackage{multirow,multicol}
+\usepackage{color}
+\usepackage[toc,page]{appendix}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{tabto}
+\lstset{ %
+language=C,                % choose the language of the code
+basicstyle={\ttfamily},       % the size of the fonts that are used for the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+aboveskip=6mm, 
+%belowskip=3mm, 
+numbers=left, numberfirstline=false, numberblanklines=false,
+numberstyle=\tiny\color{gray}, numbersep= 5pt, 
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+%frame=single,           % adds a frame around the code
+%frame = tb, 
+frame = none, 
+tabsize=2,          % sets default tabsize to 2 spaces
+captionpos=b,           % sets the caption-position to bottom
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
+%\graphicspath{{../../pics/}}
+\fancypagestyle{plain}{
+\fancyhf{}
+\rhead{School of Computer Science and Applied Mathematics\\ 
+%\noindent\rule{15.4cm}{0.4pt}\\
+\footnotesize{\textsc{University of the Witwatersrand, Johannesburg}}}
+\lhead{\includegraphics[scale=0.08]{witslogo_h.png}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+}
+
+%\textwidth=16.8cm 
+%\textheight=22.6cm 
+\evensidemargin 0pt 
+\oddsidemargin 0pt 
+\leftmargin 0pt 
+\rightmargin 0pt 
+\setlength{\topmargin}{0pt} 
+\setlength{\footskip}{50pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\linespread{1} 
+% 
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+%Custom commands for logical operators and other pseudocode stuff
+\algnewcommand\AND{\textbf{ and }}
+\algnewcommand\OR{\textbf{ or }}
+\algnewcommand\NOT{\textbf{not}}
+\algnewcommand\BREAK{\textbf{break}}
+\algnewcommand\RETURN{\textbf{return }}
+
+\begin{document}
+\title{COMS4040A Assignment 2 -- Report}
+\author{Tamlin Love (1438243) - BSc Hons}
+\date{\today} 
+\maketitle 
+%\thispagestyle{empty}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\fancyhead[L]{COMS4040A Assignment 2}
+%\vskip 3mm 
+%\pagenumbering{roman}
+%\newpage
+\pagenumbering{arabic} 
+\vspace{-1.5cm}
+\section{Introduction}\label{Introduction}
+Discrete Image Convolution is a widely used technique in digital image and signal processing. It can achieve a huge variety of effects, from blurring and sharpening to edge detection and noise removal. 
+\\
+Consider a discrete image $I \in \mathbb{R}^{M \times N}$ where each $Y(i,j) \in [0,1]$. Consider also a discrete filter $K \in \mathbb{R}^{F \times F}$. Then the discrete convolution of $I$ by $K$ is defined as:
+\section{Empirical Analysis}
+
+\section{Summary}
+
+\bibliographystyle{IEEEannot}
+\bibliography{myBib}
+\begin{comment}
+\begin{appendices}
+\section{Algorithms}\label{app:Algorithms}
+\begin{algorithm}[H]
+\caption{k Nearest Neighbour}\label{alg:kNN}
+\begin{algorithmic}[1]
+\Procedure{kNN}{P,Q,k}
+	\State distance $\gets [][]$
+	\State index $\gets [][]$
+	\For{$q_{i}\in Q$}
+		\For{$p_{j} \in P$}
+			\State distance[$i$][$j$] $\gets$ dist($q_{i},p_{j}$)
+			\State index[$i$][$j$] $\gets j$
+		\EndFor
+	\EndFor	
+	\For{each $i$ in distance[$i$]}
+		\State sort(distance[$i$],index[$i$])
+	\EndFor
+	
+	\State \RETURN index[$i$][$0:k-1$]
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\end{appendices}
+\begin{algorithm}[H]
+\caption{Euclidean Distance}\label{alg:euclid}
+\begin{algorithmic}[1]
+\Procedure{dist}{$q,p$}
+	\State $distance \gets 0$
+	\For{$i \in [1,2,...,d]$}
+		\State $distance \gets distance + (p_{i} - q_{i})^2$
+	\EndFor
+	\State \RETURN $\sqrt{distance}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}[H]
+\caption{Manhattan Distance}\label{alg:manhattan}
+\begin{algorithmic}[1]
+\Procedure{dist}{$q,p$}
+	\State $distance \gets 0$
+	\For{$i \in [1,2,...,d]$}
+		\State $distance \gets distance + |p_{i} - q_{i}|$
+	\EndFor
+	\State \RETURN $distance$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}[H]
+\caption{Quicksort}\label{alg:qsort}
+\begin{algorithmic}[1]
+\Procedure{Quicksort}{$index,distance,low,high$}
+	\If{$low<high$}
+		\State $pivot \gets$ Partition($index,distance,low,high$)
+		\State Quicksort($index,dist,low,pivot-1$)
+		\State Quicksort($index,dist,pivot+1,high$)
+	\EndIf
+\EndProcedure
+\Procedure{Partition}{$index,distance,low,high$}
+	\State $pivot \gets distance[high]$
+	\State $i \gets low - 1$
+	\For{$j\in [low,low+1,...,high-1,high]$}
+		\If{$distance[j]\leq pivot$}
+			\State $i \gets i + 1$
+			\State Swap($distance[i],distance[j]$)
+			\State Swap($index[i],index[j]$)
+		\EndIf
+	\EndFor
+	\State Swap($distance[i+1],distance[high]$)
+	\State Swap($index[i+1],index[high]$)
+	\State \RETURN $i+1$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}[H]
+\caption{Bubblesort}\label{alg:bubblesort}
+\begin{algorithmic}[1]
+\Procedure{Bubblesort}{$index, distance $}
+	\For{$i \in [0,...,m-1]$}
+		\For{$j \in [0,...,m-i-1]$}
+			\If{$distance[j]>distance[j+1]$}
+				\State Swap($distance[j],distance[j+1]$)
+				\State Swap($index[j],index[j+1]$)
+			\EndIf
+		\EndFor
+	\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}[H]
+\caption{Mergesort}\label{alg:mergesort}
+\begin{algorithmic}[1]
+\Procedure{MergesortParent}{$index, distance $}
+	\State Create($index2$)
+	\State Create($distance2$)
+	\State Mergesort($index,index2,distance,distance2,0,m$)
+	\State Destroy($index2$)
+	\State Destroy($distance2$)
+\EndProcedure
+\Procedure{Mergesort}{$index,index2,distance,distance2,low,high$}
+	\If{$low<high$}
+		\State $mid \gets \frac{low+high}{2}$
+		\State Mergesort($index,index2,distance,distance2,low,mid$)
+		\State Mergesort($index,index2,distance,distance2,mid+1,high$)
+		\State Merge($index,index2,distance,distance2,low,mid,high$)
+	\EndIf
+\EndProcedure
+\Procedure{Merge}{$index,index2,distance,distance2,low,mid,high$}
+	\State $l1 \gets low$
+	\State $l2 \gets mid+1$
+	\For{$i\gets low$;$l1\leq mid$\AND$l2\leq high$;$i\gets i+1$}
+		\If{$distance[l1]\leq distance[l2]$}
+			\State $distance2[i] \gets distance[l1]$
+			\State $index2[i] \gets index[l1]$
+			\State $l1 \gets l1 + 1$
+		\Else
+			\State $distance2[i] \gets distance[l2]$
+			\State $index2[i] \gets index[l2]$
+			\State $l2 \gets l2 + 1$
+		\EndIf
+	\EndFor
+	\While{$l1\leq mid$}
+		\State $distance2[i] \gets distance[l1]$
+		\State $index2[i] \gets index[l1]$
+		\State $l1 \gets l1 + 1$
+		\State $i \gets i + 1$
+	\EndWhile
+	\While{$l2\leq high$}
+		\State $distance2[i] \gets distance[l2]$
+		\State $index2[i] \gets index[l2]$
+		\State $l2 \gets l2 + 1$
+		\State $i \gets i + 1$
+	\EndWhile
+	\State $distance \gets distance2$
+	\State $index \gets index2$ 
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}[H]
+\caption{Odd-Even Sort}\label{alg:oddeven}
+\begin{algorithmic}[1]
+\Procedure{OddEven}{$index, distance $}
+	\For{$i \in [0,...,m-1]$}
+		\State $j0 \gets i \% 2$
+		\For{$j \in [j0,j0+2,...,m-1]$}
+			\If{$distance[j]>distance[j+1]$}
+				\State Swap($distance[j],distance[j+1]$)
+				\State Swap($index[j],index[j+1]$)
+			\EndIf
+		\EndFor
+	\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\end{comment}
+\end{document} 
+

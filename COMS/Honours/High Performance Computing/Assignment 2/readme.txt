@@ -10,6 +10,14 @@ _____ _    _ _____             _____                      _       _   _
 By Tamlin Love (1438243)
 13/04/2019
 
+This program runs 5 versions of image convolution in an inout image using either an averaging filter, a sharpening filter or a Sobel filter of size 3
+The approaches are as follows:
+	1. CPU approach - serial
+	2. GPU approach - naively making a thread for each pixel and using global memory
+	3. GPU approach - loading tiles of an image into shared memory
+	4. GPU approach - loading the filter into constant memory
+	5. GPU approach - loading the image into texture memory
+
 ==Compilation==
 Using the Makefile provided, type "make" in the terminal to compile convolution.cu
 
@@ -20,7 +28,8 @@ replacing ??? with the desired sizes. Note also that the Sobel filter will not w
 
 
 ==Usage==
-A simple running of the program can be achieved by typing "./convolution" in the terminal. This will run all five approaches of convolution on the "lena.pgm" image located in the data directory (which should be located in the same directory as convolution.cu) using an averaging filter.
+A simple running of the program can be achieved by typing "./convolution" in the terminal. This will run all five approaches of convolution on the "lena.pgm" image located in the 
+data directory (which should be located in the same directory as convolution.cu) using an averaging filter.
 
 To run on a different image or using a different filter, follow these steps:
 
@@ -32,3 +41,5 @@ To run on a different image or using a different filter, follow these steps:
 		0 - averaging filter
 		1 - sharpening filter
 		2 - Sobel (edge detection) filter
+4. Voila! The program has run and, if all went well, should save the result of serial convolution in the data directory and should display the time and accuracy of the various
+GPU approaches.
