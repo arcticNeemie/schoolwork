@@ -137,13 +137,14 @@ However, we can do better by making use of the read-only memory types. In one ap
 In the final approach, we load the image into texture memory as a 2D texture, making use of the 2D spatial locality inherent to the convolution algorithm. This reduces global memory reads to $MNLP$ in the case of a global memory filter. This approach is referred to as the \textbf{Texture Memory} approach.
 \\
 In each case, because $MN$ threads are used, the overall asymptotic time complexity of each approach when using global memory accesses as a basic operation is $\mathcal{O}(LP)$.
-\section{Empirical Analysis}
+\section{Empirical Analysis}\label{EmpiricalAnalysis}
 The above approaches, along with the CPU serial approach, were run on a Nvidia GTX 1060 6GB GPU with the following specs
 \begin{table}[H]
 \begin{tabular}{ll}
 \textbf{Memory Clock Rate}     & 4.004 GHz    \\
 \textbf{Memory Bus Width}      & 192 bits     \\
 \textbf{Peak Memory Bandwidth} & 192.192 GB/s \\
+\textbf{Theoretical Peak FLOPS} & 4.375 TFLOPS \\
 \textbf{Compute Capability}    & 6.1         
 \end{tabular}
 \end{table}
@@ -251,9 +252,92 @@ Measuring the number of global memory accesses (read and write) performed by eac
 \end{table}
 As predicted by the results in Section \ref{ParallelApproaches}, we see that the number of global memory accesses in the Na\"{i}ve approach is equal to twice that of the Constant and Texture Memory approaches, and that the number corresponding to the Shared Memory approach is further scaled by the size of the tile. The fact that the number of global memory accesses does not correspond to the kernel execution time points to the effects of the various memory speeds and the overhead associated with each approach.
 \subsection{Overhead Time}
+The overhead time (that is, the time taken for the relevant variables to be initalised and copied from the host to the device and vice-versa) was measured for all approaches using both filter types. The following results were recorded.
+\begin{table}[H]
+\small
+\begin{tabular}{cccccc}
+\multicolumn{6}{c}{\textbf{Averaging Filter - Overhead Time}}                                                                                      \\
+\textbf{Image Size}          & \textbf{Filter Size} & \textbf{Naive} & \textbf{Shared Memory} & \textbf{Constant Memory} & \textbf{Texture Memory} \\ \hline
+\multirow{3}{*}{256 x 256}   & 3 x 3                & 0.084529       & 0.053155               & 0.0515                   & 0.051605                \\
+                             & 5 x 5                & 0.082068       & 0.053767               & 0.053193                 & 0.052054                \\
+                             & 9 x 9                & 0.073769       & 0.054243               & 0.054473                 & 0.057575                \\ \hline
+\multirow{3}{*}{512 x 512}   & 3 x 3                & 0.074273       & 0.051962               & 0.052071                 & 0.053216                \\
+                             & 5 x 5                & 0.074455       & 0.054641               & 0.054124                 & 0.054191                \\
+                             & 9 x 9                & 0.071953       & 0.054384               & 0.05358                  & 0.056806                \\ \hline
+\multirow{3}{*}{1024 x 1024} & 3 x 3                & 0.075182       & 0.053532               & 0.05368                  & 0.060639                \\
+                             & 5 x 5                & 0.075999       & 0.0546                 & 0.055844                 & 0.05837                 \\
+                             & 9 x 9                & 0.07342        & 0.054135               & 0.053048                 & 0.052906                \\ \hline
+\multirow{3}{*}{2048 x 2048} & 3 x 3                & 0.080347       & 0.059241               & 0.054023                 & 0.054079                \\
+                             & 5 x 5                & 0.076506       & 0.058069               & 0.055145                 & 0.055384                \\
+                             & 9 x 9                & 0.089209       & 0.059943               & 0.054062                 & 0.057342               
+\end{tabular}
+\end{table}
+\newpage
+\begin{table}[H]
+\small
+\begin{tabular}{cccccc}
+\multicolumn{6}{c}{\textbf{Sharpening Filter - Overhead Time}}                                                                                     \\
+\textbf{Image Size}          & \textbf{Filter Size} & \textbf{Naive} & \textbf{Shared Memory} & \textbf{Constant Memory} & \textbf{Texture Memory} \\ \hline
+\multirow{3}{*}{256 x 256}   & 3 x 3                & 0.066851       & 0.053856               & 0.05086                  & 0.051455                \\
+                             & 5 x 5                & 0.060539       & 0.053923               & 0.052218                 & 0.052853                \\
+                             & 9 x 9                & 0.063107       & 0.054783               & 0.055964                 & 0.052518                \\ \hline
+\multirow{3}{*}{512 x 512}   & 3 x 3                & 0.063249       & 0.054889               & 0.052294                 & 0.053067                \\
+                             & 5 x 5                & 0.066288       & 0.05473                & 0.051798                 & 0.050577                \\
+                             & 9 x 9                & 0.064031       & 0.052632               & 0.051961                 & 0.051078                \\ \hline
+\multirow{3}{*}{1024 x 1024} & 3 x 3                & 0.0644         & 0.053654               & 0.05364                  & 0.053326                \\
+                             & 5 x 5                & 0.064512       & 0.053681               & 0.053515                 & 0.053266                \\
+                             & 9 x 9                & 0.070299       & 0.053248               & 0.051807                 & 0.051805                \\ \hline
+\multirow{3}{*}{2048 x 2048} & 3 x 3                & 0.069807       & 0.058458               & 0.055704                 & 0.056625                \\
+                             & 5 x 5                & 0.070972       & 0.059943               & 0.055607                 & 0.063975                \\
+                             & 9 x 9                & 0.065598       & 0.059443               & 0.062524                 & 0.055691               
+\end{tabular}
+\end{table}
+We can immediately see that the overhead of the Na\"{i}ve approach is substantially larger than that of the other approaches. This is to be expected, as the cost of loading an entire image and a filter into the device and loading the image back into the host is expensive. On average, the Texture Memory approach has the least overhead, indicating that loading an image into texture memory may be more optimal than the global memory. While the overhead time does increase with increases in $M$, $N$, $L$ and $P$, it does so minimally, with changes in time occurring in the order of 0.01 seconds, indicating that the connection between device and host is not much of a bottleneck in this problem and on this hardware.
 \subsection{Measured Floating-point Computation Rate}
-\section{Summary}
-
+The floating-point computation rate, $FLOPS = \frac{f}{Time}$, where $f$ is the number of floating-point operations performed by the kernel, was calculated for each image size and filter size for each approach. The results are tabulated below, with all values in GFLOPS.
+\begin{table}[H]
+\small
+\begin{tabular}{ccccccc}
+\multicolumn{7}{c}{\textbf{Averaging Filter - FLOPS}}                                                                                                                \\
+\textbf{Image Size}          & \textbf{Filter Size} & \textbf{Serial} & \textbf{Naive} & \textbf{Shared Memory} & \textbf{Constant Memory} & \textbf{Texture Memory} \\ \hline
+\multirow{3}{*}{256 x 256}   & 3 x 3                & 0.41476         & 155.04859      & 780.24936              & 259.88414                & 158.92480               \\
+                             & 5 x 5                & 0.51869         & 195.84595      & 503.29103              & 402.39104                & 271.65729               \\
+                             & 9 x 9                & 0.91089         & 257.41785      & 332.85389              & 482.40409                & 396.61416               \\ \hline
+\multirow{3}{*}{512 x 512}   & 3 x 3                & 0.72041         & 217.33306      & 1,033.83040            & 396.66526                & 282.53298               \\
+                             & 5 x 5                & 1.39063         & 229.93518      & 566.54619              & 515.88595                & 370.17037               \\
+                             & 9 x 9                & 1.78314         & 275.28489      & 300.64223              & 618.40717                & 438.87633               \\ \hline
+\multirow{3}{*}{1024 x 1024} & 3 x 3                & 1.64941         & 234.90040      & 1,117.65449            & 449.94866                & 337.91320               \\
+                             & 5 x 5                & 2.10534         & 238.90428      & 586.16510              & 494.48976                & 414.59082               \\
+                             & 9 x 9                & 2.33012         & 261.42404      & 323.94836              & 579.64760                & 506.01689               \\ \hline
+\multirow{3}{*}{2048 x 2048} & 3 x 3                & 2.25024         & 248.53237      & 984.23422              & 470.12179                & 317.10638               \\
+                             & 5 x 5                & 2.39064         & 221.52407      & 552.02903              & 518.16955                & 372.21551               \\
+                             & 9 x 9                & 2.42833         & 277.78424      & 323.63383              & 574.77934                & 515.14527              
+\end{tabular}
+\end{table}
+\begin{table}[H]
+\small
+\begin{tabular}{ccccccc}
+\multicolumn{7}{c}{\textbf{Sharpening Filter - FLOPS}}                                                                                                               \\
+\textbf{Image Size}          & \textbf{Filter Size} & \textbf{Serial} & \textbf{Naive} & \textbf{Shared Memory} & \textbf{Constant Memory} & \textbf{Texture Memory} \\ \hline
+\multirow{3}{*}{256 x 256}   & 3 x 3                & 0.93420         & 155.04859      & 795.25415              & 259.88414                & 158.92480               \\
+                             & 5 x 5                & 1.55979         & 195.84595      & 508.22525              & 394.50102                & 271.65729               \\
+                             & 9 x 9                & 2.02186         & 258.66141      & 315.08589              & 557.91082                & 405.62812               \\ \hline
+\multirow{3}{*}{512 x 512}   & 3 x 3                & 2.09170         & 215.49125      & 1,021.06706            & 396.66526                & 276.39096               \\
+                             & 5 x 5                & 2.30940         & 229.15309      & 571.22839              & 519.21425                & 376.37435               \\
+                             & 9 x 9                & 2.45588         & 270.41875      & 354.15654              & 616.92062                & 475.93700               \\ \hline
+\multirow{3}{*}{1024 x 1024} & 3 x 3                & 1.56205         & 242.74910      & 1,119.54561            & 451.63386                & 344.78601               \\
+                             & 5 x 5                & 2.34773         & 239.11627      & 585.33777              & 509.35575                & 412.05509               \\
+                             & 9 x 9                & 2.43673         & 280.23768      & 358.63954              & 586.26836                & 511.45468               \\ \hline
+\multirow{3}{*}{2048 x 2048} & 3 x 3                & 2.22037         & 248.38064      & 1,139.79579            & 469.66403                & 366.52927               \\
+                             & 5 x 5                & 2.33574         & 241.14902      & 573.20222              & 518.16955                & 421.89281               \\
+                             & 9 x 9                & 2.42579         & 281.73529      & 358.82122              & 589.55113                & 517.63540              
+\end{tabular}
+\end{table}
+Here the strengths of GPU parallelisation are evident, with FLOPS scaling vastly compared to the serial approach. As expected, the Na\"{i}ve approach has a low floating-point computation rate when compared to the other approaches, although it is still substantially higher than the serial approach. We see the highest FLOPS in the Shared Memory approach, likely because the internal overhead is still large despite relatively few floating-point operations. Even then, the performance here is only a fraction of the theoretical maximum.
+\\
+The general trend is that FLOPS increases with increases in $M$, $N$, $L$ and $P$. This is true for all approached except the Shared Memory approach, whose FLOPS increases with increasing $M$ and $N$ but actually decreases with higher values of $L$ and $P$. This is because the kernel time grows faster than the number of operations, as a smaller proportion of floating-point operations are dependent on $L$ and $P$ than in other kernels.
+\section{Conclusion}
+We conclude that the image convolution problem is a prime example of algorithms whose performances can be improved substantially by parallel approaches. After running the tests detailed in Section \ref{EmpiricalAnalysis}, we note that the best performance is achieved by the Constant Memory approach, and then by the Texture Memory approach. We hypothesize that the ideal parallel convolution algorithm would be a hybrid solution in which the image is loaded into texture memory while the filter is loaded into constant memory, as this approach maximises memory access speed while keeping overhead costs reasonable. Further work could include implementation of this approach, as well as other optimisation such as making use of the separability of certain filters.
 \bibliographystyle{IEEEannot}
 \bibliography{myBib}
 
