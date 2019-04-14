@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.27)  14 APR 2019 09:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.27)  14 APR 2019 17:01
 entering extended mode
 **./report.tex
 (report.tex
@@ -871,6 +871,12 @@ Package: appendix 2009/09/02 v1.2b extra appendix facilities
 \c@@ppsavesec=\count164
 \c@@ppsaveapp=\count165
 )
+("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/changepage\change
+page.sty"
+Package: changepage 2009/10/20 v1.0c check page and change page layout
+\c@cp@cntr=\count166
+\cp@tempcnt=\count167
+)
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\inputenc.sty
 "
 Package: inputenc 2018/08/11 v1.3c Input encoding file
@@ -931,8 +937,8 @@ s.sty"
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 )
 \@linkdim=\dimen265
-\Hy@linkcounter=\count166
-\Hy@pagecounter=\count167
+\Hy@linkcounter=\count168
+\Hy@pagecounter=\count169
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/hyperref\pd1enc.d
 ef"
@@ -940,7 +946,7 @@ File: pd1enc.def 2018/11/30 v6.88e Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
-\Hy@SavedSpaceFactor=\count168
+\Hy@SavedSpaceFactor=\count170
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/00miktex\hyperref
 .cfg"
@@ -954,10 +960,10 @@ Package hyperref Info: Plain pages OFF on input line 4534.
 Package hyperref Info: Backreferencing OFF on input line 4539.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4772.
-\c@Hy@tempcnt=\count169
+\c@Hy@tempcnt=\count171
 LaTeX Info: Redefining \url on input line 5125.
 \XeTeXLinkMargin=\dimen266
-\Fld@menulength=\count170
+\Fld@menulength=\count172
 \Field@Width=\dimen267
 \Fld@charsize=\dimen268
 Package hyperref Info: Hyper figures OFF on input line 6380.
@@ -969,17 +975,17 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6405.
 Package hyperref Info: PDF/A mode OFF on input line 6410.
 LaTeX Info: Redefining \ref on input line 6450.
 LaTeX Info: Redefining \pageref on input line 6454.
-\Hy@abspage=\count171
-\c@Item=\count172
-\c@Hfootnote=\count173
+\Hy@abspage=\count173
+\c@Item=\count174
+\c@Hfootnote=\count175
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/hyperref\hpdftex.
 def"
 File: hpdftex.def 2018/11/30 v6.88e Hyperref driver for pdfTeX
-\Fld@listcount=\count174
-\c@bookmark@seq@number=\count175
+\Fld@listcount=\count176
+\c@bookmark@seq@number=\count177
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\rerunfil
 echeck.sty"
@@ -1003,21 +1009,21 @@ File: lstmisc.sty 2019/02/27 1.8b (Carsten Heinz)
 ) (report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 93.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 94.
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\t1ptm.fd"
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
@@ -1025,16 +1031,16 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/context/base/mkii\supp-
 pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count176
+\scratchcounter=\count178
 \scratchdimen=\dimen271
 \scratchbox=\box92
-\nofMPsegments=\count177
-\nofMParguments=\count178
+\nofMPsegments=\count179
+\nofMParguments=\count180
 \everyMPshowfont=\toks44
-\MPscratchCnt=\count179
+\MPscratchCnt=\count181
 \MPscratchDim=\dimen272
-\MPnumerator=\count180
-\makeMPintoPDFobject=\count181
+\MPnumerator=\count182
+\makeMPintoPDFobject=\count183
 \everyMPtoPDFconversion=\toks45
 )
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\epstopdf
@@ -1086,9 +1092,9 @@ G,.JBIG2,.JB2,.eps]
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count182
+\c@lstlisting=\count184
 \AtBeginShipoutBox=\box93
-Package hyperref Info: Link coloring ON on input line 93.
+Package hyperref Info: Link coloring ON on input line 94.
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/hyperref\nameref.
 sty"
@@ -1098,91 +1104,101 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 lestring.sty"
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count183
+\c@section@level=\count185
 )
-LaTeX Info: Redefining \ref on input line 93.
-LaTeX Info: Redefining \pageref on input line 93.
-LaTeX Info: Redefining \nameref on input line 93.
+LaTeX Info: Redefining \ref on input line 94.
+LaTeX Info: Redefining \pageref on input line 94.
+LaTeX Info: Redefining \nameref on input line 94.
  (report.out) (report.out)
 \@outlinefile=\write4
 \openout4 = `report.out'.
 
-LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 99
-.
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 10
+0.
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\ot1ztmcm.f
 d"
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 99
-.
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 10
+0.
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\omlztmcm.f
 d"
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 99
-.
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 10
+0.
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\omsztmcm.f
 d"
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 99
-.
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 10
+0.
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\omxztmcm.f
 d"
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 99.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 100.
  ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\ulasy.fd"
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for U+bbold on input line 99.
+LaTeX Font Info:    Try loading font information for U+bbold on input line 100.
+
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/jknappen\ubbold.f
 d"
 File: ubbold.fd 1996/01/01 Blackboard Bold Font Definition File (jk)
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 99.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 100.
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/jknappen\ursfs.fd
 "
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-LaTeX Font Info:    Try loading font information for U+stmry on input line 99.
+LaTeX Font Info:    Try loading font information for U+stmry on input line 100.
+
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/stmaryrd\ustmry.f
 d")
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 99.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 100.
+
 
 ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\ot1ptm.fd"
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 99.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 100.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 99.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 100.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 99.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 100.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 108.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 109.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 111.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 112.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 111.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 112.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 111.
- (report.bbl
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 112.
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 119.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 122.
 
-LaTeX Warning: Empty `thebibliography' environment on input line 21.
-
+ ("C:\Users\Tamlin\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\omsptm.fd
+"
+File: omsptm.fd 
 )
-<witslogo_h.png, id=18, 1030.85126pt x 640.3925pt>
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 122.
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 122.
+<witslogo_h.png, id=45, 1030.85126pt x 640.3925pt>
 File: witslogo_h.png Graphic file (type png)
 <use witslogo_h.png>
-Package pdftex.def Info: witslogo_h.png  used on input line 273.
+Package pdftex.def Info: witslogo_h.png  used on input line 140.
 (pdftex.def)             Requested size: 82.46977pt x 51.23244pt.
 
 
@@ -1194,35 +1210,65 @@ This may cause the page layout to be inconsistent, however.
 [1{C:/Users/Tamlin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
  <./witslogo_h.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 273.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 273.
+<images.png, id=65, 291.489pt x 258.2448pt>
+File: images.png Graphic file (type png)
+<use images.png>
+Package pdftex.def Info: images.png  used on input line 164.
+(pdftex.def)             Requested size: 349.78503pt x 309.8922pt.
+ [2]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 170.
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 171.
+
+Overfull \hbox (50.77736pt too wide) in paragraph at lines 170--186
+[][] 
+ []
+
+
+Overfull \hbox (50.77736pt too wide) in paragraph at lines 189--205
+[][] 
+ []
+
+[3 <./images.png>]
+Overfull \hbox (46.89499pt too wide) in paragraph at lines 211--227
+[][] 
+ []
+
+[4] (report.bbl) [5]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 260.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 260.
  (report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 273.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 273.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 260.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 260.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: CC3DA9FF9CDF6C3A89F6B5D03C6ECC00;145.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 273.
+(rerunfilecheck)             Checksum: C21DC113D574E2B3FA0AECB7D18A9796;558.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 260.
  ) 
 Here is how much of TeX's memory you used:
- 21591 strings out of 492946
- 402389 string characters out of 3125822
- 677276 words of memory out of 3000000
- 25012 multiletter control sequences out of 15000+200000
- 52495 words of font info for 106 fonts, out of 3000000 for 9000
+ 21720 strings out of 492946
+ 404231 string characters out of 3125822
+ 690039 words of memory out of 3000000
+ 25104 multiletter control sequences out of 15000+200000
+ 71827 words of font info for 135 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,16n,66p,445b,403s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 55i,16n,66p,639b,403s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Tamlin\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/bbold/dpi60
 0\bbold10.pk>{C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips
 /base/8r.enc}<C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
-lic/amsfonts/cm/cmmi10.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Tamlin/AppData/Local/Programs
-/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Tamlin/AppData/
-Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Users/Tamlin/App
-Data/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Users/Tamli
-n/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (1 page, 185042 bytes).
+lic/amsfonts/cm/cmex10.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Tamlin/AppData/Local/Program
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Tamlin/AppData/
+Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/T
+amlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/rsfs/rsfs10.pfb><C:/
+Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/symbol/usyr.pfb>
+<C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmb8a
+.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/u
+tmr8a.pfb><C:/Users/Tamlin/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/ti
+mes/utmri8a.pfb>
+Output written on report.pdf (5 pages, 1355798 bytes).
 PDF statistics:
- 61 PDF objects out of 1000 (max. 8388607)
- 6 named destinations out of 1000 (max. 500000)
- 42 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 126 PDF objects out of 1000 (max. 8388607)
+ 19 named destinations out of 1000 (max. 500000)
+ 95 words of extra memory for PDF output out of 10000 (max. 10000000)
 

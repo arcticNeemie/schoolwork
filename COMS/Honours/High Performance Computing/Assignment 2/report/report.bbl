@@ -1,4 +1,4 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
 \providecommand{\url}[1]{#1}
 \csname url@rmstyle\endcsname
 \providecommand{\newblock}{\relax}
@@ -17,5 +17,14 @@
 \language=\csname l@#1\endcsname
 \fi
 #2}}
+
+\bibitem{nvidia19}
+Nvidia, ``{CUDA C Programming Guide},'' March 2019.
+
+
+\bibitem{wang19}
+H.~Wang, ``{COMS4040A \& COMS7045A: High Performance Computing \& Scientific
+  Data Management - Introduction to CUDA C},'' 2019.
+
 
 \end{thebibliography}

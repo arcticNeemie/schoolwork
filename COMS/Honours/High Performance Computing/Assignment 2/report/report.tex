@@ -28,6 +28,7 @@
 \usepackage{multirow,multicol}
 \usepackage{color}
 \usepackage[toc,page]{appendix}
+\usepackage{changepage}
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -108,167 +109,153 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 \section{Introduction}\label{Introduction}
 Discrete Image Convolution is a widely used technique in digital image and signal processing. It can achieve a huge variety of effects, from blurring and sharpening to edge detection and noise removal. 
 \\
-Consider a discrete image $I \in \mathbb{R}^{M \times N}$ where each $Y(i,j) \in [0,1]$. Consider also a discrete filter $K \in \mathbb{R}^{F \times F}$. Then the discrete convolution of $I$ by $K$ is defined as:
+Consider a discrete image $I \in \mathbb{R}^{M \times N}$ where each $Y(i,j) \in [0,1]$. Consider also a discrete filter $F \in \mathbb{R}^{L \times P}$. Then the discrete convolution of $I$ by $F$ is defined as:
+\begin{equation}
+(I*F)(i,j) = \sum_{s=0}^{L-1}\sum_{t=0}^{P-1} I(i-s,j-t)F(s,t),
+\end{equation}
+where $i\in[0,M-1]$ and $j\in[0,N-1]$.
+\\
+In serial, this can be expensive operation as it has an asymptotic time complexity of $\mathcal{O}(MNLP)$. However, because the calculation of each pixel $I(i,j)$ depends only on its local neighbourhood, we can parallelise the problem to improve efficiency. In this report, we consider several approaches to parallelising the problem on a GPU using CUDA. Before we can discuss these approaches, however, we must first discuss the different types of memory on a GPU.
+\subsection{GPU Memory}
+On the GPU there are 5 types of memory \cite{wang19}:
+\begin{itemize}
+\item \textbf{Local Memory} - each thread has its own local memory which is not shared with any other threads, thus limiting its use to temporary variables in the convolution calculation.
+\item \textbf{Shared Memory} - this type of memory is shared among threads in a block. It is typically very fast, but is also quite small (48 KB on a Nvidia GTX 1060\cite{nvidia19})
+\item \textbf{Global Memory} - global memory resides on the device and is accessible by all grids. As a consequence, it is fairly slow.
+\item \textbf{Constant Memory} - constant memory is a fast read-only memory type that is accessible by all grids. It is optimised for being read by multiple threads, but is fairly small (64 KB on a Nvidia GTX 1060\cite{nvidia19}).
+\item \textbf{Texture Memory} - texture memory is a fairly large read-only memory type that is optimised for 2D spatial locality (i.e. nearby threads will access nearby points in texture memory). As a consequence, it is quite fast under these conditions.
+\end{itemize}
+\section{Parallel Approaches}\label{ParallelApproaches}
+We now discuss four separate parallel approaches to the convolution problem.
+\\
+The first approach is to na\"{i}vely assign each pixel to a thread and access its neighbours from global memory. While this certainly does the job of parallelising the problem, it is inefficient, as it makes roughly $2MNLP$ reads from global memory (as both the image and the filter are stored there) and then $MN$ writes to global memory (as the output image is stored there). This approach is referred to as the \textbf{Na\"{i}ve} approach.
+\\
+A better approach is to make use of the faster shared memory for image reading. Due to the shared memory's small size, we can tile the image into overlapping blocks and only load one tile to the shared memory of the corresponding block. Thus each block deals with only a fraction of the total image. For a tile width and height of $T$, this reduces the number of reads from global memory to $\frac{MN}{T^2}(T+2\left \lfloor{\frac{L}{2}}\right \rfloor)(T+2\left \lfloor{\frac{P}{2}}\right \rfloor)$ (as the filter is still in global memory). This approach is referred to as the \textbf{Shared Memory} approach.
+\\
+However, we can do better by making use of the read-only memory types. In one approach, we can load the filter into constant memory, thus making it much faster to access and reducing the number of reads from global memory to $MNLP$ if the image is in global memory or $MN$ if the image is shared. For experimental purposes, we consider the first case. This approach is referred to as the \textbf{Constant Memory} approach.
+\\
+In the final approach, we load the image into texture memory as a 2D texture, making use of the 2D spatial locality inherent to the convolution algorithm. This reduces global memory reads to $MNLP$ in the case of a global memory filter. This approach is referred to as the \textbf{Texture Memory} approach.
+\\
+In each case, because $MN$ threads are used, the overall asymptotic time complexity of each approach when using global memory accesses as a basic operation is $\mathcal{O}(LP)$.
 \section{Empirical Analysis}
-
+The above approaches, along with the CPU serial approach, were run on a Nvidia GTX 1060 6GB GPU with the following specs
+\begin{table}[H]
+\begin{tabular}{ll}
+\textbf{Memory Clock Rate}     & 4.004 GHz    \\
+\textbf{Memory Bus Width}      & 192 bits     \\
+\textbf{Peak Memory Bandwidth} & 192.192 GB/s \\
+\textbf{Compute Capability}    & 6.1         
+\end{tabular}
+\end{table}
+On the host side was an Intel i7-7700 CPU @ 3.60GHz. 
+\\
+An averaging filter, sharpening filter and Sobel vertical edge detection filter were implemented, with the former two being varied for sizes $3\times3$, $5\times5$ and $9\times9$. The $3\times3$ versions of each filter are shown below:
+\begin{table}[H]
+\begin{tabular}{l|l|l|l|c|l|l|l|l|l|l|l|}
+\cline{2-4} \cline{6-8} \cline{10-12}
+          & 1/9 & 1/9 & 1/9 &            & -1 & -1 & -1 &       & -1 & 0 & 1 \\ \cline{2-4} \cline{6-8} \cline{10-12} 
+Averaging & 1/9 & 1/9 & 1/9 & Sharpening & -1 & 9  & -1 & Sobel & -2 & 0 & 2 \\ \cline{2-4} \cline{6-8} \cline{10-12} 
+          & 1/9 & 1/9 & 1/9 &            & -1 & -1 & -1 &       & -1 & 0 & 1 \\ \cline{2-4} \cline{6-8} \cline{10-12} 
+\end{tabular}
+\end{table}
+The experiments were run on four images of sizes ranging from $256 \times 256$ to $2048 \times 2048$. The images, along with some examples of the program output on these images, is shown below.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1.2]{images.png}
+\end{figure}
+\subsection{Kernel Time and Speedup}
+This first set of results shows the execution time for the kernel for various image sizes and filter sizes using both the averaging and the sharpening filters. All times are in seconds.
+\begin{table}[H]
+\small
+\begin{tabular}{ccccccc}
+\multicolumn{7}{c}{\textbf{Averaging Filter - Kernel Time}}                                                                                                                                   \\
+\textbf{Image Size}          & \textbf{Filter Size} & \textbf{Serial Time} & \textbf{Naive Time} & \textbf{Shared Memory Time} & \textbf{Constant Memory Time} & \textbf{Texture Memory Time} \\ \hline
+\multirow{3}{*}{256 x 256}   & 3 x 3                & 0.014537             & 0.000041            & 0.000053                    & 0.000029                      & 0.00004                      \\
+                             & 5 x 5                & 0.03184              & 0.000086            & 0.000103                    & 0.00005                       & 0.000062                     \\
+                             & 9 x 9                & 0.058421             & 0.000208            & 0.000266                    & 0.000133                      & 0.000135                     \\ \hline
+\multirow{3}{*}{512 x 512}   & 3 x 3                & 0.033477             & 0.000117            & 0.00016                     & 0.000076                      & 0.00009                      \\
+                             & 5 x 5                & 0.047504             & 0.000293            & 0.000366                    & 0.000156                      & 0.000182                     \\
+                             & 9 x 9                & 0.119374             & 0.000778            & 0.001178                    & 0.000415                      & 0.000488                     \\ \hline
+\multirow{3}{*}{1024 x 1024} & 3 x 3                & 0.058487             & 0.000433            & 0.000592                    & 0.000268                      & 0.000301                     \\
+                             & 5 x 5                & 0.12551              & 0.001128            & 0.001415                    & 0.000651                      & 0.00065                      \\
+                             & 9 x 9                & 0.365407             & 0.003277            & 0.004373                    & 0.001771                      & 0.001693                     \\ \hline
+\multirow{3}{*}{2048 x 2048} & 3 x 3                & 0.171482             & 0.001637            & 0.002689                    & 0.001026                      & 0.001283                     \\
+                             & 5 x 5                & 0.442127             & 0.004866            & 0.00601                     & 0.002485                      & 0.002896                     \\
+                             & 9 x 9                & 1.402518             & 0.012336            & 0.017509                    & 0.007144                      & 0.006652                    
+\end{tabular}
+\end{table}
+\begin{table}[H]
+\small
+\begin{tabular}{ccccccc}
+\multicolumn{7}{c}{\textbf{Sharpening Filter - Kernel Time}}                                                                                                                                                \\
+\textbf{Image Size}          & \textbf{Filter Size} & \textbf{Serial Time} & \textbf{Naive Time} & \textbf{Shared Memory Time} & \textbf{Constant Memory Time} & \textbf{Texture Memory Time} \\ \hline
+\multirow{3}{*}{256 x 256}   & 3 x 3                & 0.006454             & 0.000041            & 0.000052                    & 0.000029                      & 0.00004                      \\
+                             & 5 x 5                & 0.010588             & 0.000086            & 0.000102                    & 0.000051                      & 0.000062                     \\
+                             & 9 x 9                & 0.02632              & 0.000207            & 0.000281                    & 0.000115                      & 0.000132                     \\ \hline
+\multirow{3}{*}{512 x 512}   & 3 x 3                & 0.01153              & 0.000118            & 0.000162                    & 0.000076                      & 0.000092                     \\
+                             & 5 x 5                & 0.028605             & 0.000294            & 0.000363                    & 0.000155                      & 0.000179                     \\
+                             & 9 x 9                & 0.086674             & 0.000792            & 0.001                       & 0.000416                      & 0.00045                      \\ \hline
+\multirow{3}{*}{1024 x 1024} & 3 x 3                & 0.061758             & 0.000419            & 0.000591                    & 0.000267                      & 0.000295                     \\
+                             & 5 x 5                & 0.112552             & 0.001127            & 0.001417                    & 0.000632                      & 0.000654                     \\
+                             & 9 x 9                & 0.349421             & 0.003057            & 0.00395                     & 0.001751                      & 0.001675                     \\ \hline
+\multirow{3}{*}{2048 x 2048} & 3 x 3                & 0.173789             & 0.001638            & 0.002322                    & 0.001027                      & 0.00111                      \\
+                             & 5 x 5                & 0.452518             & 0.00447             & 0.005788                    & 0.002485                      & 0.002555                     \\
+                             & 9 x 9                & 1.403984             & 0.012163            & 0.015792                    & 0.006965                      & 0.00662                     
+\end{tabular}
+\end{table}
+We can immediately see that the time taken for the kernel function to run increases both with $M$ and $N$ but also with $L$ and $P$ as they increase for all approaches. This is of course predicted by the complexity analysis of these approaches.
+\\
+Restricting our discussion to the results of the sharpening filter, we can measure the speed-up, $S = \frac{Time_{Serial}}{Time_{Parallel}}$, of the various approaches and tabulate the results below:
+\begin{table}[H]
+\small
+\begin{tabular}{cccccc}
+\multicolumn{6}{c}{\textbf{Sharpening Filter - Speedup}}                                                                                                                        \\
+\textbf{Image Size}          & \textbf{Filter Size} & \textbf{Naive Speedup} & \textbf{Shared Memory Speedup} & \textbf{Constant Memory Speedup} & \textbf{Texture Memory Speedup} \\ \hline
+\multirow{3}{*}{256 x 256}   & 3 x 3                & 157.4146               & 124.1154                       & 222.5517                         & 161.3500                        \\
+                             & 5 x 5                & 123.1163               & 103.8039                       & 207.6078                         & 170.7742                        \\
+                             & 9 x 9                & 127.1498               & 93.6655                        & 228.8696                         & 199.3939                        \\ \hline
+\multirow{3}{*}{512 x 512}   & 3 x 3                & 97.7119                & 71.1728                        & 151.7105                         & 125.3261                        \\
+                             & 5 x 5                & 97.2959                & 78.8017                        & 184.5484                         & 159.8045                        \\
+                             & 9 x 9                & 109.4369               & 86.6740                        & 208.3510                         & 192.6089                        \\ \hline
+\multirow{3}{*}{1024 x 1024} & 3 x 3                & 147.3938               & 104.4975                       & 231.3034                         & 209.3492                        \\
+                             & 5 x 5                & 99.8687                & 79.4298                        & 178.0886                         & 172.0979                        \\
+                             & 9 x 9                & 114.3019               & 88.4610                        & 199.5551                         & 208.6096                        \\ \hline
+\multirow{3}{*}{2048 x 2048} & 3 x 3                & 106.0983               & 74.8445                        & 169.2201                         & 156.5667                        \\
+                             & 5 x 5                & 101.2345               & 78.1821                        & 182.0998                         & 177.1108                        \\
+                             & 9 x 9                & 115.4307               & 88.9048                        & 201.5770                         & 212.0822                       
+\end{tabular}
+\end{table}
+Here we see that the approach that consistently gives the highest speedup is the Constant Memory approach, followed by the Texture Memory approach, then the Na\"{i}ve approach and finally the Shared Memory approach. The fact that the Constant Memory approach is fastest is unsurprising, as it makes use of some of the fastest memory on the device. An interesting result is that the Shared Memory approach is the slowest. This is likely due to the increased overhead within the kernel required to handle the initialisation of the overlapping block.
+\subsection{Global Memory Accesses}
+Measuring the number of global memory accesses (read and write) performed by each approach, we arrive at the following results.
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[H]
+\small
+\begin{tabular}{cccccc}
+\multicolumn{6}{c}{\textbf{Sharpening Filter - Global Memory Accesses}}                                                                            \\
+\textbf{Image Size}          & \textbf{Filter Size} & \textbf{Naive} & \textbf{Shared Memory} & \textbf{Constant Memory} & \textbf{Texture Memory} \\ \hline
+\multirow{3}{*}{256 x 256}   & 3 x 3                & 1245184        & 148480                 & 655360                   & 655360                  \\
+                             & 5 x 5                & 3342336        & 167936                 & 1703936                  & 1703936                 \\
+                             & 9 x 9                & 10682368       & 212992                 & 5373952                  & 5373952                 \\ \hline
+\multirow{3}{*}{512 x 512}   & 3 x 3                & 4980736        & 593920                 & 2621440                  & 2621440                 \\
+                             & 5 x 5                & 13369344       & 671744                 & 6815744                  & 6815744                 \\
+                             & 9 x 9                & 42729472       & 851968                 & 21495808                 & 21495808                \\ \hline
+\multirow{3}{*}{1024 x 1024} & 3 x 3                & 19922944       & 2375680                & 10485760                 & 10485760                \\
+                             & 5 x 5                & 53477376       & 2686976                & 27262976                 & 27262976                \\
+                             & 9 x 9                & 170917888      & 3407872                & 85983232                 & 85983232                \\ \hline
+\multirow{3}{*}{2048 x 2048} & 3 x 3                & 79691776       & 9502720                & 41943040                 & 41943040                \\
+                             & 5 x 5                & 213909504      & 10747904               & 109051904                & 109051904               \\
+                             & 9 x 9                & 683671552      & 13631488               & 343932928                & 343932928              
+\end{tabular}
+\end{table}
+As predicted by the results in Section \ref{ParallelApproaches}, we see that the number of global memory accesses in the Na\"{i}ve approach is equal to twice that of the Constant and Texture Memory approaches, and that the number corresponding to the Shared Memory approach is further scaled by the size of the tile. The fact that the number of global memory accesses does not correspond to the kernel execution time points to the effects of the various memory speeds and the overhead associated with each approach.
+\subsection{Overhead Time}
+\subsection{Measured Floating-point Computation Rate}
 \section{Summary}
 
 \bibliographystyle{IEEEannot}
 \bibliography{myBib}
-\begin{comment}
-\begin{appendices}
-\section{Algorithms}\label{app:Algorithms}
-\begin{algorithm}[H]
-\caption{k Nearest Neighbour}\label{alg:kNN}
-\begin{algorithmic}[1]
-\Procedure{kNN}{P,Q,k}
-	\State distance $\gets [][]$
-	\State index $\gets [][]$
-	\For{$q_{i}\in Q$}
-		\For{$p_{j} \in P$}
-			\State distance[$i$][$j$] $\gets$ dist($q_{i},p_{j}$)
-			\State index[$i$][$j$] $\gets j$
-		\EndFor
-	\EndFor	
-	\For{each $i$ in distance[$i$]}
-		\State sort(distance[$i$],index[$i$])
-	\EndFor
-	
-	\State \RETURN index[$i$][$0:k-1$]
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-\end{appendices}
-\begin{algorithm}[H]
-\caption{Euclidean Distance}\label{alg:euclid}
-\begin{algorithmic}[1]
-\Procedure{dist}{$q,p$}
-	\State $distance \gets 0$
-	\For{$i \in [1,2,...,d]$}
-		\State $distance \gets distance + (p_{i} - q_{i})^2$
-	\EndFor
-	\State \RETURN $\sqrt{distance}$
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-\begin{algorithm}[H]
-\caption{Manhattan Distance}\label{alg:manhattan}
-\begin{algorithmic}[1]
-\Procedure{dist}{$q,p$}
-	\State $distance \gets 0$
-	\For{$i \in [1,2,...,d]$}
-		\State $distance \gets distance + |p_{i} - q_{i}|$
-	\EndFor
-	\State \RETURN $distance$
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-\begin{algorithm}[H]
-\caption{Quicksort}\label{alg:qsort}
-\begin{algorithmic}[1]
-\Procedure{Quicksort}{$index,distance,low,high$}
-	\If{$low<high$}
-		\State $pivot \gets$ Partition($index,distance,low,high$)
-		\State Quicksort($index,dist,low,pivot-1$)
-		\State Quicksort($index,dist,pivot+1,high$)
-	\EndIf
-\EndProcedure
-\Procedure{Partition}{$index,distance,low,high$}
-	\State $pivot \gets distance[high]$
-	\State $i \gets low - 1$
-	\For{$j\in [low,low+1,...,high-1,high]$}
-		\If{$distance[j]\leq pivot$}
-			\State $i \gets i + 1$
-			\State Swap($distance[i],distance[j]$)
-			\State Swap($index[i],index[j]$)
-		\EndIf
-	\EndFor
-	\State Swap($distance[i+1],distance[high]$)
-	\State Swap($index[i+1],index[high]$)
-	\State \RETURN $i+1$
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-\begin{algorithm}[H]
-\caption{Bubblesort}\label{alg:bubblesort}
-\begin{algorithmic}[1]
-\Procedure{Bubblesort}{$index, distance $}
-	\For{$i \in [0,...,m-1]$}
-		\For{$j \in [0,...,m-i-1]$}
-			\If{$distance[j]>distance[j+1]$}
-				\State Swap($distance[j],distance[j+1]$)
-				\State Swap($index[j],index[j+1]$)
-			\EndIf
-		\EndFor
-	\EndFor
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-\begin{algorithm}[H]
-\caption{Mergesort}\label{alg:mergesort}
-\begin{algorithmic}[1]
-\Procedure{MergesortParent}{$index, distance $}
-	\State Create($index2$)
-	\State Create($distance2$)
-	\State Mergesort($index,index2,distance,distance2,0,m$)
-	\State Destroy($index2$)
-	\State Destroy($distance2$)
-\EndProcedure
-\Procedure{Mergesort}{$index,index2,distance,distance2,low,high$}
-	\If{$low<high$}
-		\State $mid \gets \frac{low+high}{2}$
-		\State Mergesort($index,index2,distance,distance2,low,mid$)
-		\State Mergesort($index,index2,distance,distance2,mid+1,high$)
-		\State Merge($index,index2,distance,distance2,low,mid,high$)
-	\EndIf
-\EndProcedure
-\Procedure{Merge}{$index,index2,distance,distance2,low,mid,high$}
-	\State $l1 \gets low$
-	\State $l2 \gets mid+1$
-	\For{$i\gets low$;$l1\leq mid$\AND$l2\leq high$;$i\gets i+1$}
-		\If{$distance[l1]\leq distance[l2]$}
-			\State $distance2[i] \gets distance[l1]$
-			\State $index2[i] \gets index[l1]$
-			\State $l1 \gets l1 + 1$
-		\Else
-			\State $distance2[i] \gets distance[l2]$
-			\State $index2[i] \gets index[l2]$
-			\State $l2 \gets l2 + 1$
-		\EndIf
-	\EndFor
-	\While{$l1\leq mid$}
-		\State $distance2[i] \gets distance[l1]$
-		\State $index2[i] \gets index[l1]$
-		\State $l1 \gets l1 + 1$
-		\State $i \gets i + 1$
-	\EndWhile
-	\While{$l2\leq high$}
-		\State $distance2[i] \gets distance[l2]$
-		\State $index2[i] \gets index[l2]$
-		\State $l2 \gets l2 + 1$
-		\State $i \gets i + 1$
-	\EndWhile
-	\State $distance \gets distance2$
-	\State $index \gets index2$ 
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-\begin{algorithm}[H]
-\caption{Odd-Even Sort}\label{alg:oddeven}
-\begin{algorithmic}[1]
-\Procedure{OddEven}{$index, distance $}
-	\For{$i \in [0,...,m-1]$}
-		\State $j0 \gets i \% 2$
-		\For{$j \in [j0,j0+2,...,m-1]$}
-			\If{$distance[j]>distance[j+1]$}
-				\State Swap($distance[j],distance[j+1]$)
-				\State Swap($index[j],index[j+1]$)
-			\EndIf
-		\EndFor
-	\EndFor
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-\end{comment}
+
 \end{document} 
 

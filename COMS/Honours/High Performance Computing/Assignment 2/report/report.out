@@ -1,3 +1,9 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.2}{Empirical Analysis}{}% 2
-\BOOKMARK [1][-]{section.3}{Summary}{}% 3
+\BOOKMARK [2][-]{subsection.1.1}{GPU Memory}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Parallel Approaches}{}% 3
+\BOOKMARK [1][-]{section.3}{Empirical Analysis}{}% 4
+\BOOKMARK [2][-]{subsection.3.1}{Kernel Time and Speedup}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.2}{Global Memory Accesses}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.3}{Overhead Time}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.4}{Measured Floating-point Computation Rate}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{Summary}{}% 9
